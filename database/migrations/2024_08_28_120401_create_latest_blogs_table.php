@@ -17,7 +17,10 @@ return new class extends Migration
             
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
+
             $table->string('name')->nullable();
+            $table->string('category_id');
+
             $table->timestamps();
         });
     }
