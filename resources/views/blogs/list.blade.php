@@ -1,3 +1,6 @@
+@extends('dashboard')
+@section('content')
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -76,3 +79,4 @@
         }
     }
 </script>
+@endsection
