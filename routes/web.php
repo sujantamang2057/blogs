@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
 
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BlogCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,7 +25,10 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/newblog', [DashboardController::class, 'newblogs'])->name('newblog');
+    Route::get('/newblog', [BlogController::class, 'create'])->name('blogs.create');
+
+    //blog category controler route
+    Route::resource('category', BlogCategoryController::class);
 
 
 
@@ -44,7 +47,11 @@ Route::controller(BlogController::class)->group(function(){
     Route::post('/blogs','store')->name('blogs.store');
     Route::get('/blogs/{product}/edit','edit')->name('blogs.edit');
     Route::put('/blogs/{product}','update')->name('blogs.update');
-    Route::delete('/blogs/{product}','destroy')->name('blogs.destroy');    
+    Route::delete('/blogs/{product}','destroy')->name('blogs.destroy');   
+    
+    //blog category controler route
+    // Route::resource('category', CategoryController::class);
+
 
 
 
@@ -53,4 +60,3 @@ Route::controller(BlogController::class)->group(function(){
 
 
 //for category route using resource controller
-Route::resource('category', CategoryController::class);

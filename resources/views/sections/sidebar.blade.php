@@ -13,11 +13,11 @@
                                 <li class="nav-item"> <a href="./index.html" class="nav-link active"> <i class="nav-icon bi bi-circle"></i>
                                         <p>Dashboard v1</p>
                                     </a> </li>
-                                <li class="nav-item"> <a href="{{route('newblog')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <li class="nav-item"> <a href="{{route('blogs.create')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                         <p>Blog</p>
                                     </a> </li>
-                                <li class="nav-item"> <a href="./index3.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                        <p>Dashboard v3</p>
+                                <li class="nav-item"> <a href="{{ route('category.index')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                        <p>Blog Category</p>
                                     </a> </li>
                             </ul>
                         </li>
