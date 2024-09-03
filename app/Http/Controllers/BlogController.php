@@ -1,122 +1,129 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Requests\BlogRequest;
-use App\Models\latest_blog;
-use Illuminate\Support\Facades\File;
-
-
+ use App\Models\blog_category;
+ use App\Http\Requests\BlogRequest;
+use App\Models\blog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 
 class BlogController extends Controller
 {
-    //
-    //This method will show blog page
-    public function index() {
-        $products = latest_blog::orderBy('created_at','DESC')->get();
-
-        return view('blogs.list',[
-            'products' => $products
-        ]);
-    }
-
-    //This method will show create page
-
-
-    public function create(){
-        return view('admin.blog.create');
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $blog = blog::paginate(2); // Adjust the number per page as needed
         
+        // Return the view with the paginated data
+        return view('admin.blog.index', compact('blog'));   
+     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+        $blogCategories = blog_category::all();
+        return view('admin.blog.create',compact('blogCategories'));
     }
-    
-    //This method will show create page
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(BlogRequest $request)
+    {
+        //
+        // dd($request->all());
+        $blogCategory = new blog();
+        $blogCategory->title = $request->title;
+        $blogCategory->description = $request->description;
 
 
-    public function store(Request $request) {
-        $rules = [
-           'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'name' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',         
-        ];
+        $blogCategory->blog_category_id = $request->blog_category_id;
+        $blogCategory->status = $request->has('status') ? 1 : 0;
+
+       // Save the blog category
+       $blogCategory->save();
+
+       // If an image is uploaded, save it to the uploads folder and update the blog category
+       if ($request->image != "") {
+           $image = $request->image;
+           $ext = $image->getClientOriginalExtension();
+           $imageName = time().'.'.$ext;
+
+           // Save image to products directory
+           $image->move(public_path('uploads'),$imageName);
+
+           // Save image name in database
+           $blogCategory->image = $imageName;
+           $blogCategory->save();
+       }
+
+       // Redirect to the blog category index with a success message
+       return redirect()->route('blog.index')->with('success','category added successfully.');
+      
+
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+        $blog=blog::findorfail($id);
+        return view('admin.blog.show',compact('blog'));
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+        $blogCategory = blog::findOrFail($id);
+        // Fetch all categories for the parent category select dropdown
+        $categories = blog_category::all();
+
+        return view('admin.blog.edit', compact('blogCategory', 'categories'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(BlogRequest $request, string $id)
+    {
+        $blogCategory = blog::findOrFail($id);
+
+        
 
         if ($request->image != "") {
             $rules['image'] = 'image';
         }
 
-        $validator = Validator::make($request->all(),$rules);
 
-        if ($validator->fails()) {
-            return redirect()->route('blogs.create')->withInput()->withErrors($validator);
-        }
-
-        // here we will insert product in db
-        $blogs = new latest_blog();
-        $blogs->name = $request->name;
-        $blogs->title = $request->title;
-        $blogs->description = $request->description;
-        $blogs->save();
-
-        if ($request->image != "") {
-            // here we will store image
-            $image = $request->image;
-            $ext = $image->getClientOriginalExtension();
-            $imageName = time().'.'.$ext; // Unique image name
-
-            // Save image to products directory
-            $image->move(public_path('uploads'),$imageName);
-
-            // Save image name in database
-            $blogs->image = $imageName;
-            $blogs->save();
-        }        
-
-        return redirect()->route('blogs.index')->with('success','blog added successfully.');
-    }
-    //This method will show edit page
-    public function edit($id) {
-        $product = latest_blog::findOrFail($id);
-        return view('blogs.edit',[
-            'product' => $product
-        ]);
-    }
-
-//update the data
-    public function update($id, Request $request) {
         
-
-        $blogs = latest_blog::findOrFail($id);
-
-        $rules = [
-            'title' => 'required|string|max:255',
-             'description' => 'required|string',
-             'name' => 'nullable|string',
-             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',         
-         ];
-
-        if ($request->image != "") {
-            $rules['image'] = 'image';
-        }
-
-        $validator = Validator::make($request->all(),$rules);
-
-        if ($validator->fails()) {
-            // echo "200";
-            return redirect()->route('blogs.edit',$blogs->id)->withInput()->withErrors($validator);
-        }
 
         // here we will update product
-        $blogs->name = $request->name;
-        $blogs->title = $request->title;
-        $blogs->description = $request->description;
-        $blogs->save();
+        $blogCategory->title = $request->title;
+        $blogCategory->description = $request->description;
 
+
+        $blogCategory->blog_category_id = $request->blog_category_id;
+        $blogCategory->status = $request->has('status') ? 1 : 0;
+
+        // Save the blog category
+        $blogCategory->save();
         if ($request->image != "") {
 
             // delete old image
-            File::delete(public_path('uploads/'.$blogs->image));
+            File::delete(public_path('uploads/'.$blogCategory->image));
 
             // here we will store image
             $image = $request->image;
@@ -127,29 +134,26 @@ class BlogController extends Controller
             $image->move(public_path('uploads'),$imageName);
 
             // Save image name in database
-            $blogs->image = $imageName;
-            $blogs->save();
+            $blogCategory->image = $imageName;
+            $blogCategory->save();
         }        
 
-        return redirect()->route('blogs.index')->with('success','blog updated successfully.');
+        return redirect()->route('blog.index')->with('success','blog post updated successfully.');
     }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+        $blogCategory = blog::findOrFail($id);
+//deleting the image from file
+        File::delete(public_path('uploads/'.$blogCategory->image));
 
-        //This method will show u[date page
+        $blogCategory->delete();
+        return redirect()->route('blog.index')->with('success','blog post deleted successfully.');
 
-    
 
-     //This method will show delete page
 
-     public function destroy($id) {
-        $blogs = latest_blog::findOrFail($id);
-
-       // delete image
-       File::delete(public_path('uploads/'.$blogs->image));
-
-       // delete product from database
-       $blogs->delete();
-
-       return redirect()->route('blogs.index')->with('success','blog deleted successfully.');
     }
-
 }

@@ -1,73 +1,123 @@
 @extends('dashboard')
 
 @section('content')
-
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Simple Laravel 11 CRUD</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  </head>
-  <body>
-
-    <div class="bg-dark py-3">
-        <h3 class="text-white text-center">Simple Laravel Llogs 0peration</h3>
-    </div>
-    <div class="container">
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-10 d-flex justify-content-end">
-                <a href="{{ route('blogs.index') }}" class="btn btn-dark">Back</a>
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="mb-0">Blog post</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Blog post
+                    </li>
+                </ol>
             </div>
         </div>
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-10">
-                <div class="card borde-0 shadow-lg my-4">
-                    <div class="card-header bg-dark">
-                        <h3 class="text-white">Create Blogs</h3>
+    </div>
+</div>
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="card card-primary card-outline mb-4">
+                    <div class="card-header">
+                        <div class="card-title">Create blog post</div>
                     </div>
-                    <form enctype="multipart/form-data" action="{{ route('blogs.store') }}" method="post">
+                    <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
+                            <!-- Image Input -->
                             <div class="mb-3">
-                                <label for="" class="form-label h5">Name</label>
-                                <input value="{{ old('name') }}" type="text" class="@error('name') is-invalid @enderror form-control-lg form-control" placeholder="Name" name="name">
-                                @error('name')
-                                    <p class="invalid-feedback">{{ $message }}</p>
+                                <label for="image" class="form-label"><strong>Image:</strong></label>
+                                <input type="file" name="image" id="image"
+                                    class="form-control @error('image') is-invalid @enderror"
+                                    placeholder="image" required>
+                                @error('image')
+                                <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <!-- Title Input -->
                             <div class="mb-3">
-                                <label for="" class="form-label h5">title</label>
-                                <input value="{{ old('sku') }}" type="text" class="@error('title') is-invalid @enderror form-control form-control-lg" placeholder="title" name="title">
+                                <label for="title" class="form-label"><strong>Title:</strong></label>
+                                <input type="text" name="title"
+                                    class="form-control @error('title') is-invalid @enderror" id="title"
+                                    placeholder="Title" required>
                                 @error('title')
-                                    <p class="invalid-feedback">{{ $message }}</p>
+                                <div class="form-text text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+                            <!-- Parent Category Select -->
                             <div class="mb-3">
-                                <label for="" class="form-label h5">Description</label>
-                                <textarea placeholder="Description" class="form-control" name="description" cols="30" rows="5">{{ old('description') }}</textarea>
+                                <label for="parent_id" class="form-label"><strong>Blog Category:</strong></label>
+                                <select class="form-control @error('blog_category_id') is-invalid @enderror" name="blog_category_id" id="parent_id">
+                                    <option value="">Select blog Category</option>
+                                    @foreach ($blogCategories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                    @endforeach
+                                </select>
+                                @error('blog_category_id')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
+
+                            <!-- this is for description -->
                             <div class="mb-3">
-                                <label for="" class="form-label h5">Image</label>
-                                <input type="file" class="form-control form-control-lg" placeholder="image" name="image">
+                                <label for="description" class="form-label"><strong>Description:</strong></label>
+                                <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
+                                    rows="4" placeholder="Enter a description...">{{ old('description') }}</textarea>
+                                @error('description')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-lg btn-primary">Submit</button>
+                            <!-- Status Toggle -->
+                            <div class="mb-3">
+                                <label for="status" class="form-label"><strong>Status:</strong></label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input @error('status') is-invalid @enderror"
+                                        type="checkbox" role="switch" id="status" name="status" value="1"
+                                        {{ old('status') ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="status">Active</label>
+                                </div>
+                                @error('status')
+                                <div class="form-text text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    
-  </body>
-</html>
+</div>
+@endsection
 
+@section('scripts')
+<!-- Initialize FilePond -->
+<script>
+    // Register FilePond plugins if necessary
+    // FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageExifOrientation, FilePondPluginFileValidateSize);
 
+    // Select the file input element
+    const inputElement = document.querySelector('input[name="image"]');
 
+    // Create a FilePond instance
+    const pond = FilePond.create(inputElement);
 
+    // Configure FilePond (optional)
+    // pond.setOptions({
+    //     server: {
+    //         process: '/upload',
+    //         revert: '/revert',
+    //         restore: '/restore',
+    //         load: '/load',
+    //         fetch: '/fetch'
+    //     }
+    // });
+</script>
 @endsection

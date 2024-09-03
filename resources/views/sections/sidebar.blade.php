@@ -13,7 +13,7 @@
                                 <li class="nav-item"> <a href="./index.html" class="nav-link active"> <i class="nav-icon bi bi-circle"></i>
                                         <p>Dashboard v1</p>
                                     </a> </li>
-                                <li class="nav-item"> <a href="{{route('blogs.create')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <li class="nav-item"> <a href="{{ route('blog.index')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                         <p>Blog</p>
                                     </a> </li>
                                 <li class="nav-item"> <a href="{{ route('category.index')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>

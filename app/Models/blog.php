@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class latest_blog extends Model
+class blog extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'title',
-        'description',
-        'image',
-        'name',
-    ];
+
+    public function blogCategory(){
+        return $this->belongsTo(blog_category::class, 'blog_category_id');
+    }
+
+    
 }
