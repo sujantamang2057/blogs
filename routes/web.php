@@ -29,7 +29,10 @@ Route::middleware('auth')->group(function () {
 
     //blog category controler route
     Route::resource('category', BlogCategoryController::class);
+
     Route::resource('blog', BlogController::class);
+    Route::post('upload', [BlogController::class, 'upload'])->name('upload');
+    Route::delete('revert', [BlogController::class, 'revert'])->name('revert');
 
 
 

@@ -25,7 +25,7 @@ class BlogRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'name' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5000',
+            'image' => 'nullable|string',
             'blog_category_id' => 'exists:blog_categories,id',
 
             //

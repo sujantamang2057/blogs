@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use App\Models\blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\storage;
+
 
 
 class BlogController extends Controller
@@ -15,7 +17,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blog = blog::paginate(2); // Adjust the number per page as needed
+        $blog = blog::paginate(10); // Adjust the number per page as needed
         
         // Return the view with the paginated data
         return view('admin.blog.index', compact('blog'));   
@@ -37,7 +39,7 @@ class BlogController extends Controller
     public function store(BlogRequest $request)
     {
         //
-        // dd($request->all());
+        // dd($request->image);
         $blogCategory = new blog();
         $blogCategory->title = $request->title;
         $blogCategory->description = $request->description;
@@ -47,22 +49,23 @@ class BlogController extends Controller
         $blogCategory->status = $request->has('status') ? 1 : 0;
 
        // Save the blog category
-       $blogCategory->save();
-
        // If an image is uploaded, save it to the uploads folder and update the blog category
-       if ($request->image != "") {
-           $image = $request->image;
-           $ext = $image->getClientOriginalExtension();
-           $imageName = time().'.'.$ext;
+       if ($request->input('image')) {
+        $imagePath = $request->input('image');
+        $filename = basename($imagePath);
 
-           // Save image to products directory
-           $image->move(public_path('uploads'),$imageName);
+        $newPath = 'images/' . $filename;
 
-           // Save image name in database
-           $blogCategory->image = $imageName;
-           $blogCategory->save();
-       }
 
+        // Move the file from 'tmp' to 'images'
+        Storage::disk('public')->move($imagePath, $newPath);
+
+        // Save the new image path in the database
+        $blogCategory->image = $newPath;
+        
+
+    }
+    $blogCategory->save();
        // Redirect to the blog category index with a success message
        return redirect()->route('blog.index')->with('success','category added successfully.');
       
@@ -155,5 +158,23 @@ class BlogController extends Controller
 
 
 
+    }
+public function upload(Request $request)
+    {
+        if ($request->file('image'))
+        {
+            $path = $request->file('image')->store('tmp', 'public');
+            return response()->json(['path' => $path]);
+        }
+        return response()->json(['error' => 'No file uploaded'], 400);
+    }
+
+    public function revert(Request $request)
+    {
+        $path = $request->getContent();
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+        return response()->json(['success' => true]);
     }
 }
