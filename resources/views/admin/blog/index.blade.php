@@ -75,6 +75,11 @@
 
                                             <td>{{ $blog->title }}</td>
                                             <td>{!! $blog->description !!}</td>
+
+
+
+
+                                            
                                             <td>                                       
                                                 @if ($blog->blogCategory)
                                                     {{ $blog->blogCategory->title }}

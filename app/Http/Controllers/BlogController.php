@@ -52,7 +52,10 @@ class BlogController extends Controller
        // If an image is uploaded, save it to the uploads folder and update the blog category
        if ($request->input('image')) {
         $imagePath = $request->input('image');
+
         $filename = basename($imagePath);
+       
+
 
         $newPath = 'images/' . $filename;
 
@@ -67,7 +70,7 @@ class BlogController extends Controller
     }
     $blogCategory->save();
        // Redirect to the blog category index with a success message
-       return redirect()->route('blog.index')->with('success','category added successfully.');
+       return redirect()->route('blog.index')->with('success','category post added successfully.');
       
 
 
