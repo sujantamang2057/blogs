@@ -24,9 +24,9 @@ class blogcategoryRequest extends FormRequest
         return [
             //
             'title' => 'required|string|max:255',
-        'image' => 'nullable|image',
-        'parent_id' => 'nullable|exists:blog_categories,id',
-        'status' => 'boolean',
+            'image' => 'nullable|string',
+            'parent_id' => 'nullable|exists:blog_categories,id',
+            'status' => 'boolean',
         ];
     }
 }
