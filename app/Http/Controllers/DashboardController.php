@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Blog;
 
 class DashboardController extends Controller
 {
@@ -10,10 +10,15 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('admin.dashboard.index');
+        $activecount = Blog::where('status', '1')->count();
+        $inactivecount = Blog::where('status', '0')->count();
+
+        return view('admin.dashboard.index', compact('activecount', 'inactivecount'));
     }
-    public function newblogs(){
+
+    public function newblogs()
+    {
         return view('admin.dashboard.blog');
-        
+
     }
 }
