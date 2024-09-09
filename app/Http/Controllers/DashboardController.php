@@ -11,25 +11,31 @@ class DashboardController extends Controller
 
     public function index()
     {
-        //blog count
-        $blogCounts = Blog::whereIn('status', [0, 1])
-            ->select('status', Blog::raw('count(*) as count'))
-            ->groupBy('status')
-            ->pluck('count', 'status');
+        // List of models and their respective class names
+        $models = [
+            'Category' => blog_category::class,
+            'Blog' => Blog::class,
 
-        $activecount = $blogCounts[1] ?? 0; // active blogs count
-        $inactivecount = $blogCounts[0] ?? 0; // inactive blogs count
+        ];
 
-        //category count
-        $categoryCounts = blog_category::whereIn('status', [0, 1])
-            ->select('status', blog_category::raw('count(*) as count'))
-            ->groupBy('status')
-            ->pluck('count', 'status');
+        $statusCounts = [];
 
-        $activecount1 = $categoryCounts[1] ?? 0; //  category active blogs count
-        $inactivecount1 = $categoryCounts[0] ?? 0; //  categoryinactive blogs count
+        // Loop through each model to get active and inactive counts
+        foreach ($models as $modelName => $modelClass) {
+            $counts = $modelClass::select('status', $modelClass::raw('count(*) as count'))
+                ->whereIn('status', [0, 1])
+                ->groupBy('status')
+                ->pluck('count', 'status');
 
-        return view('admin.dashboard.index', compact('activecount', 'inactivecount', 'activecount1', 'inactivecount1'));
+            // Save the counts for each model
+            $statusCounts[$modelName] = [
+                'active' => $counts[1] ?? 0,
+                'inactive' => $counts[0] ?? 0,
+            ];
+
+        }
+
+        return view('admin.dashboard.index', compact('statusCounts'));
     }
 
     public function newblogs()
