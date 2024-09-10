@@ -3,6 +3,7 @@
 
 
 <head>
+    {{-- for the meta csrf token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -33,6 +34,12 @@
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
         rel="stylesheet" />
+
+    <!-- Fancybox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+    {{-- fancy box finish --}}
+
     <script src="https://cdn.tiny.cloud/1/lz3stx6dwxywl56d146m3msq6l66bfvqz2iyl49ikdndki4k/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
 </head> <!--end::Head--> <!--begin::Body-->

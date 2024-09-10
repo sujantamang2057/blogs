@@ -64,8 +64,12 @@
 
                                                 <td>
                                                     @if ($blog->image)
-                                                        <img src="{{ asset('storage/' . $blog->image) }}"
-                                                            alt="{{ $blog->title }}" style="width: 50px; height: auto;">
+                                                        <a href="{{ asset('storage/' . $blog->image) }}"
+                                                            data-fancybox="gallery" data-caption="{{ $blog->title }}">
+                                                            <img src="{{ asset('storage/' . $blog->image) }}"
+                                                                alt="{{ $blog->title }}"
+                                                                style="width: 50px; height: auto;">
+                                                        </a>
                                                     @else
                                                         <p>No image available</p>
                                                     @endif
@@ -144,7 +148,7 @@
                             // Send AJAX request to update status
 
                             fetch('{{ route('blog.status') }}', {
-                                    method: 'PATCH',
+                                    method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'X-CSRF-TOKEN': document.querySelector(
