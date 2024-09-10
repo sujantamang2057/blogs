@@ -24,15 +24,18 @@
             <strong>Title:</strong> <span class="text-muted">{{ $blog->title }}</span>
         </div>
         <div class="mb-3">
-            <strong>Description:</strong> <span class="text-muted">{{ $blog->description}}</span>
+            <strong>Description:</strong> <span class="text-muted">{!! $blog->description !!}</span>
+        </div>
+        <div class="mb-3">
+            <strong>Published at:</strong> <span class="text-muted">{{ $blog->published_at }}</span>
         </div>
         <div class="mb-3">
             <strong>Blog Category:</strong> <span class="text-muted">
 
-                @if($blog->blogCategory)
-                {{ $blog->blogCategory->title }}
+                @if ($blog->blogCategory)
+                    {{ $blog->blogCategory->title }}
                 @else
-                none
+                    none
                 @endif
 
             </span>
@@ -46,8 +49,8 @@
         <div class="mb-3">
             <strong>Image:</strong>
             @if ($blog->image)
-                <img src="{{ asset('uploads/' . $blog->image) }}" alt="{{ $blog->title }}"
-                    class="img-thumbnail" style="width: 100px; height: auto;">
+                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-thumbnail"
+                    style="width: 100px; height: auto;">
             @else
                 <p class="text-muted">No image available</p>
             @endif

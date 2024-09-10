@@ -74,6 +74,18 @@
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                {{-- for the published at --}}
+                                <div class="mb-3">
+                                    <label for="published_at"><strong>Publish at:</strong></label>
+                                    <input type="datetime-local" name="published_at" id="published_at"
+                                        class="form-control @error('published_at') is-invalid @enderror"
+                                        value="{{ old('published_at') ? old('published_at')->format('Y-m-d\TH:i') : '' }}">
+
+
+                                    @error('published_at')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <!-- Status Toggle -->
                                 <div class="mb-3">
                                     <label for="status" class="form-label"><strong>Status:</strong></label>

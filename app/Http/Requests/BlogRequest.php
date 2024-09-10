@@ -26,6 +26,7 @@ class BlogRequest extends FormRequest
             'description' => 'required|string',
             'name' => 'nullable|string',
             'image' => 'nullable|string',
+
             'blog_category_id' => 'exists:blog_categories,id',
 
             //

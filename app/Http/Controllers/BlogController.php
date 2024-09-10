@@ -42,6 +42,7 @@ class BlogController extends Controller
         // dd($request->image);
         $blogCategory = new blog;
         $blogCategory->title = $request->title;
+        $blogCategory->published_at = $request->published_at;
         $blogCategory->description = $request->description;
 
         $blogCategory->blog_category_id = $request->blog_category_id;
@@ -114,24 +115,25 @@ class BlogController extends Controller
         $blogCategory->status = $request->has('status') ? 1 : 0;
 
         // Save the blog category
-        $blogCategory->save();
         if ($request->image != '') {
 
             // delete old image
-            File::delete(public_path('uploads/'.$blogCategory->image));
+            File::delete(public_path('storage/'.$blogCategory->image));
 
             // here we will store image
-            $image = $request->image;
-            $ext = $image->getClientOriginalExtension();
-            $imageName = time().'.'.$ext; // Unique image name
+            $imagePath = $request->input('image');
 
-            // Save image to products directory
-            $image->move(public_path('uploads'), $imageName);
+            $filename = basename($imagePath);
 
-            // Save image name in database
-            $blogCategory->image = $imageName;
-            $blogCategory->save();
+            $newPath = 'images/'.$filename;
+
+            // Move the file from 'tmp' to 'images'
+            Storage::disk('public')->move($imagePath, $newPath);
+
+            // Save the new image path in the database
+            $blogCategory->image = $newPath;
         }
+        $blogCategory->save();
 
         return redirect()->route('blog.index')->with('success', 'blog post updated successfully.');
     }
