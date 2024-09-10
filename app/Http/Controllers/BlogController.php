@@ -172,4 +172,20 @@ class BlogController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function updateStatus(Request $request)
+    {
+
+        $blog = Blog::find($request->id);
+
+        if ($blog) {
+            $blog->status = $request->status;
+
+            $blog->save();
+
+            return response()->json(['success' => true, 'status' => $blog->status]);
+        }
+
+        return response()->json(['success' => false]);
+    }
 }
