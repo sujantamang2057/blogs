@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('category', BlogCategoryController::class);
 
     Route::resource('blog', BlogController::class);
+    Route::resource('user', userController::class);
     Route::post('upload', [BlogController::class, 'upload'])->name('upload');
     Route::delete('revert', [BlogController::class, 'revert'])->name('revert');
     Route::post('/blog/status/update', [BlogController::class, 'updateStatus'])->name('blog.status');

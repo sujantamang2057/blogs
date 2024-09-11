@@ -109,9 +109,16 @@
                             </div>
                             <!--end::Body-->
                             <!--begin::Footer-->
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
-                                    Update</button>
+                            <div class="row">
+
+                                <div class="card-footer">
+                                    <a href="{{ url()->previous() }}" class="btn me-2"
+                                        style="background-color: black; color: white;">
+                                        <i class="fa-solid fa-floppy-disk"></i> Back
+                                    </a>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
+                                        Update</button>
+                                </div>
                             </div>
                             <!--end::Footer-->
                         </form>

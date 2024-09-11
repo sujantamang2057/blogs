@@ -93,7 +93,7 @@
                                                 </td>
                                                 <td>
                                                     <label for="status{{ $blog->id }}"
-                                                        class="form-label"><strong>Status:</strong></label>
+                                                        class="form-label"><strong></strong></label>
                                                     <div class="form-check form-switch">
                                                         <input
                                                             class="form-check-input @error('status') is-invalid @enderror"

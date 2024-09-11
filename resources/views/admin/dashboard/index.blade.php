@@ -33,7 +33,7 @@
                         </div> <!--end::Small Box Widget-->
                     </div> <!--end::Col-->
                 @endforeach
-                /div> <!--end::Row--> <!--begin::Row-->
+                <!--end::Row--> <!--begin::Row-->
 
             </div> <!--end::Container-->
         </div>

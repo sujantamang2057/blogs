@@ -29,16 +29,7 @@
                         <form action="{{ route('category.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
-                                <!-- Image Input -->
-                                <div class="mb-3">
-                                    <label for="image" class="form-label"><strong>Image:</strong></label>
-                                    <input type="file" name="image" id="image"
-                                        class="form-control @error('image') is-invalid @enderror" 
-                                        placeholder="image" required>
-                                    @error('image')
-                                        <div class="form-text text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+
                                 <!-- Title Input -->
                                 <div class="mb-3">
                                     <label for="title" class="form-label"><strong>Title:</strong></label>
@@ -55,13 +46,23 @@
                                     <select class="form-control @error('parent_id') is-invalid @enderror" name="parent_id"
                                         id="parent_id">
                                         <option value="">Select Parent Category</option>
-                                        
+
                                         <option value="">Select Parent Category</option>
                                         @foreach ($blogCategories as $category)
                                             <option value="{{ $category->id }}">{{ $category->title }}</option>
-                                        @endforeach                                       
+                                        @endforeach
                                     </select>
                                     @error('parent_id')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <!-- Image Input -->
+                                <div class="mb-3">
+                                    <label for="image" class="form-label"><strong>Image:</strong></label>
+                                    <input type="file" name="image" id="image"
+                                        class="form-control @error('image') is-invalid @enderror" placeholder="image"
+                                        required>
+                                    @error('image')
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -79,8 +80,18 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
+                            <div class="row">
+                                <div class="card-footer d-flex">
+                                    <a href="{{ url()->previous() }}" class="btn me-2"
+                                        style="background-color: black; color: white;">
+                                        <i class="fa-solid fa-floppy-disk"></i> Back
+                                    </a>
+
+
+
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
+                                        Submit</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -98,10 +109,10 @@
 
         // Select the file input element
         const inputElement = document.querySelector('input[name="image"]');
-        
+
         // Create a FilePond instance
         const pond = FilePond.create(inputElement);
-        
+
         // Configure FilePond (optional)
         // pond.setOptions({
         //     server: {

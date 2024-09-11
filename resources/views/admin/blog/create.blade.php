@@ -29,22 +29,13 @@
                         <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
-                                <!-- Image Input -->
-                                <div class="mb-3">
-                                    <label for="image" class="form-label"><strong>Image:</strong></label>
-                                    <input type="file" name="image" id="image"
-                                        class="form-control @error('image') is-invalid @enderror" placeholder="image"
-                                        required>
-                                    @error('image')
-                                        <div class="form-text text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+
                                 <!-- Title Input -->
                                 <div class="mb-3">
                                     <label for="title" class="form-label"><strong>Title:</strong></label>
                                     <input type="text" name="title"
                                         class="form-control @error('title') is-invalid @enderror" id="title"
-                                        placeholder="Title" required>
+                                        placeholder="Title">
                                     @error('title')
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
@@ -86,6 +77,16 @@
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <!-- Image Input -->
+                                <div class="mb-3">
+                                    <label for="image" class="form-label"><strong>Image:</strong></label>
+                                    <input type="file" name="image" id="image"
+                                        class="form-control @error('image') is-invalid @enderror" placeholder="image"
+                                        required>
+                                    @error('image')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <!-- Status Toggle -->
                                 <div class="mb-3">
                                     <label for="status" class="form-label"><strong>Status:</strong></label>
@@ -100,9 +101,18 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
-                                    Submit</button>
+                            <div class="row">
+                                <div class="card-footer d-flex">
+                                    <a href="{{ url()->previous() }}" class="btn me-2"
+                                        style="background-color: black; color: white;">
+                                        <i class="fa-solid fa-floppy-disk"></i> Back
+                                    </a>
+
+
+
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
+                                        Submit</button>
+                                </div>
                             </div>
                         </form>
                     </div>

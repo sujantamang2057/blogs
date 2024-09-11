@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Elegant\Sanitizer\Sanitizer;
 use Illuminate\Foundation\Http\FormRequest;
 
 class blogcategoryRequest extends FormRequest
@@ -27,6 +28,19 @@ class blogcategoryRequest extends FormRequest
             'image' => 'nullable|string',
             'parent_id' => 'nullable|exists:blog_categories,id',
             'status' => 'boolean',
+
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        // Define sanitization rules
+        $sanitizer = new Sanitizer($this->all(), [
+            'title' => 'trim|escape',
+
+        ]);
+
+        // Replace request data with sanitized data
+        $this->merge($sanitizer->sanitize());
     }
 }
