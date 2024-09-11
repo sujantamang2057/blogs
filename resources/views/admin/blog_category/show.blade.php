@@ -35,7 +35,7 @@
         <div class="mb-3">
             <strong>Image:</strong>
             @if ($blogCategory->image)
-                <img src="{{ asset('uploads/' . $blogCategory->image) }}" alt="{{ $blogCategory->title }}"
+                <img src="{{ asset('storage/' . $blogCategory->image) }}" alt="{{ $blogCategory->title }}"
                     class="img-thumbnail" style="width: 100px; height: auto;">
             @else
                 <p class="text-muted">No image available</p>

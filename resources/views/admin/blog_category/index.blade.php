@@ -50,8 +50,8 @@
                                             <th style="width: 60px">No</th>
                                             <th>Image</th>
                                             <th>Title</th>
-                                            <th>Slug</th>
-                                            <th>Parent Category</th>
+                                            {{-- <th>Slug</th> --}}
+                                            {{-- <th>Parent Category</th> --}}
 
                                             <th>Status</th>
                                             <th style="width: 280px">Action</th>
@@ -79,14 +79,14 @@
 
 
                                                 <td>{{ $blogCategories->title }}</td>
-                                                <td>{{ $blogCategories->slug }}</td>
-                                                <td>
+                                                {{-- <td>{{ $blogCategories->slug }}</td> --}}
+                                                {{-- <td>
                                                     @if ($blogCategories->ParentBlogCategory)
                                                         {{ $blogCategories->ParentBlogCategory->title }}
                                                     @else
                                                         None
                                                     @endif
-                                                </td>
+                                                </td> --}}
                                                 <td>{{ $blogCategories->status ? 'Active' : 'Inactive' }}</td>
                                                 <td>
                                                     <a href="{{ route('category.show', $blogCategories->id) }}"

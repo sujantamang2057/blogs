@@ -48,7 +48,7 @@
                                         class="form-control @error('image') is-invalid @enderror" id="image"
                                         placeholder="image">
                                     @if ($blogCategory->image)
-                                        <img src="{{ asset('uploads/' . $blogCategory->image) }}"
+                                        <img src="{{ asset('storage/' . $blogCategory->image) }}"
                                             alt="{{ $blogCategory->title }}" class="img-thumbnail mt-2" width="150">
                                     @endif
                                     @error('image')
