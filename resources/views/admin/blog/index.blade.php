@@ -58,7 +58,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($blog as $blog)
+                                        @foreach ($blogs as $blog)
                                             <tr class="align-middle">
                                                 <td>{{ $loop->iteration }}</td>
 
@@ -127,6 +127,7 @@
 
                             </div>
                             <div class="card-footer clearfix">
+                                {{ $blogs->links('pagination::bootstrap-5') }}
                             </div>
                         </div> <!-- /.card -->
                     </div> <!-- /.col -->

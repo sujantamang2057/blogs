@@ -58,7 +58,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($blogCategories as $blogCategories)
+                                        @foreach ($blogCategoriestable as $blogCategories)
                                             <tr class="align-middle">
                                                 <td>{{ $loop->iteration }}</td>
 
@@ -67,7 +67,7 @@
                                                         <a href="{{ asset('storage/' . $blogCategories->image) }}"
                                                             data-fancybox="gallery"
                                                             data-caption="{{ $blogCategories->title }}">
-                                                            <img src="{{ asset('storage/' . $blogCategories->image) }}"
+                                                            <img src="{{ asset('storage/images/resized/' . basename($blogCategories->image)) }}"
                                                                 alt="{{ $blogCategories->title }}"
                                                                 style="width: 50px; height: auto;">
                                                         </a>
@@ -87,7 +87,20 @@
                                                         None
                                                     @endif
                                                 </td> --}}
-                                                <td>{{ $blogCategories->status ? 'Active' : 'Inactive' }}</td>
+                                                <td>
+                                                    <label for="status{{ $blogCategories->id }}"
+                                                        class="form-label"><strong></strong></label>
+                                                    <div class="form-check form-switch">
+                                                        <input
+                                                            class="form-check-input @error('status') is-invalid @enderror"
+                                                            type="checkbox" role="switch"
+                                                            id="status{{ $blogCategories->id }}" name="status"
+                                                            data-id="{{ $blogCategories->id }}" value="1"
+                                                            {{ $blogCategories->status ? 'checked' : '' }}>
+                                                        <label class="form-check-label"
+                                                            for="status{{ $blogCategories->id }}"></label>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <a href="{{ route('category.show', $blogCategories->id) }}"
                                                         class="btn btn-info btn-sm">View</a>
@@ -108,10 +121,62 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
+                                {{ $blogCategoriestable->links('pagination::bootstrap-5') }}
                             </div>
                         </div> <!-- /.card -->
                     </div> <!-- /.col -->
                 </div> <!--end::Row-->
             </div> <!--end::Container-->
         </div> <!--end::App Content-->
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Handle toggle switch click
+                document.querySelectorAll('.form-check-input').forEach(function(toggle) {
+                    toggle.addEventListener('change', function() {
+                        var blogId = this.dataset.id;
+                        var newStatus = this.checked ? 1 : 0;
+                        console.log('Blog ID:', blogId);
+                        console.log('New Status:', newStatus);
+
+
+                        if (confirm('Are you sure you want to change the status?')) {
+                            // Send AJAX request to update status
+
+                            fetch('{{ route('blogcategory.status') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    body: JSON.stringify({
+                                        id: blogId,
+                                        status: newStatus
+                                    })
+                                })
+
+
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        alert('Status updated successfully');
+                                    } else {
+                                        alert('Failed to update status');
+                                        // Revert the toggle if the update failed
+                                        toggle.checked = !toggle.checked;
+                                    }
+                                })
+                                .catch(error => {
+                                    alert('An error occurred');
+                                    console.error(error);
+                                });
+                        } else {
+                            // Revert the toggle if the user cancels
+                            this.checked = !this.checked;
+                        }
+                    });
+                });
+            });
+        </script>
     @endsection

@@ -19,10 +19,10 @@ class BlogCategoryController extends Controller
     {
         //
         // Fetch post categories with pagination
-        $blogCategories = blog_category::paginate(10); // Adjust the number per page as needed
+        $blogCategoriestable = blog_category::orderBy('id', 'asc')->paginate(10); // Adjust the number per page as needed
 
         // Return the view with the paginated data
-        return view('admin.blog_category.index', compact('blogCategories'));
+        return view('admin.blog_category.index', compact('blogCategoriestable'));
     }
 
     /**
@@ -60,18 +60,25 @@ class BlogCategoryController extends Controller
         // If an image is uploaded, save it to the uploads folder and update the blog category
         if ($request->input('image')) {
             $imagePath = $request->input('image');
-
             $filename = basename($imagePath);
 
-            $newPath = 'images/'.$filename;
+            // Define paths
+            $originalPath = 'images/'.$filename;
+            $resizedPath = 'images/resized/'.$filename;
 
             // Move the file from 'tmp' to 'images'
-            Storage::disk('public')->move($imagePath, $newPath);
+            Storage::disk('public')->move($imagePath, $originalPath);
+
+            // Resize the image using Intervention Image
+            $resizedImage = Image::make(storage_path('app/public/'.$originalPath))->resize(300, 300);
+
+            // Store the resized image
+            Storage::disk('public')->put($resizedPath, (string) $resizedImage->encode());
 
             // Save the new image path in the database
-            $blogCategory->image = $newPath;
-
+            $blogCategory->image = $originalPath;
         }
+
         $blogCategory->save();
 
         // Redirect to the blog category index with a success message
@@ -129,19 +136,20 @@ class BlogCategoryController extends Controller
         if ($request->image != '') {
 
             // delete old image
-            File::delete(public_path('uploads/'.$blogCategory->image));
+            File::delete(public_path('storage/'.$blogCategory->image));
 
             // here we will store image
-            $image = $request->image;
-            $ext = $image->getClientOriginalExtension();
-            $imageName = time().'.'.$ext; // Unique image name
+            $imagePath = $request->input('image');
 
-            // Save image to products directory
-            $image->move(public_path('uploads'), $imageName);
+            $filename = basename($imagePath);
 
-            // Save image name in database
-            $blogCategory->image = $imageName;
-            $blogCategory->save();
+            $newPath = 'images/'.$filename;
+
+            // Move the file from 'tmp' to 'images'
+            Storage::disk('public')->move($imagePath, $newPath);
+
+            // Save the new image path in the database
+            $blogCategory->image = $newPath;
         }
 
         return redirect()->route('category.index')->with('success', 'blog category updated successfully.');
@@ -161,5 +169,21 @@ class BlogCategoryController extends Controller
 
         return redirect()->route('category.index')->with('success', 'blog category deleted successfully.');
 
+    }
+
+    public function updateStatus(Request $request)
+    {
+
+        $blogcategory = blog_category::find($request->id);
+
+        if ($blogcategory) {
+            $blogcategory->status = $request->status;
+
+            $blogcategory->save();
+
+            return response()->json(['success' => true, 'status' => $blogcategory->status]);
+        }
+
+        return response()->json(['success' => false]);
     }
 }

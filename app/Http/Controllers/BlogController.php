@@ -16,10 +16,10 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blog = blog::paginate(10); // Adjust the number per page as needed
+        $blogs = blog::orderBy('id', 'asc')->paginate(10); // Adjust the number per page as needed
 
         // Return the view with the paginated data
-        return view('admin.blog.index', compact('blog'));
+        return view('admin.blog.index', compact('blogs'));
     }
 
     /**

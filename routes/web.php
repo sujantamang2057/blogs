@@ -31,7 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('user', userController::class);
     Route::post('upload', [BlogController::class, 'upload'])->name('upload');
     Route::delete('revert', [BlogController::class, 'revert'])->name('revert');
-    Route::post('/blog/status/update', [BlogController::class, 'updateStatus'])->name('blog.status');
+    Route::post('/blog/new', [BlogController::class, 'updateStatus'])->name('blog.status');
+    Route::post('/blog/status/update', [BlogCategoryController::class, 'updateStatus'])->name('blogcategory.status');
 
 });
 
