@@ -5,13 +5,12 @@
         <div class="container-fluid"> <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Blog Category</h3>
+                    <h3 class="mb-0">Blog post</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Blog Category
+                            Blog post
                         </li>
                     </ol>
                 </div>
@@ -31,12 +30,11 @@
                     <div class="card card-primary card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
-                            <div class="card-title">Edit Post Category</div>
+                            <div class="card-title">Edit Blog Post</div>
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
-                        <form action="{{ route('blog.update', $blogCategory->id) }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('blog.update', $blog->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <!--begin::Body-->
@@ -47,9 +45,9 @@
                                     <input type="file" name="image"
                                         class="form-control @error('image') is-invalid @enderror" id="image"
                                         placeholder="image">
-                                    @if ($blogCategory->image)
-                                        <img src="{{ asset('storage/' . $blogCategory->image) }}"
-                                            alt="{{ $blogCategory->title }}" class="img-thumbnail mt-2" width="150">
+                                    @if ($blog->image)
+                                        <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}"
+                                            class="img-thumbnail mt-2" width="150">
                                     @endif
                                     @error('image')
                                         <div class="form-text text-danger">{{ $message }}</div>
@@ -58,7 +56,7 @@
                                 <!-- Title Input -->
                                 <div class="mb-3">
                                     <label for="title" class="form-label"><strong>Title:</strong></label>
-                                    <input type="text" name="title" value="{{ old('title', $blogCategory->title) }}"
+                                    <input type="text" name="title" value="{{ old('title', $blog->title) }}"
                                         class="form-control @error('title') is-invalid @enderror" id="title"
                                         placeholder="Title">
                                     @error('title')
@@ -70,7 +68,7 @@
                                 <div class="mb-3">
                                     <label for="description" class="form-label"><strong>Description:</strong></label>
                                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
-                                        rows="4" placeholder="Enter a description...">{{ old('description', $blogCategory->description ?? '') }}</textarea>
+                                        rows="4" placeholder="Enter a description...">{{ old('description', $blog->description ?? '') }}</textarea>
                                     @error('description')
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
@@ -84,7 +82,7 @@
                                         <option value="">Select Parent Category</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
-                                                {{ $blogCategory->blog_category_id == $category->id ? 'selected' : '' }}>
+                                                {{ $blog->blog_category_id == $category->id ? 'selected' : '' }}>
                                                 {{ $category->title }}
                                             </option>
                                         @endforeach

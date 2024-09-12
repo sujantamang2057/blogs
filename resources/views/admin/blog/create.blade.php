@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        
                         <li class="breadcrumb-item active" aria-current="page">
                             Blog post
                         </li>
@@ -46,7 +46,7 @@
                                     <select class="form-control @error('blog_category_id') is-invalid @enderror"
                                         name="blog_category_id" id="parent_id">
                                         <option value="">Select blog Category</option>
-                                        @foreach ($blogCategories as $category)
+                                        @foreach ($blog as $category)
                                             <option value="{{ $category->id }}">{{ $category->title }}</option>
                                         @endforeach
                                     </select>
@@ -81,8 +81,8 @@
                                 <div class="mb-3">
                                     <label for="image" class="form-label"><strong>Image:</strong></label>
                                     <input type="file" name="image" id="image"
-                                        class="form-control @error('image') is-invalid @enderror" placeholder="image"
-                                        required>
+                                        class="form-control @error('image') is-invalid @enderror" placeholder="image">
+
                                     @error('image')
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror

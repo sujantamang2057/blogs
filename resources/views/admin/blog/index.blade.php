@@ -9,7 +9,6 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Blog post
                         </li>
@@ -66,7 +65,7 @@
                                                     @if ($blog->image)
                                                         <a href="{{ asset('storage/' . $blog->image) }}"
                                                             data-fancybox="gallery" data-caption="{{ $blog->title }}">
-                                                            <img src="{{ asset('storage/' . $blog->image) }}"
+                                                            <img src="{{ asset('storage/images/resized/' . basename($blog->image)) }}"
                                                                 alt="{{ $blog->title }}"
                                                                 style="width: 50px; height: auto;">
                                                         </a>

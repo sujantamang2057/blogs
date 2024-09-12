@@ -60,13 +60,15 @@ class BlogCategoryController extends Controller
         // If an image is uploaded, save it to the uploads folder and update the blog category
         if ($request->input('image')) {
             $imagePath = $request->input('image');
+
             $filename = basename($imagePath);
 
             // Define paths
             $originalPath = 'images/'.$filename;
+
             $resizedPath = 'images/resized/'.$filename;
 
-            // Move the file from 'tmp' to 'images'
+            // Move the file from 'temporay place' to 'original path'
             Storage::disk('public')->move($imagePath, $originalPath);
 
             // Resize the image using Intervention Image
