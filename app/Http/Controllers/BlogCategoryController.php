@@ -132,25 +132,34 @@ class BlogCategoryController extends Controller
         $blogCategory->status = $request->has('status') ? 1 : 0;
 
         // Save the blog category
-        $blogCategory->save();
-        if ($request->image != '') {
 
-            // delete old image
-            File::delete(public_path('storage/'.$blogCategory->image));
+        if ($request->input('image')) {
+            // Delete old images if they exist
+            if ($blogCategory->image) {
+                File::delete(public_path('storage/'.$blogCategory->image));
+                File::delete(public_path('storage/images/resized/'.basename($blogCategory->image)));
+            }
 
-            // here we will store image
             $imagePath = $request->input('image');
-
             $filename = basename($imagePath);
 
-            $newPath = 'images/'.$filename;
+            // Define paths
+            $originalPath = 'images/'.$filename;
+            $resizedPath = 'images/resized/'.$filename;
 
             // Move the file from 'tmp' to 'images'
-            Storage::disk('public')->move($imagePath, $newPath);
+            Storage::disk('public')->move($imagePath, $originalPath);
+
+            // Resize the image using Intervention Image
+            $resizedImage = Image::make(storage_path('app/public/'.$originalPath))->resize(300, 300);
+
+            // Store the resized image
+            Storage::disk('public')->put($resizedPath, (string) $resizedImage->encode());
 
             // Save the new image path in the database
-            $blogCategory->image = $newPath;
+            $blogCategory->image = $originalPath;
         }
+        $blogCategory->save();
 
         return redirect()->route('category.index')->with('success', 'blog category updated successfully.');
     }
