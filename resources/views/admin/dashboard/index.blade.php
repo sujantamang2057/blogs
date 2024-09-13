@@ -4,9 +4,10 @@
     <div class="app-content"> <!--begin::Container-->
         <div class="container-fluid"> <!--begin::Row-->
             <div class="row"> <!--begin::Col-->
+                @php $counter = 1; @endphp
                 @foreach ($statusCounts as $modelName => $counts)
                     <div class="col-lg-3 col-6"> <!--begin::Small Box Widget-->
-                        <div class="small-box text-bg-primary">
+                        <div class="small-box {{ $counter % 2 == 0 ? 'text-bg-primary' : 'text-bg-warning' }}">
                             <h1>{{ $modelName }}</h1>
                             <div class="inner">
                                 <div class="row">
@@ -32,6 +33,7 @@
                             </a>
                         </div> <!--end::Small Box Widget-->
                     </div> <!--end::Col-->
+                    @php $counter++; @endphp
                 @endforeach
                 <!--end::Row--> <!--begin::Row-->
 

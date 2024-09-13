@@ -112,10 +112,6 @@ class BlogController extends Controller
     {
         $blog = blog::findOrFail($id);
 
-        if ($request->image != '') {
-            $rules['image'] = 'image';
-        }
-
         // here we will update product
         $blog->title = $request->title;
         $blog->description = $request->description;

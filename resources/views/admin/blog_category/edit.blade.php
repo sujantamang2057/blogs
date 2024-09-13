@@ -101,7 +101,7 @@
                                         <input class="form-check-input @error('status') is-invalid @enderror"
                                             type="checkbox" role="switch" id="status" name="status" value="1"
                                             {{ old('status', $category->status) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="status">Active</label>
+                                        <label class="form-check-label" for="status"></label>
                                     </div>
                                     @error('status')
                                         <div class="form-text text-danger">{{ $message }}</div>

@@ -122,10 +122,6 @@ class BlogCategoryController extends Controller
 
         $blogCategory = blog_category::findOrFail($id);
 
-        if ($request->image != '') {
-            $rules['image'] = 'image';
-        }
-
         // here we will update product
         $blogCategory->title = $request->title;
         $blogCategory->slug = Str::slug($request->title);

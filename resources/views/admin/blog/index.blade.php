@@ -51,7 +51,7 @@
                                             <th style="width: 60px">No</th>
                                             <th>Image</th>
                                             <th>Title</th>
-                                            <th>Description</th>
+                                            {{-- <th>Description</th> --}}
                                             <th>Blog Category</th>
 
                                             <th>Status</th>
@@ -79,7 +79,7 @@
 
 
                                                 <td>{{ $blog->title }}</td>
-                                                <td>{!! $blog->description !!}</td>
+                                                {{-- <td>{!! $blog->description !!}</td> --}}
 
 
 
