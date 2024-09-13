@@ -1,4 +1,5 @@
 @extends('dashboard')
+@section('title', 'Create blog post')
 
 @section('content')
     <div class="app-content-header">

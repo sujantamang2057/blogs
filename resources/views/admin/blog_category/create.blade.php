@@ -1,5 +1,7 @@
 @extends('dashboard')
 
+@section('title', 'Create blog Category')
+
 @section('content')
     <div class="app-content-header">
         <div class="container-fluid">

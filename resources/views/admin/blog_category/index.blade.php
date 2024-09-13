@@ -1,4 +1,5 @@
 @extends('dashboard')
+@section('title', 'Blog Category')
 
 @section('content')
     <div class="app-content-header"> <!--begin::Container-->

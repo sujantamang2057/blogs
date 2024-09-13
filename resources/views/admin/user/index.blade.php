@@ -1,5 +1,7 @@
 @extends('dashboard')
 
+@section('title', 'User')
+
 @section('content')
     <div class="app-content-header"> <!--begin::Container-->
         <div class="container-fluid"> <!--begin::Row-->
