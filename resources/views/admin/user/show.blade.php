@@ -1,5 +1,5 @@
 @extends('dashboard')
-@section('title', ' Show User')
+@section('title', ' Detail User')
 
 @section('content')
     <div class="app-content-header bg-light py-3 mb-4 border-bottom">
