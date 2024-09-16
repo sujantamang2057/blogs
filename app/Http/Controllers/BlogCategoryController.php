@@ -159,7 +159,7 @@ class BlogCategoryController extends Controller
         }
         $blogCategory->save();
 
-        return redirect()->route('category.index')->with('success', 'blog category updated successfully.');
+        return redirect()->route('category.show', $blogCategory->id)->with('success', 'blog category updated successfully.');
     }
 
     /**
