@@ -63,6 +63,21 @@
                 </td>
             </tr>
         </table>
+        <a href="{{ route('blog.create') }}" class="btn me-2" style="background-color: red; color: white;margin-top: 15px;">
+            <i class="fa-solid fa-floppy-disk"></i> Create
+        </a>
+        <form action="{{ route('blog.destroy', $blog->id) }}" method="POST" class="btn me-2"
+            style="background-color: blue; color: white;margin-top: 15px;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn me-2">Delete</button>
+        </form>
+        <a href="{{ route('blog.edit', $blog->id) }}" class="btn me-2"
+            style="background-color: red; color: white;margin-top: 15px;">
+            <i class="fa-solid fa-floppy-disk"></i> Edit
+        </a>
+
+
 
         <a href="{{ route('blog.index') }}" class="btn btn-primary mt-3">Back to List</a>
     </div>

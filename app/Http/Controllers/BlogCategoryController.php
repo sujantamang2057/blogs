@@ -84,7 +84,7 @@ class BlogCategoryController extends Controller
         $blogCategory->save();
 
         // Redirect to the blog category index with a success message
-        return redirect()->route('category.index')->with('success', 'category added successfully.');
+        return redirect()->route('category.show', $blogCategory->id)->with('success', 'category added successfully.');
 
     }
 

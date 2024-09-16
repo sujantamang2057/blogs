@@ -2,6 +2,7 @@
 
 @section('title', 'Create blog Category')
 
+
 @section('content')
     <div class="app-content-header">
         <div class="container-fluid">
@@ -100,29 +101,4 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <!-- Initialize FilePond -->
-    <script>
-        // Register FilePond plugins if necessary
-        // FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginImageExifOrientation, FilePondPluginFileValidateSize);
-
-        // Select the file input element
-        const inputElement = document.querySelector('input[name="image"]');
-
-        // Create a FilePond instance
-        const pond = FilePond.create(inputElement);
-
-        // Configure FilePond (optional)
-        // pond.setOptions({
-        //     server: {
-        //         process: '/upload',
-        //         revert: '/revert',
-        //         restore: '/restore',
-        //         load: '/load',
-        //         fetch: '/fetch'
-        //     }
-        // });
-    </script>
 @endsection

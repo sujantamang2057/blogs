@@ -117,6 +117,10 @@
                                         style="background-color: black; color: white;">
                                         <i class="fa-solid fa-floppy-disk"></i> Back
                                     </a>
+                                    <a href="{{ route('category.create') }}" class="btn me-2"
+                                        style="background-color: red; color: white;">
+                                        <i class="fa-solid fa-floppy-disk"></i> Create
+                                    </a>
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
                                         Update</button>
                                 </div>

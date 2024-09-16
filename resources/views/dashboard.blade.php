@@ -6,8 +6,10 @@
     {{-- for the meta csrf token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>@yield('title')</title><!--begin::Primary Meta Tags-->
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="title" content="AdminLTE v4 | Dashboard">
@@ -16,6 +18,10 @@
         content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS.">
     <meta name="keywords"
         content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard">
+    {{-- css of the filepond --}}
+    <link rel="stylesheet" href="{{ asset('Backend/filepond/filepond/dist/filepond.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('Backend/filepond/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css') }}">
     <!--end::Primary Meta Tags--><!--begin::Fonts-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
         integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous">
@@ -31,17 +37,20 @@
         integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
         integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-        rel="stylesheet" />
 
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
     {{-- fancy box finish --}}
 
-    <script src="https://cdn.tiny.cloud/1/lz3stx6dwxywl56d146m3msq6l66bfvqz2iyl49ikdndki4k/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    {{-- tiny mc for the description --}}
+    <script src="{{ asset('Backend/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+
+
+
+
+
+
 </head> <!--end::Head--> <!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary"> <!--begin::App Wrapper-->
@@ -87,6 +96,9 @@
     </div> <!--end::App Wrapper-->
     <!--begin::Script-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    {{-- script for the file pond --}}
+    
+
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js"
         integrity="sha256-H2VM7BKda+v2Z4+DRy69uknwxjyDRhszjXFhsL4gD3w=" crossorigin="anonymous"></script>
     <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
@@ -96,9 +108,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha256-YMa+wAM6QkVyz999odX7lPRxkoYAan8suedu4k2Zur8=" crossorigin="anonymous"></script> <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="../../dist/js/adminlte.js"></script> <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
-    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
     <script>
         tinymce.init({
             selector: '#description',
@@ -245,32 +255,7 @@
         integrity="sha256-/t1nN2956BT869E6H4V1dnt0X5pAQHPytli+1nTZm2Y=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"
         integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY=" crossorigin="anonymous"></script> <!-- jsvectormap -->
-    <script>
-        FilePond.registerPlugin(FilePondPluginImagePreview);
-        FilePond.registerPlugin(FilePondPluginFileValidateType);
 
-        const pond = FilePond.create(document.querySelector('#image'), {
-            acceptedFileTypes: ['image/*'],
-            server: {
-                process: {
-                    url: '{{ route('upload') }}',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    onload: (response) => {
-                        const data = JSON.parse(response);
-                        return data.path;
-                    }
-                },
-                revert: {
-                    url: '{{ route('revert') }}',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                }
-            }
-        });
-    </script>
 
     place this script file in the create part
     <script>
@@ -382,6 +367,60 @@
         );
         sparkline3.render();
     </script> <!--end::Script-->
+
+
+
+
+    <script>
+        // Initialize TinyMCE for the textarea
+        initTinyMCE('#description');
+    </script>
+    <script
+    src="{{ asset('Backend/filepond/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js') }}">
+</script>
+
+<script src="{{ asset('Backend/filepond/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
+</script>
+<script src="{{ asset('Backend/filepond/filepond/dist/filepond.js') }}"></script>
+
+
+
+
+
+
+<script>
+    console.log("FilePond script loaded");
+
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+    FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+    console.log("FilePond plugins registered");
+
+    const pond = FilePond.create(document.querySelector('#image'), {
+        acceptedFileTypes: ['image/*'],
+        server: {
+            process: {
+                url: '{{ route('upload') }}',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                onload: (response) => {
+                    const data = JSON.parse(response);
+                    return data.path;
+                }
+            },
+            revert: {
+                url: '{{ route('revert') }}',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        }
+    });
+</script>
+
+
+
 </body><!--end::Body-->
 
 </html>

@@ -20,28 +20,55 @@
     </div>
 
     <div class="container bg-white p-4 rounded shadow-sm">
-        <div class="mb-3">
-            <strong>Title:</strong> <span class="text-muted">{{ $blogCategory->title }}</span>
-        </div>
-        <div class="mb-3">
-            <strong>Slug:</strong> <span class="text-muted">{{ $blogCategory->slug }}</span>
-        </div>
-        <div class="mb-3">
-            <strong>Status:</strong>
-            <span class="badge {{ $blogCategory->status ? 'bg-success' : 'bg-secondary' }}">
-                {{ $blogCategory->status ? 'Active' : 'Inactive' }}
-            </span>
-        </div>
-        <div class="mb-3">
-            <strong>Image:</strong>
-            @if ($blogCategory->image)
-                <img src="{{ asset('storage/' . $blogCategory->image) }}" alt="{{ $blogCategory->title }}"
-                    class="img-thumbnail" style="width: 100px; height: auto;">
-            @else
-                <p class="text-muted">No image available</p>
-            @endif
-        </div>
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th scope="row">Title</th>
+                    <td class="text-muted">{{ $blogCategory->title }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Slug</th>
+                    <td class="text-muted">{{ $blogCategory->slug }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                        <span class="badge {{ $blogCategory->status ? 'bg-success' : 'bg-secondary' }}">
+                            {{ $blogCategory->status ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Image</th>
+                    <td>
+                        @if ($blogCategory->image)
+                            <a href="{{ asset('storage/' . $blogCategory->image) }}" data-fancybox="gallery"
+                                data-caption="{{ $blogCategory->title }}">
+                                <img src="{{ asset('storage/' . $blogCategory->image) }}" alt="{{ $blogCategory->title }}"
+                                    class="img-thumbnail" style="width: 100px; height: auto;">
+                            </a>
+                        @else
+                            <p class="text-muted">No image available</p>
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ route('category.create') }}" class="btn me-2"
+            style="background-color: red; color: white;margin-top: 15px;">
+            <i class="fa-solid fa-floppy-disk"></i> Create
+        </a>
+        <form action="{{ route('category.destroy', $blogCategory->id) }}" method="POST" class="btn me-2"
+            style="background-color: blue; color: white;margin-top: 15px;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn me-2">Delete</button>
+        </form>
+        <a href="{{ route('category.edit', $blogCategory->id) }}" class="btn me-2"
+            style="background-color: red; color: white;margin-top: 15px;">
+            <i class="fa-solid fa-floppy-disk"></i> Edit
+        </a>
 
-        <a href="{{ route('category.index') }}" class="btn btn-primary">Back to List</a>
+        <a href="{{ route('category.index') }}" class="btn btn-primary mt-3">Back to List</a>
     </div>
 @endsection
