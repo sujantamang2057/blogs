@@ -29,7 +29,7 @@ class BlogController extends Controller
     public function create()
     {
         //
-        $blog = blog_category::all();
+        $blog = blog_category::withTrashed()->get();
 
         return view('admin.blog.create', compact('blog'));
     }
@@ -148,7 +148,7 @@ class BlogController extends Controller
         }
         $blog->save();
 
-        return redirect()->route('blog.index', $blog->id)->with('success', 'blog post updated successfully.');
+        return redirect()->route('blog.show', $blog->id)->with('success', 'blog post updated successfully.');
     }
 
     /**

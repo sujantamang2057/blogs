@@ -9,9 +9,8 @@ class blog extends Model
 {
     use HasFactory;
 
-    public function blogCategory(){
-        return $this->belongsTo(blog_category::class, 'blog_category_id');
+    public function blogCategory()
+    {
+        return $this->belongsTo(blog_category::class, 'blog_category_id')->withTrashed();
     }
-
-    
-}
+}  

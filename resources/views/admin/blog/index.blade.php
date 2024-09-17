@@ -86,6 +86,7 @@
 
 
                                                 <td>
+
                                                     @if ($blog->blogCategory)
                                                         {{ $blog->blogCategory->title }}
                                                     @else

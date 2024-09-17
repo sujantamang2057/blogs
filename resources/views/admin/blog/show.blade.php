@@ -81,4 +81,24 @@
 
         <a href="{{ route('blog.index') }}" class="btn btn-primary mt-3">Back to List</a>
     </div>
+    <style>
+        /* Set a fixed width for the first column (attribute column) */
+        .table th {
+            width: 200px;
+            /* Adjust this width as necessary */
+            white-space: nowrap;
+        }
+
+        /* Ensure the content in the second column doesn't overflow */
+        .table td img {
+            max-width: 100%;
+            /* Ensure images don't overflow the cell */
+            height: auto;
+        }
+
+        .table td {
+            word-wrap: break-word;
+            /* Break long words if necessary */
+        }
+    </style>
 @endsection
