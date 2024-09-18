@@ -26,7 +26,7 @@
                 <div class="col-12"></div>
                 <!--end::Col-->
                 <!--begin::Col-->
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <!--begin::Quick Example-->
                     <div class="card card-primary card-outline mb-4">
                         <!--begin::Header-->

@@ -43,9 +43,13 @@
             <tr>
                 <th>Status:</th>
                 <td>
-                    <span class="badge {{ $blog->status ? 'bg-success' : 'bg-secondary' }}">
-                        {{ $blog->status ? 'Active' : 'Inactive' }}
-                    </span>
+                    <label for="status{{ $blog->id }}" class="form-label"><strong></strong></label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox" role="switch"
+                            id="status{{ $blog->id }}" name="status" data-id="{{ $blog->id }}" value="1"
+                            {{ $blog->status ? 'checked' : '' }}>
+                        <label class="form-check-label" for="status{{ $blog->id }}"></label>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -116,4 +120,54 @@
             /* Break long words if necessary */
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle toggle switch click
+            document.querySelectorAll('.form-check-input').forEach(function(toggle) {
+                toggle.addEventListener('change', function() {
+                    var blogId = this.dataset.id;
+                    var newStatus = this.checked ? 1 : 0;
+                    console.log('Blog ID:', blogId);
+                    console.log('New Status:', newStatus);
+
+
+                    if (confirm('Are you sure you want to change the status?')) {
+                        // Send AJAX request to update status
+
+                        fetch('{{ route('blog.status') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({
+                                    id: blogId,
+                                    status: newStatus
+                                })
+                            })
+
+
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert('Status updated successfully');
+                                } else {
+                                    alert('Failed to update status');
+                                    // Revert the toggle if the update failed
+                                    toggle.checked = !toggle.checked;
+                                }
+                            })
+                            .catch(error => {
+                                alert('An error occurred');
+                                console.error(error);
+                            });
+                    } else {
+                        // Revert the toggle if the user cancels
+                        this.checked = !this.checked;
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

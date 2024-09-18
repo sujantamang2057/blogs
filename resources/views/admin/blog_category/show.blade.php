@@ -34,9 +34,14 @@
                 <tr>
                     <th scope="row">Status</th>
                     <td>
-                        <span class="badge {{ $blogCategory->status ? 'bg-success' : 'bg-secondary' }}">
-                            {{ $blogCategory->status ? 'Active' : 'Inactive' }}
-                        </span>
+                        <label for="status{{ $blogCategory->id }}" class="form-label"><strong></strong></label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox"
+                                role="switch" id="status{{ $blogCategory->id }}" name="status"
+                                data-id="{{ $blogCategory->id }}" value="1"
+                                {{ $blogCategory->status ? 'checked' : '' }}>
+                            <label class="form-check-label" for="status{{ $blogCategory->id }}"></label>
+                        </div>
                     </td>
                 </tr>
 
@@ -83,4 +88,54 @@
 
         <a href="{{ route('category.index') }}" class="btn btn-primary mt-3">Back to List</a>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle toggle switch click
+            document.querySelectorAll('.form-check-input').forEach(function(toggle) {
+                toggle.addEventListener('change', function() {
+                    var blogId = this.dataset.id;
+                    var newStatus = this.checked ? 1 : 0;
+                    console.log('Blog ID:', blogId);
+                    console.log('New Status:', newStatus);
+
+
+                    if (confirm('Are you sure you want to change the status?')) {
+                        // Send AJAX request to update status
+
+                        fetch('{{ route('blogcategory.status') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute('content')
+                                },
+                                body: JSON.stringify({
+                                    id: blogId,
+                                    status: newStatus
+                                })
+                            })
+
+
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert('Status updated successfully');
+                                } else {
+                                    alert('Failed to update status');
+                                    // Revert the toggle if the update failed
+                                    toggle.checked = !toggle.checked;
+                                }
+                            })
+                            .catch(error => {
+                                alert('An error occurred');
+                                console.error(error);
+                            });
+                    } else {
+                        // Revert the toggle if the user cancels
+                        this.checked = !this.checked;
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

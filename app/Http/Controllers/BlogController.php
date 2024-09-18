@@ -30,7 +30,7 @@ class BlogController extends Controller
     public function create()
     {
         //
-        $blog = blog_category::all();
+        $blog = blog_category::where('status', 1)->get();
 
         return view('admin.blog.create', compact('blog'));
     }
@@ -98,15 +98,21 @@ class BlogController extends Controller
      */
     public function edit(string $id)
     {
-        //
         $blog = blog::findOrFail($id);
 
-        //to make formath match with data and time insted of  the string
+        // Convert published_at to a Carbon instance if it's not null
         $blog->published_at = $blog->published_at ? Carbon::parse($blog->published_at) : null;
 
-        // Fetch all categories for the parent category select dropdown
-        $categories = blog_category::all();
-        // dd($categories);
+        // Fetch only active categories
+        $categories = blog_category::whereNull('deleted_at')->get();
+
+        // Check if the post's category is soft-deleted
+        $deletedCategory = blog_category::withTrashed()->find($blog->blog_category_id);
+
+        // If the category is soft-deleted, add it to the categories list
+        if ($deletedCategory && $deletedCategory->trashed()) {
+            $categories->push($deletedCategory);
+        }
 
         return view('admin.blog.edit', compact('blog', 'categories'));
     }
