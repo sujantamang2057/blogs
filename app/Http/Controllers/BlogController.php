@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BlogRequest;
 use App\Models\blog;
 use App\Models\blog_category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\storage;
@@ -29,7 +30,7 @@ class BlogController extends Controller
     public function create()
     {
         //
-        $blog = blog_category::withTrashed()->get();
+        $blog = blog_category::all();
 
         return view('admin.blog.create', compact('blog'));
     }
@@ -99,8 +100,13 @@ class BlogController extends Controller
     {
         //
         $blog = blog::findOrFail($id);
+
+        //to make formath match with data and time insted of  the string
+        $blog->published_at = $blog->published_at ? Carbon::parse($blog->published_at) : null;
+
         // Fetch all categories for the parent category select dropdown
         $categories = blog_category::all();
+        // dd($categories);
 
         return view('admin.blog.edit', compact('blog', 'categories'));
     }
@@ -123,8 +129,12 @@ class BlogController extends Controller
         if ($request->input('image')) {
             // Delete old images if they exist
             if ($blog->image) {
-                File::delete(public_path('storage/'.$blog->image));
-                File::delete(public_path('storage/images/resized/'.basename($blog->image)));
+                if (Storage::exists(public_path('storage/'.$blog->image))) {
+                    Storage::delete(public_path('storage/'.$blog->image));
+                }
+                if (Storage::exists(public_path('storage/images/resized/'.basename($blog->image)))) {
+                    Storage::delete(public_path('storage/images/resized/'.basename($blog->image)));
+                }
             }
 
             $imagePath = $request->input('image');

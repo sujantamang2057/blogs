@@ -62,15 +62,30 @@
                     @endif
                 </td>
             </tr>
+            <tr>
+                <th>Published_at :</th>
+                <td class="text-muted">{{ $blog->published_at }}</td>
+            </tr>
+
+            <tr>
+                <th>Created_at :</th>
+                <td class="text-muted">{{ $blog->created_at }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at :</th>
+                <td class="text-muted">{{ $blog->updated_at }}</td>
+            </tr>
+
         </table>
-        <a href="{{ route('blog.create') }}" class="btn me-2" style="background-color: red; color: white;margin-top: 15px;">
+        <a href="{{ route('blog.create') }}" class="btn me-2"
+            style="background-color: red; color: white;margin-top: 15px;">
             <i class="fa-solid fa-floppy-disk"></i> Create
         </a>
         <form action="{{ route('blog.destroy', $blog->id) }}" method="POST" class="btn me-2"
-            style="background-color: blue; color: white;margin-top: 15px;">
+            style=" color: white;margin-top: 15px;">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn me-2">Delete</button>
+            <button type="submit" class="btn btn-danger">Delete</button>
         </form>
         <a href="{{ route('blog.edit', $blog->id) }}" class="btn me-2"
             style="background-color: red; color: white;margin-top: 15px;">

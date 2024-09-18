@@ -101,4 +101,38 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            // Initialize TinyMCE for the textarea
+            initTinyMCE('#description');
+        </script>
+
+
+        <script>
+            FilePond.registerPlugin(FilePondPluginImagePreview);
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+            const pond = FilePond.create(document.querySelector('#image'), {
+                acceptedFileTypes: ['image/*'],
+                server: {
+                    process: {
+                        url: '{{ route('upload') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        onload: (response) => {
+                            const data = JSON.parse(response);
+                            return data.path;
+                        }
+                    },
+                    revert: {
+                        url: '{{ route('revert') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }
+                }
+            });
+        </script>
+    @endpush
 @endsection

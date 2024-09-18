@@ -46,10 +46,7 @@
                                     <input type="file" name="image"
                                         class="form-control @error('image') is-invalid @enderror" id="image"
                                         placeholder="image">
-                                    @if ($blog->image)
-                                        <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}"
-                                            class="img-thumbnail mt-2" width="150">
-                                    @endif
+
                                     @error('image')
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
@@ -71,6 +68,16 @@
                                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
                                         rows="4" placeholder="Enter a description...">{{ old('description', $blog->description ?? '') }}</textarea>
                                     @error('description')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- for the published date --}}
+                                <div class="mb-3">
+                                    <label for="published_at" class="form-label"><strong>Published Date:</strong></label>
+                                    <input type="datetime-local" name="published_at" id="published_at"
+                                        class="form-control @error('published_at') is-invalid @enderror"
+                                        value="{{ old('published_at', isset($blog->published_at) ? $blog->published_at->format('Y-m-d\TH:i') : '') }}">
+                                    @error('published_at')
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -136,4 +143,53 @@
         <!--end::Container-->
     </div>
     <!--end::App Content-->
+    @push('scripts')
+        <script>
+            // Register the FilePond plugins
+            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+
+            // Get the image input element
+            const inputElement = document.querySelector('#image');
+
+            // Initialize FilePond
+            const pond = FilePond.create(inputElement, {
+                acceptedFileTypes: ['image/*'],
+                server: {
+                    load: (source, load, error, progress, abort, headers) => {
+                        fetch(source, {
+                            mode: 'cors'
+                        }).then((res) => {
+                            return res.blob();
+                        }).then(load).catch(error);
+                    },
+                    process: {
+                        url: '{{ route('upload') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        onload: (response) => {
+                            const data = JSON.parse(response);
+                            return data.path;
+                        }
+                    },
+                    revert: {
+                        url: '{{ route('revert') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }
+                },
+                files: [
+                    @if (isset($blog) && $blog->image)
+                        {
+                            source: '{{ asset('storage/' . $blog->image) }}',
+                            options: {
+                                type: 'local',
+                            },
+                        }
+                    @endif
+                ],
+            });
+        </script>
+    @endpush
 @endsection

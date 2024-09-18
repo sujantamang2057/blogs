@@ -138,5 +138,54 @@
         <!--end::Container-->
     </div>
     <!--end::App Content-->
+    @push('scripts')
+        <script>
+            // Register the FilePond plugins
+            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+
+            // Get the image input element
+            const inputElement = document.querySelector('#image');
+
+            // Initialize FilePond
+            const pond = FilePond.create(inputElement, {
+                acceptedFileTypes: ['image/*'],
+                server: {
+                    load: (source, load, error, progress, abort, headers) => {
+                        fetch(source, {
+                            mode: 'cors'
+                        }).then((res) => {
+                            return res.blob();
+                        }).then(load).catch(error);
+                    },
+                    process: {
+                        url: '{{ route('upload') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        onload: (response) => {
+                            const data = JSON.parse(response);
+                            return data.path;
+                        }
+                    },
+                    revert: {
+                        url: '{{ route('revert') }}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    }
+                },
+                files: [
+                    @if (isset($blogCategory) && $blogCategory->image)
+                        {
+                            source: '{{ asset('storage/' . $blogCategory->image) }}',
+                            options: {
+                                type: 'local',
+                            },
+                        }
+                    @endif
+                ],
+            });
+        </script>
+    @endpush
 
 @endsection

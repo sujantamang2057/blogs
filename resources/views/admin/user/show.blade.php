@@ -1,5 +1,5 @@
 @extends('dashboard')
-@section('title', ' Detail User')
+@section('title', 'Detail User')
 
 @section('content')
     <div class="app-content-header bg-light py-3 mb-4 border-bottom">
@@ -20,12 +20,35 @@
     </div>
 
     <div class="container bg-white p-4 rounded shadow-sm">
-        <div class="mb-3">
-            <strong>Name:</strong> <span class="text-muted">{{ $user->name }}</span>
-        </div>
-        <div class="mb-3">
-            <strong>Email:</strong> <span class="text-muted">{{ $user->email }}</span>
-        </div>
-        <a href="{{ route('user.index') }}" class="btn btn-primary">Back to List</a>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Name:</strong></td>
+                    <td>{{ $user->name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>{{ $user->email }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="btn me-2"
+            style=" color: white;margin-top: 15px;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+        <a href="{{ route('user.edit', $user->id) }}" class="btn me-2"
+            style="background-color: red; color: white;margin-top: 15px;">
+            <i class="fa-solid fa-floppy-disk"></i> Edit
+        </a>
+        <a href="{{ route('user.index') }}" class="btn btn-primary" style="margin-top: 15px">Back to List</a>
     </div>
 @endsection

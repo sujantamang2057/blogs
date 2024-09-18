@@ -13,4 +13,4 @@ class blog extends Model
     {
         return $this->belongsTo(blog_category::class, 'blog_category_id')->withTrashed();
     }
-}  
+}

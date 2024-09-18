@@ -134,8 +134,12 @@ class BlogCategoryController extends Controller
         if ($request->input('image')) {
             // Delete old images if they exist
             if ($blogCategory->image) {
-                File::delete(public_path('storage/'.$blogCategory->image));
-                File::delete(public_path('storage/images/resized/'.basename($blogCategory->image)));
+                if (Storage::exists(public_path('storage/'.$blogCategory->image))) {
+                    Storage::delete(public_path('storage/'.$blogCategory->image));
+                }
+                if (Storage::exists(public_path('storage/images/resized/'.basename($blogCategory->image)))) {
+                    Storage::delete(public_path('storage/images/resized/'.basename($blogCategory->image)));
+                }
             }
 
             $imagePath = $request->input('image');

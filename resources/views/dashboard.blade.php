@@ -97,7 +97,7 @@
     <!--begin::Script-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
     {{-- script for the file pond --}}
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.3.0/browser/overlayscrollbars.browser.es6.min.js"
         integrity="sha256-H2VM7BKda+v2Z4+DRy69uknwxjyDRhszjXFhsL4gD3w=" crossorigin="anonymous"></script>
@@ -376,48 +376,19 @@
         initTinyMCE('#description');
     </script>
     <script
-    src="{{ asset('Backend/filepond/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js') }}">
-</script>
+        src="{{ asset('Backend/filepond/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js') }}">
+    </script>
 
-<script src="{{ asset('Backend/filepond/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
-</script>
-<script src="{{ asset('Backend/filepond/filepond/dist/filepond.js') }}"></script>
-
-
+    <script src="{{ asset('Backend/filepond/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
+    </script>
+    <script src="{{ asset('Backend/filepond/filepond/dist/filepond.js') }}"></script>
 
 
 
 
-<script>
-    console.log("FilePond script loaded");
 
-    FilePond.registerPlugin(FilePondPluginImagePreview);
-    FilePond.registerPlugin(FilePondPluginFileValidateType);
 
-    console.log("FilePond plugins registered");
-
-    const pond = FilePond.create(document.querySelector('#image'), {
-        acceptedFileTypes: ['image/*'],
-        server: {
-            process: {
-                url: '{{ route('upload') }}',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                onload: (response) => {
-                    const data = JSON.parse(response);
-                    return data.path;
-                }
-            },
-            revert: {
-                url: '{{ route('revert') }}',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            }
-        }
-    });
-</script>
+    @stack('scripts')
 
 
 
