@@ -7,6 +7,7 @@ use App\Models\blog;
 use App\Models\blog_category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\storage;
 use Intervention\Image\Facades\Image;
@@ -48,7 +49,13 @@ class BlogController extends Controller
         $blog->description = $request->description;
 
         $blog->blog_category_id = $request->blog_category_id;
+        $blog->updated_at = null;
         $blog->status = $request->has('status') ? 1 : 0;
+        //for created by adding the current login user to it
+        if (! $blog->exists) {
+            $blog->created_by = Auth::id();
+        }
+        //for updated by adding the current login user to it
 
         // Save the blog category
         // If an image is uploaded, save it to the uploads folder and update the blog category
@@ -130,6 +137,8 @@ class BlogController extends Controller
 
         $blog->blog_category_id = $request->blog_category_id;
         $blog->status = $request->has('status') ? 1 : 0;
+
+        $blog->updated_by = Auth::id();
 
         // Save the blog category
         if ($request->input('image')) {

@@ -21,4 +21,14 @@ class blog_category extends Model
     {
         return $this->belongsTo(blog_category::class, 'parent_id');
     }
+
+    public function categorycreatedBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function categoryupdatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

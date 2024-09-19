@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\blogcategoryRequest;
 use App\Models\blog_category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\storage;
 use Illuminate\Support\Str;
@@ -53,7 +54,11 @@ class BlogCategoryController extends Controller
         $blogCategory->slug = Str::slug($request->title);
 
         $blogCategory->parent_id = $request->parent_id;
+        $blogCategory->updated_at = null;
         $blogCategory->status = $request->has('status') ? 1 : 0;
+        if (! $blogCategory->exists) {
+            $blogCategory->created_by = Auth::id();
+        }
 
         // Save the blog category
 
@@ -127,6 +132,7 @@ class BlogCategoryController extends Controller
         $blogCategory->slug = Str::slug($request->title);
 
         $blogCategory->parent_id = $request->parent_id;
+        $blogCategory->updated_by = Auth::id();
         $blogCategory->status = $request->has('status') ? 1 : 0;
 
         // Save the blog category

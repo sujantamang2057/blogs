@@ -64,8 +64,31 @@
                     <td class="text-muted">{{ $blogCategory->created_at }}</td>
                 </tr>
                 <tr>
+                    <th scope="row">Created_by</th>
+                    @if ($blogCategory->categorycreatedBy)
+                        <td class="text-muted">{{ $blogCategory->categorycreatedBy->name }}</td>
+                    @else
+                        <td class="text-muted"></td>
+                    @endif
+                <tr>
+
+
+
+
+
+                <tr>
                     <th scope="row">Updated_at</th>
                     <td class="text-muted">{{ $blogCategory->updated_at }}</td>
+                </tr>
+                <tr>
+                    <th>Updated_by :</th>
+                    @if ($blogCategory->categoryupdatedBy)
+                        <td class="text-muted">{{ $blogCategory->categoryupdatedBy->name }}</td>
+                    @else
+                        <td class="text-muted">Not updated Yet .</td>
+                    @endif
+
+
                 </tr>
 
 

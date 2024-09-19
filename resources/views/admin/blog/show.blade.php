@@ -76,8 +76,30 @@
                 <td class="text-muted">{{ $blog->created_at }}</td>
             </tr>
             <tr>
+                <th>Created_by :</th>
+                @if ($blog->blogcreatedBy)
+                    <td class="text-muted">{{ $blog->blogcreatedBy->name }}</td>
+                @else
+                    <td class="text-muted"></td>
+                @endif
+
+
+            </tr>
+
+
+            <tr>
                 <th>Updated_at :</th>
                 <td class="text-muted">{{ $blog->updated_at }}</td>
+            </tr>
+            <tr>
+                <th>Updated_by :</th>
+                @if ($blog->blogupdatedBy)
+                    <td class="text-muted">{{ $blog->blogupdatedBy->name }}</td>
+                @else
+                    <td class="text-muted">Not updated Yet .</td>
+                @endif
+
+
             </tr>
 
         </table>
