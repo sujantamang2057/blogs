@@ -34,10 +34,10 @@
                                 <!-- Title Input -->
                                 <div class="row mb-3 g-4">
                                     <div class="col-md-6">
-                                        <label for="title" class="form-label"><strong>Title:</strong></label>
+                                        <label for="title" class="form-label"><strong>Title: <span class="text-danger">*</span></strong></label>
                                         <input type="text" name="title"
                                             class="form-control @error('title') is-invalid @enderror" id="title"
-                                            placeholder="Title">
+                                            placeholder="Title" value="{{ old('title') }}">
                                         @error('title')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
@@ -45,12 +45,15 @@
                                     <!-- Parent Category Select -->
 
                                     <div class="col-md-6">
-                                        <label for="parent_id" class="form-label"><strong>Blog Category:</strong></label>
+                                        <label for="parent_id" class="form-label"><strong>Blog Category: <span class="text-danger">*</span></strong></label>
                                         <select class="form-control @error('blog_category_id') is-invalid @enderror"
                                             name="blog_category_id" id="parent_id">
                                             <option value="">Select blog Category</option>
                                             @foreach ($blog as $category)
-                                                <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                                <option value="{{ $category->id }}"
+                                                    {{ old('blog_category_id') == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->title }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('blog_category_id')
@@ -63,7 +66,7 @@
                                 <!-- this is for description -->
                                 <div class="row mb-3 g-4">
                                     <div class="col-md-12">
-                                        <label for="description" class="form-label"><strong>Description:</strong></label>
+                                        <label for="description" class="form-label"><strong>Description: <span class="text-danger">*</span></strong></label>
                                         <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
                                             rows="4" placeholder="Enter a description...">{{ old('description') }}</textarea>
                                         @error('description')
@@ -78,7 +81,7 @@
                                         <label for="published_at"><strong>Publish at:</strong></label>
                                         <input type="datetime-local" name="published_at" id="published_at"
                                             class="form-control @error('published_at') is-invalid @enderror"
-                                            value="{{ old('published_at') ? old('published_at')->format('Y-m-d\TH:i') : '' }}">
+                                            value="{{ old('published_at') ? \Carbon\Carbon::parse(old('published_at'))->format('Y-m-d\TH:i') : '' }}">
 
 
                                         @error('published_at')
@@ -91,8 +94,7 @@
                                     <div class="col-md-6">
                                         <label for="image" class="form-label"><strong>Image:</strong></label>
                                         <input type="file" name="image" id="image"
-                                            class="form-control @error('image') is-invalid @enderror" placeholder="image"
-                                            value="{{ old('image') }}">
+                                            class="form-control @error('image') is-invalid @enderror" placeholder="image">
 
                                         @error('image')
                                             <div class="form-text text-danger">{{ $message }}</div>
@@ -164,6 +166,12 @@
                     }
                 }
             });
+            // If validation fails, reload the image in FilePond
+            @if (old('image'))
+                pond.addFile('{{ asset('storage/' . old('image')) }}').then(function(file) {
+                    console.log('File added', file);
+                });
+            @endif
         </script>
     @endpush
 @endsection

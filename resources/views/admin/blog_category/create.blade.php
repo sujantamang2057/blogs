@@ -34,7 +34,7 @@
                                 <div class="row mb-3 g-4">
                                     <!-- Title Input -->
                                     <div class="col-md-6">
-                                        <label for="title" class="form-label"><strong>Title:</strong></label>
+                                        <label for="title" class="form-label"><strong>Title: <span class="text-danger">*</span></strong></label>
                                         <input type="text" name="title"
                                             class="form-control @error('title') is-invalid @enderror" id="title"
                                             placeholder="Title">
@@ -86,12 +86,12 @@
                                 </div>
                             </div>
 
-                            <div class="card-footer d-flex justify-content-between">
+                            <div class="card-footer d-flex justify-content-start">
                                 <a href="{{ url()->previous() }}" class="btn me-2"
                                     style="background-color: black; color: white;">
                                     <i class="fa-solid fa-arrow-left"></i> Back
                                 </a>
-                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
+                                <button type="submit" class="btn btn-success me-2"><i class="fa-solid fa-floppy-disk"></i>
                                     Submit</button>
                             </div>
                         </form>
@@ -132,6 +132,12 @@
                     }
                 }
             });
+            // If validation fails, reload the image in FilePond
+            @if (old('image'))
+                pond.addFile('{{ asset('storage/' . old('image')) }}').then(function(file) {
+                    console.log('File added', file);
+                });
+            @endif
         </script>
     @endpush
 @endsection

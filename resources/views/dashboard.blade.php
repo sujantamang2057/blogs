@@ -45,6 +45,23 @@
 
     {{-- tiny mc for the description --}}
     <script src="{{ asset('Backend/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+    {{-- for fontawesome icon in view --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {{-- sweet alert --}}
+    <link rel="stylesheet" href="{{ asset('Backend/sweetalert2/sweetalert2.css') }}">
+    <link rel="stylesheet" href="{{ asset('Backend/sweetalert2/sweetalert2.min.css') }}">
+    <script src="{{ asset('Backend/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    {{-- for the form here --}}
+    <script src="{{ asset('js/delete.js') }}"></script>
+
+
+
+
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+
+
 
 
 

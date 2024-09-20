@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\blogcategoryRequest;
 use App\Models\blog_category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -56,6 +57,10 @@ class BlogCategoryController extends Controller
         $blogCategory->parent_id = $request->parent_id;
         $blogCategory->updated_at = null;
         $blogCategory->status = $request->has('status') ? 1 : 0;
+        //to get the current kathamdu time instead of uk time by default
+        $currentTime = Carbon::now();
+        $blogCategory->created_at = $currentTime;
+
         if (! $blogCategory->exists) {
             $blogCategory->created_by = Auth::id();
         }
@@ -132,6 +137,9 @@ class BlogCategoryController extends Controller
         $blogCategory->slug = Str::slug($request->title);
 
         $blogCategory->parent_id = $request->parent_id;
+        //for the current time of ktm
+        $currentTime = Carbon::now();
+        $blogCategory->updated_at = $currentTime;
         $blogCategory->updated_by = Auth::id();
         $blogCategory->status = $request->has('status') ? 1 : 0;
 

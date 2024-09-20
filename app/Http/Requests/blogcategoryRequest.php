@@ -22,9 +22,11 @@ class blogcategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $categoryId = $this->route('category'); // Assuming 'post_category' is passed as a route parameter
+
         return [
             //
-            'title' => 'required|string|max:255',
+            'title' => 'required|max:255|unique:blog_categories,title,'.$categoryId,
             'image' => 'nullable|string',
             'parent_id' => 'nullable|exists:blog_categories,id',
             'status' => 'boolean',

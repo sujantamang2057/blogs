@@ -45,12 +45,16 @@ class BlogController extends Controller
         // dd($request->image);
         $blog = new blog;
         $blog->title = $request->title;
-        $blog->published_at = $request->published_at;
+        $blog->published_at = $request->published_at ? Carbon::parse($request->published_at) : Carbon::now();
         $blog->description = $request->description;
 
         $blog->blog_category_id = $request->blog_category_id;
         $blog->updated_at = null;
         $blog->status = $request->has('status') ? 1 : 0;
+        //for the current time of ktm
+        $currentTime = Carbon::now();
+        $blog->created_at = $currentTime;
+
         //for created by adding the current login user to it
         if (! $blog->exists) {
             $blog->created_by = Auth::id();
@@ -137,6 +141,9 @@ class BlogController extends Controller
 
         $blog->blog_category_id = $request->blog_category_id;
         $blog->status = $request->has('status') ? 1 : 0;
+        //for the current time of ktm
+        $currentTime = Carbon::now();
+        $blog->updated_at = $currentTime;
 
         $blog->updated_by = Auth::id();
 

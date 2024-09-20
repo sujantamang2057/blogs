@@ -96,7 +96,7 @@
                 @if ($blog->blogupdatedBy)
                     <td class="text-muted">{{ $blog->blogupdatedBy->name }}</td>
                 @else
-                    <td class="text-muted">Not updated Yet .</td>
+                    <td class="text-muted"></td>
                 @endif
 
 
@@ -149,45 +149,71 @@
                 toggle.addEventListener('change', function() {
                     var blogId = this.dataset.id;
                     var newStatus = this.checked ? 1 : 0;
-                    console.log('Blog ID:', blogId);
-                    console.log('New Status:', newStatus);
 
-
-                    if (confirm('Are you sure you want to change the status?')) {
-                        // Send AJAX request to update status
-
-                        fetch('{{ route('blog.status') }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]').getAttribute('content')
-                                },
-                                body: JSON.stringify({
-                                    id: blogId,
-                                    status: newStatus
+                    // SweetAlert for confirmation
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you want to change the status?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, change it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Send AJAX request to update status
+                            fetch('{{ route('blog.status') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').getAttribute(
+                                            'content')
+                                    },
+                                    body: JSON.stringify({
+                                        id: blogId,
+                                        status: newStatus
+                                    })
                                 })
-                            })
-
-
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    alert('Status updated successfully');
-                                } else {
-                                    alert('Failed to update status');
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Show success message
+                                        Swal.fire({
+                                            title: 'Updated!',
+                                            text: 'Status updated successfully.',
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    } else {
+                                        // Show error message
+                                        Swal.fire({
+                                            title: 'Failed!',
+                                            text: 'Failed to update status.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                        // Revert the toggle if the update failed
+                                        toggle.checked = !toggle.checked;
+                                    }
+                                })
+                                .catch(error => {
+                                    // Show error message
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An error occurred.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    console.error(error);
                                     // Revert the toggle if the update failed
                                     toggle.checked = !toggle.checked;
-                                }
-                            })
-                            .catch(error => {
-                                alert('An error occurred');
-                                console.error(error);
-                            });
-                    } else {
-                        // Revert the toggle if the user cancels
-                        this.checked = !this.checked;
-                    }
+                                });
+                        } else {
+                            // Revert the toggle if the user cancels
+                            this.checked = !this.checked;
+                        }
+                    });
                 });
             });
         });

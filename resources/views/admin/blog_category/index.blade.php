@@ -22,13 +22,7 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <div class="row d-flex justify-content-center">
-                @if (Session::has('success'))
-                    <div class="col-md-10 mt-4">
-                        <div class="alert alert-success">
-                            {{ Session::get('success') }}
-                        </div>
-                    </div>
-                @endif
+                @include('admin.message.alert')
                 <!--begin::Row-->
                 <div class="row">
                     <div class="col-md-12">
@@ -48,20 +42,54 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 60px">No</th>
-                                            <th>Image</th>
-                                            <th>Title</th>
+                                            <th style="width: 150px">Action</th>
+                                            <th style="width: 200px">Title</th>
                                             {{-- <th>Slug</th> --}}
                                             {{-- <th>Parent Category</th> --}}
+                                            <th style="width: 100px">Image</th>
 
-                                            <th>Status</th>
-                                            <th style="width: 280px">Action</th>
+                                            <th style="width: 100px">Status</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($blogCategoriestable as $blogCategories)
                                             <tr class="align-middle">
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    <a href="{{ route('category.show', $blogCategories->id) }}"
+                                                        class="btn btn-info btn-sm">
+                                                        <i class="fas fa-eye"></i> <!-- View Icon -->
+                                                    </a>
+                                                    <a href="{{ route('category.edit', $blogCategories->id) }}"
+                                                        class="btn btn-primary btn-sm">
+                                                        <i class="fas fa-edit"></i> <!-- Edit Icon -->
+                                                    </a>
+                                                    <form id="deleteForm-blog-{{ $blogCategories->id }}"
+                                                        action="{{ route('category.destroy', $blogCategories->id) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                            onclick="handleDelete('deleteForm-blog-{{ $blogCategories->id }}')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
 
+
+
+
+
+                                                <td>{{ $blogCategories->title }}</td>
+                                                {{-- <td>{{ $blogCategories->slug }}</td> --}}
+                                                {{-- <td>
+                                                    @if ($blogCategories->ParentBlogCategory)
+                                                        {{ $blogCategories->ParentBlogCategory->title }}
+                                                    @else
+                                                        None
+                                                    @endif
+                                                </td> --}}
                                                 <td>
                                                     @if ($blogCategories->image)
                                                         <a href="{{ asset('storage/' . $blogCategories->image) }}"
@@ -76,17 +104,6 @@
                                                     @endif
                                                 </td>
 
-
-
-                                                <td>{{ $blogCategories->title }}</td>
-                                                {{-- <td>{{ $blogCategories->slug }}</td> --}}
-                                                {{-- <td>
-                                                    @if ($blogCategories->ParentBlogCategory)
-                                                        {{ $blogCategories->ParentBlogCategory->title }}
-                                                    @else
-                                                        None
-                                                    @endif
-                                                </td> --}}
                                                 <td>
                                                     <label for="status{{ $blogCategories->id }}"
                                                         class="form-label"><strong></strong></label>
@@ -101,19 +118,9 @@
                                                             for="status{{ $blogCategories->id }}"></label>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <a href="{{ route('category.show', $blogCategories->id) }}"
-                                                        class="btn btn-info btn-sm">View</a>
-                                                    <a href="{{ route('category.edit', $blogCategories->id) }}"
-                                                        class="btn btn-primary btn-sm">Edit</a>
-                                                    <form action="{{ route('category.destroy', $blogCategories->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete?')">Delete</button>
-                                                    </form>
-                                                </td>
+                                                {{-- //FOR THR ACTION --}}
+
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -136,47 +143,77 @@
                     toggle.addEventListener('change', function() {
                         var blogId = this.dataset.id;
                         var newStatus = this.checked ? 1 : 0;
-                        console.log('Blog ID:', blogId);
-                        console.log('New Status:', newStatus);
 
-
-                        if (confirm('Are you sure you want to change the status?')) {
-                            // Send AJAX request to update status
-
-                            fetch('{{ route('blogcategory.status') }}', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector(
-                                            'meta[name="csrf-token"]').getAttribute('content')
-                                    },
-                                    body: JSON.stringify({
-                                        id: blogId,
-                                        status: newStatus
+                        // SweetAlert for confirmation
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Do you want to change the status?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Yes, change it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Send AJAX request to update status
+                                fetch('{{ route('blogcategory.status') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': document.querySelector(
+                                                'meta[name="csrf-token"]').getAttribute(
+                                                'content')
+                                        },
+                                        body: JSON.stringify({
+                                            id: blogId,
+                                            status: newStatus
+                                        })
                                     })
-                                })
-
-
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        alert('Status updated successfully');
-                                    } else {
-                                        alert('Failed to update status');
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            // Show success message
+                                            Swal.fire({
+                                                title: 'Updated!',
+                                                text: 'Status updated successfully.',
+                                                icon: 'success',
+                                                confirmButtonText: 'OK'
+                                            });
+                                        } else {
+                                            // Show error message
+                                            Swal.fire({
+                                                title: 'Failed!',
+                                                text: 'Failed to update status.',
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            });
+                                            // Revert the toggle if the update failed
+                                            toggle.checked = !toggle.checked;
+                                        }
+                                    })
+                                    .catch(error => {
+                                        // Show error message
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'An error occurred.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                        console.error(error);
                                         // Revert the toggle if the update failed
                                         toggle.checked = !toggle.checked;
-                                    }
-                                })
-                                .catch(error => {
-                                    alert('An error occurred');
-                                    console.error(error);
-                                });
-                        } else {
-                            // Revert the toggle if the user cancels
-                            this.checked = !this.checked;
-                        }
+                                    });
+                            } else {
+                                // Revert the toggle if the user cancels
+                                this.checked = !this.checked;
+                            }
+                        });
                     });
                 });
             });
         </script>
+
+
+
+
     @endsection

@@ -23,13 +23,7 @@
         <!--begin::Container-->
         <div class="container-fluid">
             <div class="row d-flex justify-content-center">
-                @if (Session::has('success'))
-                    <div class="col-md-10 mt-4">
-                        <div class="alert alert-success">
-                            {{ Session::get('success') }}
-                        </div>
-                    </div>
-                @endif
+                @include('admin.message.alert')
                 <!--begin::Row-->
                 <div class="row">
                     <div class="col-md-12">
@@ -46,19 +40,40 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 60px">No</th>
+                                            <th style="width: 280px">Action</th>
 
                                             <th>Name</th>
                                             <th>EmaiL</th>
 
 
 
-                                            <th style="width: 280px">Action</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($user as $user)
                                             <tr class="align-middle">
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    <a href="{{ route('user.show', $user->id) }}"
+                                                        class="btn btn-info btn-sm"> <i class="fas fa-eye"></i></a>
+                                                    <a href="{{ route('user.edit', $user->id) }}"
+                                                        class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a>
+                                                    {{-- to make the sign in user not be able to edelete itself can only delete other --}}
+                                                    @if ($user->id !== Auth::id())
+                                                        <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                                            style="display:inline;"
+                                                            id="deleteForm-user-{{ $user->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                onclick="handleDelete('deleteForm-user-{{ $user->id }}')"><i
+                                                                    class="fas fa-trash"></i></button>
+                                                        </form>
+                                                    @endif
+
+
+                                                </td>
 
 
 
@@ -73,19 +88,7 @@
 
 
 
-                                                <td>
-                                                    <a href="{{ route('user.show', $user->id) }}"
-                                                        class="btn btn-info btn-sm">View</a>
-                                                    <a href="{{ route('user.edit', $user->id) }}"
-                                                        class="btn btn-primary btn-sm">Edit</a>
-                                                    <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                                        style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete?')">Delete</button>
-                                                    </form>
-                                                </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>

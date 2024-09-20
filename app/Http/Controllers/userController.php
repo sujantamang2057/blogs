@@ -80,6 +80,6 @@ class userController extends Controller
         $user = user::findorfail($id);
         $user->delete();
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success', 'user deleted successfully');
     }
 }

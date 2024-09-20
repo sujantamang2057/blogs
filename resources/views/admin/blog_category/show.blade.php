@@ -30,20 +30,16 @@
                     <th scope="row">Slug</th>
                     <td class="text-muted">{{ $blogCategory->slug }}</td>
                 </tr>
-
                 <tr>
-                    <th scope="row">Status</th>
-                    <td>
-                        <label for="status{{ $blogCategory->id }}" class="form-label"><strong></strong></label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox"
-                                role="switch" id="status{{ $blogCategory->id }}" name="status"
-                                data-id="{{ $blogCategory->id }}" value="1"
-                                {{ $blogCategory->status ? 'checked' : '' }}>
-                            <label class="form-check-label" for="status{{ $blogCategory->id }}"></label>
-                        </div>
-                    </td>
+                    <th scope="row">parent Category</th>
+                    @if ($blogCategory->parentCategory)
+                        <td class="text-muted">{{ $blogCategory->parentCategory->title }}</td>
+                    @else
+                        <td class="text-muted"> </td>
+                    @endif
                 </tr>
+
+
 
                 <tr>
                     <th scope="row">Image</th>
@@ -85,10 +81,23 @@
                     @if ($blogCategory->categoryupdatedBy)
                         <td class="text-muted">{{ $blogCategory->categoryupdatedBy->name }}</td>
                     @else
-                        <td class="text-muted">Not updated Yet .</td>
+                        <td class="text-muted"></td>
                     @endif
 
 
+                </tr>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                        <label for="status{{ $blogCategory->id }}" class="form-label"><strong></strong></label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox"
+                                role="switch" id="status{{ $blogCategory->id }}" name="status"
+                                data-id="{{ $blogCategory->id }}" value="1"
+                                {{ $blogCategory->status ? 'checked' : '' }}>
+                            <label class="form-check-label" for="status{{ $blogCategory->id }}"></label>
+                        </div>
+                    </td>
                 </tr>
 
 
@@ -111,6 +120,7 @@
 
         <a href="{{ route('category.index') }}" class="btn btn-primary mt-3">Back to List</a>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Handle toggle switch click
@@ -118,47 +128,74 @@
                 toggle.addEventListener('change', function() {
                     var blogId = this.dataset.id;
                     var newStatus = this.checked ? 1 : 0;
-                    console.log('Blog ID:', blogId);
-                    console.log('New Status:', newStatus);
 
-
-                    if (confirm('Are you sure you want to change the status?')) {
-                        // Send AJAX request to update status
-
-                        fetch('{{ route('blogcategory.status') }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]').getAttribute('content')
-                                },
-                                body: JSON.stringify({
-                                    id: blogId,
-                                    status: newStatus
+                    // SweetAlert for confirmation
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you want to change the status?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, change it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Send AJAX request to update status
+                            fetch('{{ route('blogcategory.status') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').getAttribute(
+                                            'content')
+                                    },
+                                    body: JSON.stringify({
+                                        id: blogId,
+                                        status: newStatus
+                                    })
                                 })
-                            })
-
-
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    alert('Status updated successfully');
-                                } else {
-                                    alert('Failed to update status');
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Show success message
+                                        Swal.fire({
+                                            title: 'Updated!',
+                                            text: 'Status updated successfully.',
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    } else {
+                                        // Show error message
+                                        Swal.fire({
+                                            title: 'Failed!',
+                                            text: 'Failed to update status.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                        // Revert the toggle if the update failed
+                                        toggle.checked = !toggle.checked;
+                                    }
+                                })
+                                .catch(error => {
+                                    // Show error message
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An error occurred.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    console.error(error);
                                     // Revert the toggle if the update failed
                                     toggle.checked = !toggle.checked;
-                                }
-                            })
-                            .catch(error => {
-                                alert('An error occurred');
-                                console.error(error);
-                            });
-                    } else {
-                        // Revert the toggle if the user cancels
-                        this.checked = !this.checked;
-                    }
+                                });
+                        } else {
+                            // Revert the toggle if the user cancels
+                            this.checked = !this.checked;
+                        }
+                    });
                 });
             });
         });
     </script>
+
 @endsection
