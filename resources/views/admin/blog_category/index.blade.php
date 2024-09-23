@@ -45,7 +45,7 @@
                                             <th style="width: 150px">Action</th>
                                             <th style="width: 200px">Title</th>
                                             {{-- <th>Slug</th> --}}
-                                            {{-- <th>Parent Category</th> --}}
+                                            <th>Parent Category</th>
                                             <th style="width: 100px">Image</th>
 
                                             <th style="width: 100px">Status</th>
@@ -83,13 +83,13 @@
 
                                                 <td>{{ $blogCategories->title }}</td>
                                                 {{-- <td>{{ $blogCategories->slug }}</td> --}}
-                                                {{-- <td>
+                                                <td>
                                                     @if ($blogCategories->ParentBlogCategory)
                                                         {{ $blogCategories->ParentBlogCategory->title }}
                                                     @else
                                                         None
                                                     @endif
-                                                </td> --}}
+                                                </td>
                                                 <td>
                                                     @if ($blogCategories->image)
                                                         <a href="{{ asset('storage/' . $blogCategories->image) }}"

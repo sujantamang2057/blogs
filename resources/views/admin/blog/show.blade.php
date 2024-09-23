@@ -75,6 +75,7 @@
                 <th>Created_at :</th>
                 <td class="text-muted">{{ $blog->created_at }}</td>
             </tr>
+
             <tr>
                 <th>Created_by :</th>
                 @if ($blog->blogcreatedBy)
@@ -120,7 +121,7 @@
 
 
 
-        <a href="{{ route('blog.index') }}" class="btn btn-primary mt-3">Back to List</a>
+        <a href="{{ route('blog.index') }}" class="btn btn-primary mt-3">List</a>
     </div>
     <style>
         /* Set a fixed width for the first column (attribute column) */
@@ -184,6 +185,8 @@
                                             text: 'Status updated successfully.',
                                             icon: 'success',
                                             confirmButtonText: 'OK'
+                                        }).then((result) => {
+                                            window.location.reload();
                                         });
                                     } else {
                                         // Show error message

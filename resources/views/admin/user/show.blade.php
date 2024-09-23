@@ -22,10 +22,7 @@
     <div class="container bg-white p-4 rounded shadow-sm">
         <table class="table table-bordered table-striped">
             <thead>
-                <tr>
-                    <th>Attribute</th>
-                    <th>Value</th>
-                </tr>
+
             </thead>
             <tbody>
                 <tr>
@@ -35,6 +32,20 @@
                 <tr>
                     <td><strong>Email:</strong></td>
                     <td>{{ $user->email }}</td>
+                </tr>
+                <tr>
+                    <th>Updated_at :</th>
+                    <td class="text-muted">{{ $user->updated_at }}</td>
+                </tr>
+                <tr>
+                    <th>Updated_by :</th>
+                    @if ($user->updated_by)
+                        <td class="text-muted">{{ $user->updated_by }}</td>
+                    @else
+                        <td class="text-muted"></td>
+                    @endif
+
+
                 </tr>
             </tbody>
         </table>
@@ -49,6 +60,6 @@
             style="background-color: red; color: white;margin-top: 15px;">
             <i class="fa-solid fa-floppy-disk"></i> Edit
         </a>
-        <a href="{{ route('user.index') }}" class="btn btn-primary" style="margin-top: 15px">Back to List</a>
+        <a href="{{ route('user.index') }}" class="btn btn-primary" style="margin-top: 15px">List</a>
     </div>
 @endsection

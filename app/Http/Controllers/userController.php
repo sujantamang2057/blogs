@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\userRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class userController extends Controller
 {
@@ -65,9 +66,11 @@ class userController extends Controller
         $user = user::findorfail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->updated_by = Auth::user()->name;
+
         $user->save();
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.show', $user->id);
 
     }
 

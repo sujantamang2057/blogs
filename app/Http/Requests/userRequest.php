@@ -23,7 +23,8 @@ class userRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required',
+
+            'email' => 'email',
         ];
     }
 }

@@ -23,26 +23,26 @@
         <table class="table table-bordered table-striped">
             <tbody>
                 <tr>
-                    <th scope="row">Title</th>
+                    <th scope="row">Title :</th>
                     <td class="text-muted">{{ $blogCategory->title }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Slug</th>
+                    <th scope="row">Slug :</th>
                     <td class="text-muted">{{ $blogCategory->slug }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">parent Category</th>
-                    @if ($blogCategory->parentCategory)
-                        <td class="text-muted">{{ $blogCategory->parentCategory->title }}</td>
+                    <th scope="row">parent Category :</th>
+                    @if ($blogCategory->ParentBlogCategory)
+                        <td class="text-muted">{{ $blogCategory->ParentBlogCategory->title }}</td>
                     @else
-                        <td class="text-muted"> </td>
+                        <td class="text-muted">No Parent Category . </td>
                     @endif
                 </tr>
 
 
 
                 <tr>
-                    <th scope="row">Image</th>
+                    <th scope="row">Image :</th>
                     <td>
                         @if ($blogCategory->image)
                             <a href="{{ asset('storage/' . $blogCategory->image) }}" data-fancybox="gallery"
@@ -56,11 +56,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row">Created_at</th>
+                    <th scope="row">Created_at :</th>
                     <td class="text-muted">{{ $blogCategory->created_at }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Created_by</th>
+                    <th scope="row">Created_by :</th>
                     @if ($blogCategory->categorycreatedBy)
                         <td class="text-muted">{{ $blogCategory->categorycreatedBy->name }}</td>
                     @else
@@ -118,7 +118,7 @@
             <i class="fa-solid fa-floppy-disk"></i> Edit
         </a>
 
-        <a href="{{ route('category.index') }}" class="btn btn-primary mt-3">Back to List</a>
+        <a href="{{ route('category.index') }}" class="btn btn-primary mt-3">List</a>
     </div>
 
     <script>
@@ -163,6 +163,8 @@
                                             text: 'Status updated successfully.',
                                             icon: 'success',
                                             confirmButtonText: 'OK'
+                                        }).then((result) => {
+                                            window.location.reload();
                                         });
                                     } else {
                                         // Show error message

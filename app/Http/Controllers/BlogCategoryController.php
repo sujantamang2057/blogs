@@ -21,7 +21,7 @@ class BlogCategoryController extends Controller
     {
         //
         // Fetch post categories with pagination
-        $blogCategoriestable = blog_category::orderBy('id', 'asc')->paginate(10); // Adjust the number per page as needed
+        $blogCategoriestable = blog_category::orderBy('id', 'desc')->paginate(10); // Adjust the number per page as needed
 
         // Return the view with the paginated data
         return view('admin.blog_category.index', compact('blogCategoriestable'));
@@ -177,7 +177,7 @@ class BlogCategoryController extends Controller
         }
         $blogCategory->save();
 
-        return redirect()->route('category.show', $blogCategory->id)->with('success', 'blog category updated successfully.');
+        return redirect()->route('category.show', $blogCategory->id)->with('success', 'Blog category updated successfully.');
     }
 
     /**
@@ -192,7 +192,7 @@ class BlogCategoryController extends Controller
 
         $blogCategory->delete();
 
-        return redirect()->route('category.index')->with('success', 'blog category deleted successfully.');
+        return redirect()->route('category.index')->with('success', 'Blog category deleted successfully.');
 
     }
 
@@ -203,6 +203,7 @@ class BlogCategoryController extends Controller
 
         if ($blogcategory) {
             $blogcategory->status = $request->status;
+            $blogcategory->updated_by = Auth::id();
 
             $blogcategory->save();
 

@@ -107,13 +107,13 @@
                             <!--begin::Footer-->
                             <div class="card-footer d-flex justify-content-start">
                                 <a href="{{ url()->previous() }}" class="btn btn-dark me-2">
-                                    <i class="fa-solid fa-arrow-left"></i> Cancel
+                                    Cancel
                                 </a>
                                 {{-- <a href="{{ route('category.create') }}" class="btn btn-danger me-2">
                                     <i class="fa-solid fa-plus"></i> Create
                                 </a> --}}
                                 <button type="submit" class="btn btn-success me-2">
-                                    <i class="fa-solid fa-floppy-disk"></i> Update
+                                    Update
                                 </button>
                             </div>
                             <!--end::Footer-->

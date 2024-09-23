@@ -134,7 +134,7 @@
                                         style="background-color: red; color: white;">
                                         <i class="fa-solid fa-floppy-disk"></i> Create
                                     </a> --}}
-                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i>
+                                    <button type="submit" class="btn btn-success">
                                         Update</button>
                                 </div>
                             </div>

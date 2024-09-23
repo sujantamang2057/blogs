@@ -19,7 +19,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = blog::orderBy('id', 'asc')->paginate(10); // Adjust the number per page as needed
+        $blogs = blog::orderBy('id', 'desc')->paginate(10); // Adjust the number per page as needed
 
         // Return the view with the paginated data
         return view('admin.blog.index', compact('blogs'));
@@ -180,7 +180,7 @@ class BlogController extends Controller
         }
         $blog->save();
 
-        return redirect()->route('blog.show', $blog->id)->with('success', 'blog post updated successfully.');
+        return redirect()->route('blog.show', $blog->id)->with('success', 'Blog post updated successfully.');
     }
 
     /**
@@ -195,7 +195,7 @@ class BlogController extends Controller
 
         $blog->delete();
 
-        return redirect()->route('blog.index')->with('success', 'blog post deleted successfully.');
+        return redirect()->route('blog.index')->with('success', 'Blog post deleted successfully.');
 
     }
 
@@ -227,6 +227,7 @@ class BlogController extends Controller
 
         if ($blog) {
             $blog->status = $request->status;
+            $blog->updated_by = Auth::id();
 
             $blog->save();
 

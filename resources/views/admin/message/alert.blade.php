@@ -5,9 +5,14 @@
             text: '{{ session('success') }}',
             icon: 'success',
             confirmButtonText: 'OK'
+        }).then((result) => {
+            // Clear the session message after displaying it
+            window.location.reload(); // Refresh the page to clear the session message
         });
     </script>
 @endif
+
+
 
 
 @if ($errors->any())

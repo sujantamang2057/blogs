@@ -34,7 +34,8 @@
                                 <!-- Title Input -->
                                 <div class="row mb-3 g-4">
                                     <div class="col-md-6">
-                                        <label for="title" class="form-label"><strong>Title: <span class="text-danger">*</span></strong></label>
+                                        <label for="title" class="form-label"><strong>Title: <span
+                                                    class="text-danger">*</span></strong></label>
                                         <input type="text" name="title"
                                             class="form-control @error('title') is-invalid @enderror" id="title"
                                             placeholder="Title" value="{{ old('title') }}">
@@ -45,7 +46,8 @@
                                     <!-- Parent Category Select -->
 
                                     <div class="col-md-6">
-                                        <label for="parent_id" class="form-label"><strong>Blog Category: <span class="text-danger">*</span></strong></label>
+                                        <label for="parent_id" class="form-label"><strong>Blog Category: <span
+                                                    class="text-danger">*</span></strong></label>
                                         <select class="form-control @error('blog_category_id') is-invalid @enderror"
                                             name="blog_category_id" id="parent_id">
                                             <option value="">Select blog Category</option>
@@ -66,7 +68,8 @@
                                 <!-- this is for description -->
                                 <div class="row mb-3 g-4">
                                     <div class="col-md-12">
-                                        <label for="description" class="form-label"><strong>Description: <span class="text-danger">*</span></strong></label>
+                                        <label for="description" class="form-label"><strong>Description: <span
+                                                    class="text-danger">*</span></strong></label>
                                         <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
                                             rows="4" placeholder="Enter a description...">{{ old('description') }}</textarea>
                                         @error('description')
@@ -119,7 +122,7 @@
                                 <div class="card-footer d-flex">
                                     <a href="{{ url()->previous() }}" class="btn me-2"
                                         style="background-color: black; color: white;">
-                                        <i class="fa-solid fa-floppy-disk"></i> Back
+                                        Cancel
                                     </a>
 
 

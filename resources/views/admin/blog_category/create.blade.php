@@ -34,7 +34,8 @@
                                 <div class="row mb-3 g-4">
                                     <!-- Title Input -->
                                     <div class="col-md-6">
-                                        <label for="title" class="form-label"><strong>Title: <span class="text-danger">*</span></strong></label>
+                                        <label for="title" class="form-label"><strong>Title: <span
+                                                    class="text-danger">*</span></strong></label>
                                         <input type="text" name="title"
                                             class="form-control @error('title') is-invalid @enderror" id="title"
                                             placeholder="Title">
@@ -89,7 +90,7 @@
                             <div class="card-footer d-flex justify-content-start">
                                 <a href="{{ url()->previous() }}" class="btn me-2"
                                     style="background-color: black; color: white;">
-                                    <i class="fa-solid fa-arrow-left"></i> Back
+                                    Cancel
                                 </a>
                                 <button type="submit" class="btn btn-success me-2"><i class="fa-solid fa-floppy-disk"></i>
                                     Submit</button>
