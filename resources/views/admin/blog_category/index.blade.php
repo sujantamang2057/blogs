@@ -25,20 +25,20 @@
                 @include('admin.message.alert')
                 <!--begin::Row-->
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 ">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <h3 class="card-title">Blog Category List</h3>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
                                     <a class="btn btn-success btn-sm" href="{{ route('category.create') }}"
                                         id="createNewProduct">
-                                        <i class="fa fa-plus"></i> Create New Blog Category
+                                        <i class="fa fa-plus"></i> Create New Blog .
                                     </a>
                                 </div>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered " id="myblogtable">
                                     <thead>
                                         <tr>
                                             <th style="width: 60px">No</th>
@@ -210,6 +210,14 @@
                         });
                     });
                 });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#myblogtable').DataTable({
+
+                });
+
             });
         </script>
 

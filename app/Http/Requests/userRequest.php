@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules;
 
 class userRequest extends FormRequest
 {
@@ -21,10 +24,22 @@ class userRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
 
-            'email' => 'email',
+        // Determine if we are updating an existing user or creating a new one
+        $userId = $this->route('user') ? $this->route('user') : null;
+        $isUpdating = $userId !== null;
+
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($userId)],
+            'phone' => ['required', 'numeric', 'digits:10'], // Ensuring phone is numeric and exactly 10 digits
+            // 'address' => ['nullable', 'string', 'max:500'], // Limiting the address to 500 characters
+
+            'image' => ['nullable', 'string'],
+
+            // Password is required when creating, but optional on update
+            'password' => [$isUpdating ? 'nullable' : 'required', Rules\Password::defaults()],
         ];
+
     }
 }

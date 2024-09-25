@@ -2,7 +2,8 @@
 @section('title', 'Edit user')
 
 @section('content')
-    <div class="app-content-header"> <!--begin::Container-->
+    <div class="app-content-header">
+        <!--begin::Container-->
         <div class="container-fluid"> <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
@@ -31,22 +32,23 @@
                     <div class="card card-primary card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
-                            <div class="card-title">Edit User</div>
+                            <div class="card-title">Create User</div>
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
-                        <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
+
                             <!--begin::Body-->
                             <div class="card-body">
                                 <!-- Image Input -->
 
                                 <!-- Title Input -->
-                                <div class="row">
+                                <div class="row g-4 mb-3">
                                     <div class="col-md-6">
-                                        <label for="name" class="form-label"><strong>Name:</strong></label>
-                                        <input type="text" name="name" value="{{ old('name', $user->name) }}"
+                                        <label for="name" class="form-label"><strong>Name: <span
+                                                    class="text-danger">*</span></strong></label>
+                                        <input type="text" name="name" value="{{ old('name') }}"
                                             class="form-control @error('name') is-invalid @enderror" id="name"
                                             placeholder="Name">
                                         @error('name')
@@ -56,8 +58,9 @@
                                     <!-- Slug Input (Optional) -->
                                     <!--  dexcription Input -->
                                     <div class="col-md-6">
-                                        <label for="email" class="form-label"><strong>Email:</strong></label>
-                                        <input type="text" name="email" value="{{ old('email', $user->email) }}"
+                                        <label for="email" class="form-label"><strong>Email: <span
+                                                    class="text-danger">*</span></strong></label>
+                                        <input type="text" name="email" value="{{ old('email') }}"
                                             class="form-control @error('email') is-invalid @enderror" id="email"
                                             placeholder="Title">
                                         @error('email')
@@ -65,7 +68,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row g-4 mb-3">
 
                                     <div class="col-md-6">
                                         <label for="image" class="form-label"><strong>Image:</strong></label>
@@ -79,15 +82,28 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label for="phone" class="form-label"><strong>Phone:</strong></label>
+                                        <label for="phone" class="form-label"><strong>Phone: <span
+                                                    class="text-danger">*</span></strong></label>
                                         <input type="text" name="phone"
                                             class="form-control @error('phone') is-invalid @enderror" id="phone"
-                                            placeholder="phone" value="{{ old('phone', $user->phone) }}">
+                                            placeholder="phone" value="{{ old('phone') }}">
 
                                         @error('phone')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="password" class="form-label"><strong>Password: @if (true)
+                                                <span class="text-danger">*</span>
+                                            @endif
+                                        </strong></label>
+                                    <input type="password" name="password"
+                                        class="form-control @error('password') is-invalid @enderror" id="password"
+                                        placeholder="Password">
+                                    @error('password')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
 
@@ -98,14 +114,15 @@
                             <!--end::Body-->
                             <!--begin::Footer-->
                             <div class="row">
-
                                 <div class="card-footer">
-                                    <a href="{{ route('user.index') }}" class="btn btn-warning text-white">
-                                        <i class="fas fa-times-circle"></i> Cancel</a>
+                                    <a href="{{ url()->previous() }}" class="btn btn-warning text-white">
+                                        <i class="fas fa-times-circle"></i>Cancel
+                                    </a>
 
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i>
-                                        Update</button>
 
+
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>
+                                        Submit</button>
                                 </div>
                             </div>
                             <!--end::Footer-->
@@ -123,23 +140,18 @@
     <!--end::App Content-->
     @push('scripts')
         <script>
-            // Register the FilePond plugins
-            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
+            // Initialize TinyMCE for the textarea
+            initTinyMCE('#description');
+        </script>
 
-            // Get the image input element
-            const inputElement = document.querySelector('#image');
 
-            // Initialize FilePond
-            const pond = FilePond.create(inputElement, {
+        <script>
+            FilePond.registerPlugin(FilePondPluginImagePreview);
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+            const pond = FilePond.create(document.querySelector('#image'), {
                 acceptedFileTypes: ['image/*'],
                 server: {
-                    load: (source, load, error, progress, abort, headers) => {
-                        fetch(source, {
-                            mode: 'cors'
-                        }).then((res) => {
-                            return res.blob();
-                        }).then(load).catch(error);
-                    },
                     process: {
                         url: '{{ route('upload') }}',
                         headers: {
@@ -156,18 +168,14 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     }
-                },
-                files: [
-                    @if (isset($user) && $user->image)
-                        {
-                            source: '{{ asset('storage/' . $user->image) }}',
-                            options: {
-                                type: 'local',
-                            },
-                        }
-                    @endif
-                ],
+                }
             });
+            // If validation fails, reload the image in FilePond
+            @if (old('image'))
+                pond.addFile('{{ asset('storage/' . old('image')) }}').then(function(file) {
+                    console.log('File added', file);
+                });
+            @endif
         </script>
     @endpush
 @endsection

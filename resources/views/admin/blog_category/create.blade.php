@@ -33,7 +33,7 @@
                             <div class="card-body">
                                 <div class="row mb-3 g-4">
                                     <!-- Title Input -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="title" class="form-label"><strong>Title: <span
                                                     class="text-danger">*</span></strong></label>
                                         <input type="text" name="title"
@@ -45,7 +45,7 @@
                                     </div>
 
                                     <!-- Parent Category Select -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="parent_id" class="form-label"><strong>Parent Category:</strong></label>
                                         <select class="form-control @error('parent_id') is-invalid @enderror"
                                             name="parent_id" id="parent_id">
@@ -58,7 +58,19 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    {{-- for the slug --}}
+                                    <div class="col-md-4">
+                                        <label for="slug" class="form-label"><strong>Slug: <span
+                                                    class="text-danger">*</span></strong></label>
+                                        <input type="text" name="slug"
+                                            class="form-control @error('title') is-invalid @enderror" id="slug"
+                                            placeholder="If you leave it empty, it will be generated">
+                                        @error('slug')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
+
 
                                 <div class="row mb-3 g-4">
                                     <!-- Image Input -->
@@ -87,13 +99,17 @@
                                 </div>
                             </div>
 
-                            <div class="card-footer d-flex justify-content-start">
-                                <a href="{{ url()->previous() }}" class="btn me-2"
-                                    style="background-color: black; color: white;">
-                                    Cancel
-                                </a>
-                                <button type="submit" class="btn btn-success me-2"><i class="fa-solid fa-floppy-disk"></i>
-                                    Submit</button>
+                            <div class="row">
+                                <div class="card-footer">
+                                    <a href="{{ url()->previous() }}" class="btn btn-warning text-white">
+                                        <i class="fas fa-times-circle"></i>Cancel
+                                    </a>
+
+
+
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>
+                                        Submit</button>
+                                </div>
                             </div>
                         </form>
                     </div>

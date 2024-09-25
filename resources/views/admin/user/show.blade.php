@@ -33,33 +33,81 @@
                     <td><strong>Email:</strong></td>
                     <td>{{ $user->email }}</td>
                 </tr>
+
                 <tr>
-                    <th>Updated_at :</th>
-                    <td class="text-muted">{{ $user->updated_at }}</td>
+                    <th>Image :</th>
+                    <td>
+                        @if ($user->image)
+                            <a href="{{ asset('storage/' . $user->image) }}" data-fancybox="gallery"
+                                data-caption="{{ $user->title }}">
+                                <img src="{{ asset('storage/' . $user->image) }}" alt="{{ $user->title }}"
+                                    class="img-thumbnail" style="width: 100px; height: auto;">
+                            </a>
+                        @else
+                            <p class="text-muted">No image available</p>
+                        @endif
+                    </td>
                 </tr>
                 <tr>
-                    <th>Updated_by :</th>
-                    @if ($user->updated_by)
-                        <td class="text-muted">{{ $user->updated_by }}</td>
+                    <td><strong>Phone:</strong></td>
+                    <td>{{ $user->phone }}</td>
+                </tr>
+                <tr>
+                    <th>Created At :</th>
+                    <td class="text-muted">{{ $user->created_at }}</td>
+                </tr>
+                <tr>
+                    <th>Created By :</th>
+                    @if ($user->created_by)
+                        <td class="text-muted">{{ $user->created_by }}</td>
                     @else
                         <td class="text-muted"></td>
                     @endif
 
 
                 </tr>
+
+                @if ($user->updated_at && $user->updated_by)
+                    <tr>
+                        <th>Updated At :</th>
+                        <td class="text-muted">{{ $user->updated_at }}</td>
+                    </tr>
+                    <tr>
+                        <th>Updated By:</th>
+                        @if ($user->updated_by)
+                            <td class="text-muted">{{ $user->updated_by }}</td>
+                        @else
+                            <td class="text-muted"></td>
+                        @endif
+
+
+                    </tr>
+                @endif
             </tbody>
         </table>
 
-        <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="btn me-2"
-            style=" color: white;margin-top: 15px;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-        <a href="{{ route('user.edit', $user->id) }}" class="btn me-2"
-            style="background-color: red; color: white;margin-top: 15px;">
-            <i class="fa-solid fa-floppy-disk"></i> Edit
-        </a>
-        <a href="{{ route('user.index') }}" class="btn btn-primary" style="margin-top: 15px">List</a>
+        <div class="d-flex justify-content-start mt-3">
+            <a href="{{ route('user.index') }}" class="btn btn-warning me-2 text-white">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <a href="{{ route('user.create') }}" class="btn btn-success me-2">
+                <i class="fas fa-plus"></i> Create
+            </a>
+            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-primary me-2">
+                <i class="fas fa-edit"></i> Update
+            </a>
+            @if ($user->id != Auth::user()->id)
+                <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: none;"
+                    id="deletePostForm">
+                    @csrf
+                    @method('DELETE')
+                </form>
+
+                <a class="btn btn-danger me-2" onclick="document.getElementById('deletePostForm').submit();">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            @endif
+
+        </div>
     </div>
 @endsection

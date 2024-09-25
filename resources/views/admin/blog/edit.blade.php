@@ -40,20 +40,9 @@
                             @method('PUT')
                             <!--begin::Body-->
                             <div class="card-body">
-                                <!-- Image Input -->
+                                {{-- title --}}
                                 <div class="row mb-3 g-4">
-                                    <div class="col-md-6">
-                                        <label for="image" class="form-label"><strong>Image:</strong></label>
-                                        <input type="file" name="image"
-                                            class="form-control @error('image') is-invalid @enderror" id="image"
-                                            placeholder="image">
-
-                                        @error('image')
-                                            <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <!-- Title Input -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="title" class="form-label"><strong>Title:</strong></label>
                                         <input type="text" name="title" value="{{ old('title', $blog->title) }}"
                                             class="form-control @error('title') is-invalid @enderror" id="title"
@@ -62,6 +51,37 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    {{-- //blog category --}} <div class="col-md-4">
+                                        <label for="parent_id" class="form-label"><strong>Blog Category:</strong></label>
+                                        <select class="form-control @error('blog_category_id') is-invalid @enderror"
+                                            name="blog_category_id" id="parent_id">
+                                            <option value="">Select Parent Category</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}"
+                                                    {{ $blog->blog_category_id == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('blog_category_id')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="slug" class="form-label"><strong>Slug:</strong></label>
+                                        <input type="text" name="slug" value="{{ old('slug', $blog->slug) }}"
+                                            class="form-control @error('slug') is-invalid @enderror" id="slug"
+                                            placeholder="slug">
+                                        @error('slug')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+
+
+
+
                                 </div>
                                 <!-- Slug Input (Optional) -->
                                 <!--  dexcription Input -->
@@ -79,7 +99,7 @@
                                 <div class="row mb-3`g-4">
                                     <div class="col-md-4">
                                         <label for="published_at" class="form-label"><strong>Published
-                                                Date:</strong></label>
+                                                At:</strong></label>
                                         <input type="datetime-local" name="published_at" id="published_at"
                                             class="form-control @error('published_at') is-invalid @enderror"
                                             value="{{ old('published_at', isset($blog->published_at) ? $blog->published_at->format('Y-m-d\TH:i') : '') }}">
@@ -87,24 +107,23 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
+                                <div class="row mb-3`g-4">
 
 
-                                    <div class="col-md-4">
-                                        <label for="parent_id" class="form-label"><strong>Blog Category:</strong></label>
-                                        <select class="form-control @error('blog_category_id') is-invalid @enderror"
-                                            name="blog_category_id" id="parent_id">
-                                            <option value="">Select Parent Category</option>
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}"
-                                                    {{ $blog->blog_category_id == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->title }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('blog_category_id')
+                                    <div class="col-md-6">
+                                        <label for="image" class="form-label"><strong>Image:</strong></label>
+                                        <input type="file" name="image"
+                                            class="form-control @error('image') is-invalid @enderror" id="image"
+                                            placeholder="image">
+
+                                        @error('image')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+
+
 
                                     <!-- Status Select -->
                                     <div class="col-md-4">
@@ -121,34 +140,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--end::Body-->
-                            <!--begin::Footer-->
-                            <div class="row">
-
-                                <div class="card-footer">
-                                    <a href="{{ url()->previous() }}" class="btn me-2"
-                                        style="background-color: black; color: white;">
-                                        <i class="fa-solid fa-floppy-disk"></i> Cancel
-                                    </a>
-                                    {{-- <a href="{{ route('blog.create') }}" class="btn me-2"
-                                        style="background-color: red; color: white;">
-                                        <i class="fa-solid fa-floppy-disk"></i> Create
-                                    </a> --}}
-                                    <button type="submit" class="btn btn-success">
-                                        Update</button>
-                                </div>
-                            </div>
-                            <!--end::Footer-->
-                        </form>
-                        <!--end::Form-->
                     </div>
-                    <!--end::Quick Example-->
+                    <!--end::Body-->
+                    <!--begin::Footer-->
+                    <div class="row">
+
+                        <div class="card-footer">
+                            <a href="{{ route('category.index') }}" class="btn btn-warning text-white">
+                                <i class="fas fa-times-circle"></i> Cancel</a>
+
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i>
+                                Update</button>
+
+                        </div>
+                    </div>
+                    <!--end::Footer-->
+                    </form>
+                    <!--end::Form-->
                 </div>
-                <!--end::Col-->
+                <!--end::Quick Example-->
             </div>
-            <!--end::Row-->
+            <!--end::Col-->
         </div>
-        <!--end::Container-->
+        <!--end::Row-->
+    </div>
+    <!--end::Container-->
     </div>
     <!--end::App Content-->
     @push('scripts')

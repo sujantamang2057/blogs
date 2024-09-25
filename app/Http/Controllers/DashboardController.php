@@ -11,6 +11,7 @@ class DashboardController extends Controller
 
     public function index()
     {
+
         // List of models and their respective class names
         $models = [
             'Category' => blog_category::class,

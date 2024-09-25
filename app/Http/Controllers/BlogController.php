@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class BlogController extends Controller
@@ -47,6 +48,13 @@ class BlogController extends Controller
         $blog->title = $request->title;
         $blog->published_at = $request->published_at ? Carbon::parse($request->published_at) : Carbon::now();
         $blog->description = $request->description;
+        if ($request->slug) {
+            $blog->slug = $request->slug;
+
+        } else {
+            $blog->slug = Str::slug($request->title);
+
+        }
 
         $blog->blog_category_id = $request->blog_category_id;
         $blog->updated_at = null;
@@ -133,6 +141,7 @@ class BlogController extends Controller
      */
     public function update(BlogRequest $request, string $id)
     {
+        // dd($request->all());
         $blog = blog::findOrFail($id);
 
         // here we will update product

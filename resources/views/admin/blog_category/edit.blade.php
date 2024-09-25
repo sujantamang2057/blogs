@@ -44,19 +44,7 @@
                             <!--begin::Body-->
                             <div class="card-body">
                                 <div class="row mb-3">
-                                    <!-- Image Input -->
-                                    <div class="col-md-6">
-                                        <label for="image" class="form-label"><strong>Image:</strong></label>
-                                        <input type="file" name="image"
-                                            class="form-control @error('image') is-invalid @enderror" id="image"
-                                            placeholder="Image">
-                                        @error('image')
-                                            <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Title Input -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="title" class="form-label"><strong>Title:</strong></label>
                                         <input type="text" name="title"
                                             value="{{ old('title', $blogCategory->title) }}"
@@ -66,11 +54,8 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
 
-                                <div class="row mb-3">
-                                    <!-- Parent Category Select -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="parent_id" class="form-label"><strong>Parent Category:</strong></label>
                                         <select class="form-control @error('parent_id') is-invalid @enderror"
                                             name="parent_id" id="parent_id">
@@ -86,6 +71,35 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="col-md-4">
+                                        <label for="slug" class="form-label"><strong>Slug:</strong></label>
+                                        <input type="text" name="slug" value="{{ old('slug', $blogCategory->slug) }}"
+                                            class="form-control @error('slug') is-invalid @enderror" id="slug"
+                                            placeholder="">
+                                        @error('title')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+
+                                    <!-- Title Input -->
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <!-- Image Input -->
+                                    <div class="col-md-6">
+                                        <label for="image" class="form-label"><strong>Image:</strong></label>
+                                        <input type="file" name="image"
+                                            class="form-control @error('image') is-invalid @enderror" id="image"
+                                            placeholder="Image">
+                                        @error('image')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+
 
                                     <!-- Status Switch -->
                                     <div class="col-md-6">
@@ -105,16 +119,13 @@
                             <!--end::Body-->
 
                             <!--begin::Footer-->
-                            <div class="card-footer d-flex justify-content-start">
-                                <a href="{{ url()->previous() }}" class="btn btn-dark me-2">
-                                    Cancel
-                                </a>
-                                {{-- <a href="{{ route('category.create') }}" class="btn btn-danger me-2">
-                                    <i class="fa-solid fa-plus"></i> Create
-                                </a> --}}
-                                <button type="submit" class="btn btn-success me-2">
-                                    Update
-                                </button>
+                            <div class="card-footer">
+                                <a href="{{ route('category.index') }}" class="btn btn-warning text-white">
+                                    <i class="fas fa-times-circle"></i> Cancel</a>
+
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i>
+                                    Update</button>
+
                             </div>
                             <!--end::Footer-->
                         </form>

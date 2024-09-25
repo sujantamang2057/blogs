@@ -31,9 +31,16 @@
                             <div class="card-header">
                                 <h3 class="card-title">User</h3>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+                                    <a class="btn btn-success btn-sm" href="{{ route('user.create') }}"
+                                        id="createNewProduct">
+                                        <i class="fa fa-plus"></i> Create New User .
+                                    </a>
+                                </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
 
                                 </div>
                             </div>
+
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table class="table table-bordered">
@@ -44,6 +51,8 @@
 
                                             <th>Name</th>
                                             <th>EmaiL</th>
+                                            <th>Phone</th>
+                                            <th>Image</th>
 
 
 
@@ -81,6 +90,20 @@
 
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->email }}</td>
+                                                <td>{{ $user->phone }}</td>
+
+                                                <td>
+                                                    @if ($user->image)
+                                                        <a href="{{ asset('storage/' . $user->image) }}"
+                                                            data-fancybox="gallery" data-caption="{{ $user->title }}">
+                                                            <img src="{{ asset('storage/images/resized/' . basename($user->image)) }}"
+                                                                alt="{{ $user->title }}"
+                                                                style="width: 50px; height: auto;">
+                                                        </a>
+                                                    @else
+                                                        <p>No image available</p>
+                                                    @endif
+                                                </td>
 
 
 

@@ -31,7 +31,7 @@
                     <td class="text-muted">{{ $blogCategory->slug }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">parent Category :</th>
+                    <th scope="row">Parent Category :</th>
                     @if ($blogCategory->ParentBlogCategory)
                         <td class="text-muted">{{ $blogCategory->ParentBlogCategory->title }}</td>
                     @else
@@ -56,11 +56,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row">Created_at :</th>
+                    <th scope="row">Created At :</th>
                     <td class="text-muted">{{ $blogCategory->created_at }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Created_by :</th>
+                    <th scope="row">Created By :</th>
                     @if ($blogCategory->categorycreatedBy)
                         <td class="text-muted">{{ $blogCategory->categorycreatedBy->name }}</td>
                     @else
@@ -72,22 +72,19 @@
 
 
 
+                    @if ($blogCategory->updated_at && $blogCategory->categoryupdatedBy)
                 <tr>
-                    <th scope="row">Updated_at</th>
+                    <th scope="row">Updated At</th>
                     <td class="text-muted">{{ $blogCategory->updated_at }}</td>
                 </tr>
                 <tr>
-                    <th>Updated_by :</th>
-                    @if ($blogCategory->categoryupdatedBy)
-                        <td class="text-muted">{{ $blogCategory->categoryupdatedBy->name }}</td>
-                    @else
-                        <td class="text-muted"></td>
-                    @endif
-
-
+                    <th>Updated By :</th>
+                    <td class="text-muted">{{ $blogCategory->categoryupdatedBy->name }}</td>
                 </tr>
+                @endif
+
                 <tr>
-                    <th scope="row">Status</th>
+                    <th scope="row">Status :</th>
                     <td>
                         <label for="status{{ $blogCategory->id }}" class="form-label"><strong></strong></label>
                         <div class="form-check form-switch">
@@ -103,23 +100,50 @@
 
             </tbody>
         </table>
-        <a href="{{ route('category.create') }}" class="btn me-2"
-            style="background-color: red; color: white;margin-top: 15px;">
-            <i class="fa-solid fa-floppy-disk"></i> Create
-        </a>
-        <form action="{{ route('category.destroy', $blogCategory->id) }}" method="POST" class="btn me-2"
-            style=" color: white;margin-top: 15px;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-        <a href="{{ route('category.edit', $blogCategory->id) }}" class="btn me-2"
-            style="background-color: red; color: white;margin-top: 15px;">
-            <i class="fa-solid fa-floppy-disk"></i> Edit
-        </a>
+        <div class="d-flex justify-content-start mt-3">
+            <a href="{{ route('category.index') }}" class="btn btn-warning me-2 text-white">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <a href="{{ route('category.create') }}" class="btn btn-success me-2">
+                <i class="fas fa-plus"></i> Create
+            </a>
+            <a href="{{ route('category.edit', $blogCategory->id) }}" class="btn btn-primary me-2">
+                <i class="fas fa-edit"></i> Update
+            </a>
+            <form action="{{ route('category.destroy', $blogCategory->id) }}" method="POST" style="display: none;"
+                id="deletePostForm">
+                @csrf
+                @method('DELETE')
+            </form>
 
-        <a href="{{ route('category.index') }}" class="btn btn-primary mt-3">List</a>
+            <a class="btn btn-danger me-2" onclick="document.getElementById('deletePostForm').submit();">
+                <i class="fas fa-trash"></i> Delete
+            </a>
+
+        </div>
+        
     </div>
+
+    <style>
+        /* Set a fixed width for the first column (attribute column) */
+        .table th {
+            width: 200px;
+            /* Adjust this width as necessary */
+            white-space: nowrap;
+        }
+
+        /* Ensure the content in the second column doesn't overflow */
+        .table td img {
+            max-width: 100%;
+            /* Ensure images don't overflow the cell */
+            height: auto;
+        }
+
+        .table td {
+            word-wrap: break-word;
+            /* Break long words if necessary */
+        }
+    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

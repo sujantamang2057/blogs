@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> <!--begin::Head-->
+<html lang="en">
 
 
 <head>
@@ -56,6 +56,13 @@
     {{-- for the form here --}}
     <script src="{{ asset('js/delete.js') }}"></script>
 
+    {{-- for yajra data tables --}}
+    <link rel="stylesheet" href="{{ asset('DataTables/datatables.css') }}">
+    <script src="{{ asset('DataTables/datatables.js') }}"></script>
+
+
+
+
 
 
 
@@ -88,11 +95,10 @@
                 <div class="container-fluid"> <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Dashboard</h3>
+                            <h3><a href="{{ route('dashboard') }}">Dashboard</a></h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
 
                             </ol>
                         </div>

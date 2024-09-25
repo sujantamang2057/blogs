@@ -33,7 +33,7 @@ class BlogCategoryController extends Controller
     public function create()
     {
         //
-        $blogCategories = blog_category::all();
+        $blogCategories = blog_category::where('status', 1)->get();
 
         return view('admin.blog_category.create', compact('blogCategories'));
     }
@@ -52,7 +52,14 @@ class BlogCategoryController extends Controller
         // here we will insert product in db
         $blogCategory = new blog_category;
         $blogCategory->title = $request->title;
-        $blogCategory->slug = Str::slug($request->title);
+        //if slug is given by the userv that take that otherwise take a custom made one
+        if ($request->slug) {
+            $blogCategory->slug = $request->slug;
+
+        } else {
+            $blogCategory->slug = Str::slug($request->title);
+
+        }
 
         $blogCategory->parent_id = $request->parent_id;
         $blogCategory->updated_at = null;
@@ -117,8 +124,9 @@ class BlogCategoryController extends Controller
     {
         //find by id
         $blogCategory = blog_category::findOrFail($id);
+
         // Fetch all categories for the parent category select dropdown
-        $categories = blog_category::all();
+        $categories = blog_category::where('title', '!=', $blogCategory->title)->get();
 
         return view('admin.blog_category.edit', compact('blogCategory', 'categories'));
     }
@@ -134,7 +142,6 @@ class BlogCategoryController extends Controller
 
         // here we will update product
         $blogCategory->title = $request->title;
-        $blogCategory->slug = Str::slug($request->title);
 
         $blogCategory->parent_id = $request->parent_id;
         //for the current time of ktm

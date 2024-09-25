@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\userRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\storage;
+use Intervention\Image\Facades\Image;
 
 class userController extends Controller
 {
@@ -26,14 +29,63 @@ class userController extends Controller
     public function create()
     {
         //
+        return view('admin.user.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(userRequest $request)
     {
-        //
+        // Create a new user instance
+      
+        $user = new User;
+
+        // Hash the password
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+        $user->phone = $request->phone;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        // Set created_at and updated_at with Nepal timezone
+        $currentTime = Carbon::now();
+        $user->created_at = $currentTime;
+        $user->created_by = Auth::user()->name;
+       
+
+        if ($request->input('image')) {
+            $imagePath = $request->input('image');
+
+            $filename = basename($imagePath);
+
+            // Define paths
+            $originalPath = 'images/'.$filename;
+
+            $resizedPath = 'images/resized/'.$filename;
+
+            // Move the file from 'temporay place' to 'original path'
+            Storage::disk('public')->move($imagePath, $originalPath);
+
+            // Resize the image using Intervention Image
+            $resizedImage = Image::make(storage_path('app/public/'.$originalPath))->resize(300, 300);
+
+            // Store the resized image
+            Storage::disk('public')->put($resizedPath, (string) $resizedImage->encode());
+
+            // Save the new image path in the database
+            $user->image = $originalPath;
+        }
+
+        // Set email_verified_at to null if email is changed
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        // Save the new user
+        $user->save();
+
+        return redirect()->route('user.show', $user->id);
     }
 
     /**
@@ -66,7 +118,39 @@ class userController extends Controller
         $user = user::findorfail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->updated_by = Auth::user()->name;
+
+        if ($request->input('image')) {
+            // Delete old images if they exist
+            if ($user->image) {
+                if (Storage::exists(public_path('storage/'.$user->image))) {
+                    Storage::delete(public_path('storage/'.$user->image));
+                }
+                if (Storage::exists(public_path('storage/images/resized/'.basename($user->image)))) {
+                    Storage::delete(public_path('storage/images/resized/'.basename($user->image)));
+                }
+            }
+
+            $imagePath = $request->input('image');
+            $filename = basename($imagePath);
+
+            // Define paths
+            $originalPath = 'images/'.$filename;
+            $resizedPath = 'images/resized/'.$filename;
+
+            // Move the file from 'tmp' to 'images'
+            Storage::disk('public')->move($imagePath, $originalPath);
+
+            // Resize the image using Intervention Image
+            $resizedImage = Image::make(storage_path('app/public/'.$originalPath))->resize(300, 300);
+
+            // Store the resized image
+            Storage::disk('public')->put($resizedPath, (string) $resizedImage->encode());
+
+            // Save the new image path in the database
+            $user->image = $originalPath;
+        }
 
         $user->save();
 

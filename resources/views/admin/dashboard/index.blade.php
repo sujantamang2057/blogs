@@ -40,11 +40,3 @@
             </div> <!--end::Container-->
         </div>
     @endsection
-
-
-
-
-
-
-
-    <
