@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\userDataTable;
 use App\Http\Requests\userRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\storage;
@@ -15,13 +17,18 @@ class userController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(userDataTable $dataTable)
     {
-        //
-        $user = User::orderBy('id', 'asc')->paginate(10)->all();
 
-        return view('admin.user.index', compact('user'));
+        return $dataTable->render('admin.user.index');
     }
+    // public function index()
+    // {
+    //     //
+    //     $user = User::orderBy('id', 'asc')->paginate(10)->all();
+
+    //     return view('admin.user.index', compact('user'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -38,7 +45,7 @@ class userController extends Controller
     public function store(userRequest $request)
     {
         // Create a new user instance
-      
+
         $user = new User;
 
         // Hash the password
@@ -48,11 +55,11 @@ class userController extends Controller
         $user->phone = $request->phone;
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->status = $request->has('status') ? 1 : 0;
         // Set created_at and updated_at with Nepal timezone
         $currentTime = Carbon::now();
         $user->created_at = $currentTime;
         $user->created_by = Auth::user()->name;
-       
 
         if ($request->input('image')) {
             $imagePath = $request->input('image');
@@ -118,6 +125,8 @@ class userController extends Controller
         $user = user::findorfail($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->status = $request->has('status') ? 1 : 0;
+
         $user->phone = $request->phone;
         $user->updated_by = Auth::user()->name;
 
@@ -168,5 +177,22 @@ class userController extends Controller
         $user->delete();
 
         return redirect()->route('user.index')->with('success', 'user deleted successfully');
+    }
+
+    public function updateStatus(Request $request)
+    {
+
+        $user = user::find($request->id);
+
+        if ($user) {
+            $user->status = $request->status;
+            $user->updated_by = Auth::id();
+
+            $user->save();
+
+            return response()->json(['success' => true, 'status' => $user->status]);
+        }
+
+        return response()->json(['success' => false]);
     }
 }

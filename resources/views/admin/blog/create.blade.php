@@ -12,7 +12,7 @@
                     <ol class="breadcrumb float-sm-end">
 
                         <li class="breadcrumb-item active" aria-current="page">
-                            Blog post
+                            {{ Breadcrumbs::render('blog-create') }}
                         </li>
                     </ol>
                 </div>
@@ -97,7 +97,8 @@
                                         <label for="published_at"><strong>Publish at:</strong></label>
                                         <input type="datetime-local" name="published_at" id="published_at"
                                             class="form-control @error('published_at') is-invalid @enderror"
-                                            value="{{ old('published_at') ? \Carbon\Carbon::parse(old('published_at'))->format('Y-m-d\TH:i') : '' }}">
+                                            value="{{ old('published_at') ? \Carbon\Carbon::parse(old('published_at'))->format('Y-m-d\TH:i') : '' }}"
+                                            onclick="this.showPicker()">
 
 
                                         @error('published_at')
@@ -107,7 +108,7 @@
                                 </div>
                                 <!-- Image Input -->
                                 <div class="row mb-3 g-4">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="image" class="form-label"><strong>Image:</strong></label>
                                         <input type="file" name="image" id="image"
                                             class="form-control @error('image') is-invalid @enderror" placeholder="image">
@@ -116,7 +117,9 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <!-- Status Toggle -->
+                                </div>
+                                <!-- Status Toggle -->
+                                <div class="row mb-3 g-4">
                                     <div class="col-md-6">
                                         <label for="status" class="form-label"><strong>Status:</strong></label>
                                         <div class="form-check form-switch">
@@ -149,6 +152,7 @@
             </div>
         </div>
     </div>
+
     @push('scripts')
         <script>
             // Initialize TinyMCE for the textarea

@@ -29,13 +29,11 @@
                     <div class="col-md-12">
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h3 class="card-title">User</h3>
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-                                    <a class="btn btn-success btn-sm" href="{{ route('user.create') }}"
-                                        id="createNewProduct">
-                                        <i class="fa fa-plus"></i> Create New User .
-                                    </a>
-                                </div>
+                                <a class="btn btn-success btn-sm" href="{{ route('user.create') }}" id="createNewProduct">
+                                    <i class="fa fa-plus"></i> Create
+                                </a>
+
+
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
 
                                 </div>
@@ -43,79 +41,7 @@
 
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 60px">No</th>
-                                            <th style="width: 280px">Action</th>
-
-                                            <th>Name</th>
-                                            <th>EmaiL</th>
-                                            <th>Phone</th>
-                                            <th>Image</th>
-
-
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($user as $user)
-                                            <tr class="align-middle">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>
-                                                    <a href="{{ route('user.show', $user->id) }}"
-                                                        class="btn btn-info btn-sm"> <i class="fas fa-eye"></i></a>
-                                                    <a href="{{ route('user.edit', $user->id) }}"
-                                                        class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a>
-                                                    {{-- to make the sign in user not be able to edelete itself can only delete other --}}
-                                                    @if ($user->id !== Auth::id())
-                                                        <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                                            style="display:inline;"
-                                                            id="deleteForm-user-{{ $user->id }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                onclick="handleDelete('deleteForm-user-{{ $user->id }}')"><i
-                                                                    class="fas fa-trash"></i></button>
-                                                        </form>
-                                                    @endif
-
-
-                                                </td>
-
-
-
-
-
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ $user->phone }}</td>
-
-                                                <td>
-                                                    @if ($user->image)
-                                                        <a href="{{ asset('storage/' . $user->image) }}"
-                                                            data-fancybox="gallery" data-caption="{{ $user->title }}">
-                                                            <img src="{{ asset('storage/images/resized/' . basename($user->image)) }}"
-                                                                alt="{{ $user->title }}"
-                                                                style="width: 50px; height: auto;">
-                                                        </a>
-                                                    @else
-                                                        <p>No image available</p>
-                                                    @endif
-                                                </td>
-
-
-
-
-
-
-
-
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                {{ $dataTable->table() }}
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
@@ -129,53 +55,87 @@
             </div> <!--end::Container-->
         </div> <!--end::App Content-->
         <script>
+            console.log('DataTable script loaded');
             document.addEventListener('DOMContentLoaded', function() {
-                // Handle toggle switch click
-                document.querySelectorAll('.form-check-input').forEach(function(toggle) {
-                    toggle.addEventListener('change', function() {
-                        var blogId = this.dataset.id;
-                        var newStatus = this.checked ? 1 : 0;
-                        console.log('Blog ID:', blogId);
-                        console.log('New Status:', newStatus);
+                // Handle toggle switch change event with event delegation
+                document.querySelector('.card-body').addEventListener('change', function(e) {
+                    if (e.target.classList.contains('form-check-input')) {
+                        var toggle = e.target;
+                        var blogId = toggle.dataset.id;
+                        var newStatus = toggle.checked ? 1 : 0;
 
-
-                        if (confirm('Are you sure you want to change the status?')) {
-                            // Send AJAX request to update status
-
-                            fetch('{{ route('blog.status') }}', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector(
-                                            'meta[name="csrf-token"]').getAttribute('content')
-                                    },
-                                    body: JSON.stringify({
-                                        id: blogId,
-                                        status: newStatus
+                        // SweetAlert for confirmation
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Do you want to change the status?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Yes, change it!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // AJAX request to update status
+                                fetch('{{ route('user.status') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': document.querySelector(
+                                                'meta[name="csrf-token"]').getAttribute(
+                                                'content')
+                                        },
+                                        body: JSON.stringify({
+                                            id: blogId,
+                                            status: newStatus
+                                        })
                                     })
-                                })
-
-
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        alert('Status updated successfully');
-                                    } else {
-                                        alert('Failed to update status');
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            // Show success message
+                                            Swal.fire({
+                                                title: 'Updated!',
+                                                text: 'Status updated successfully.',
+                                                icon: 'success',
+                                                confirmButtonText: 'OK'
+                                            });
+                                        } else {
+                                            // Show error message
+                                            Swal.fire({
+                                                title: 'Failed!',
+                                                text: 'Failed to update status.',
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            });
+                                            // Revert the toggle if the update failed
+                                            toggle.checked = !toggle.checked;
+                                        }
+                                    })
+                                    .catch(error => {
+                                        // Show error message
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'An error occurred.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                        console.error(error);
                                         // Revert the toggle if the update failed
                                         toggle.checked = !toggle.checked;
-                                    }
-                                })
-                                .catch(error => {
-                                    alert('An error occurred');
-                                    console.error(error);
-                                });
-                        } else {
-                            // Revert the toggle if the user cancels
-                            this.checked = !this.checked;
-                        }
-                    });
+                                    });
+                            } else {
+                                // Revert the toggle if the user cancels
+                                toggle.checked = !toggle.checked;
+                            }
+                        });
+                    }
                 });
             });
         </script>
     @endsection
+    @push('scripts')
+        {{ $dataTable->scripts() }}
+        <script>
+            console.log('DataTable script loaded');
+        </script>
+    @endpush

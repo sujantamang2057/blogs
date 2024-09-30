@@ -40,6 +40,14 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
+        $user = \App\Models\User::where('email', $this->email)->first();
+
+        // Check if the user exists and their status is active (1 = active, 0 = inactive)
+        if (! $user || $user->status !== 1) {
+            throw ValidationException::withMessages([
+                'email' => trans('The user is inactive'), // Create a new message for inactive users
+            ]);
+        }
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());

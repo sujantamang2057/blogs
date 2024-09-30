@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\blog_category;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -16,6 +17,7 @@ class DashboardController extends Controller
         $models = [
             'Category' => blog_category::class,
             'Blog' => Blog::class,
+            'User' => User::class,
 
         ];
 

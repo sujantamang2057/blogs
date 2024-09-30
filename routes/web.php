@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('revert', [BlogController::class, 'revert'])->name('revert');
     Route::post('/blog/new', [BlogController::class, 'updateStatus'])->name('blog.status');
     Route::post('/blog/status/update', [BlogCategoryController::class, 'updateStatus'])->name('blogcategory.status');
+    Route::post('/user/status/update', [userController::class, 'updateStatus'])->name('user.status');
 
 });
 

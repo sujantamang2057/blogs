@@ -12,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            Blog Category
+                            {{ Breadcrumbs::render('category-create') }}
                         </li>
                     </ol>
                 </div>
@@ -74,7 +74,7 @@
 
                                 <div class="row mb-3 g-4">
                                     <!-- Image Input -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="image" class="form-label"><strong>Image:</strong></label>
                                         <input type="file" name="image" id="image"
                                             class="form-control @error('image') is-invalid @enderror" placeholder="image">
@@ -82,8 +82,11 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
 
-                                    <!-- Status Toggle -->
+                                <!-- Status Toggle -->
+                                <div class="row mb-3 g-4">
+
                                     <div class="col-md-6">
                                         <label for="status" class="form-label"><strong>Status:</strong></label>
                                         <div class="form-check form-switch">

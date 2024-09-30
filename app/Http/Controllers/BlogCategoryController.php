@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\blogscatDataTable;
 use App\Http\Requests\blogcategoryRequest;
 use App\Models\blog_category;
 use Carbon\Carbon;
@@ -17,15 +18,20 @@ class BlogCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(blogscatDataTable $dataTable)
     {
-        //
-        // Fetch post categories with pagination
-        $blogCategoriestable = blog_category::orderBy('id', 'desc')->paginate(10); // Adjust the number per page as needed
 
-        // Return the view with the paginated data
-        return view('admin.blog_category.index', compact('blogCategoriestable'));
+        return $dataTable->render('admin.blog_category.index');
     }
+    // public function index(Request $request)
+    // {
+    //     //
+    //     // Fetch post categories with pagination
+    //     $blogCategoriestable = blog_category::orderBy('id', 'desc')->paginate(10); // Adjust the number per page as needed
+
+    //     // Return the view with the paginated data
+    //     return view('admin.blog_category.index', compact('blogCategoriestable'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -126,7 +132,18 @@ class BlogCategoryController extends Controller
         $blogCategory = blog_category::findOrFail($id);
 
         // Fetch all categories for the parent category select dropdown
-        $categories = blog_category::where('title', '!=', $blogCategory->title)->get();
+        $categories = blog_category::whereNull('deleted_at') // Not soft deleted
+            ->where('status', 1) // Active status
+            ->where('title', '!=', $blogCategory->title)
+            ->get();
+
+        // Check if the post's category is soft-deleted
+        $deletedCategory = blog_category::withTrashed()->find($blogCategory->parent_id);
+
+        // If the category is soft-deleted, add it to the categories list
+        if ($deletedCategory && ($deletedCategory->trashed() || $deletedCategory->status == 0)) {
+            $categories->push($deletedCategory);
+        }
 
         return view('admin.blog_category.edit', compact('blogCategory', 'categories'));
     }
@@ -144,6 +161,14 @@ class BlogCategoryController extends Controller
         $blogCategory->title = $request->title;
 
         $blogCategory->parent_id = $request->parent_id;
+
+        //for the slug conditon
+        if ($request->slug) {
+            $blogCategory->slug = $request->slug;
+        } else {
+            $blogCategory->slug = Str::slug($request->title);
+        }
+
         //for the current time of ktm
         $currentTime = Carbon::now();
         $blogCategory->updated_at = $currentTime;

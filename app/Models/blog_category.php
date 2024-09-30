@@ -19,7 +19,7 @@ class blog_category extends Model
     //for the relation to parent class
     public function ParentBlogCategory()
     {
-        return $this->belongsTo(blog_category::class, 'parent_id');
+        return $this->belongsTo(blog_category::class, 'parent_id')->withTrashed();
     }
 
     public function categorycreatedBy()

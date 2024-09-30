@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end bg-transparent p-0 m-0">
                         <li class="breadcrumb-item active" aria-current="page">
-                            Blog post
+                            {{ Breadcrumbs::render('blog-show', $blog) }}
                         </li>
                     </ol>
                 </div>

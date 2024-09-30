@@ -12,7 +12,9 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item active" aria-current="page">Blog Category</li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {{ Breadcrumbs::render('category-update', $blogCategory) }}
+                        </li>
                     </ol>
                 </div>
             </div>
@@ -89,7 +91,7 @@
 
                                 <div class="row mb-3">
                                     <!-- Image Input -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="image" class="form-label"><strong>Image:</strong></label>
                                         <input type="file" name="image"
                                             class="form-control @error('image') is-invalid @enderror" id="image"
@@ -98,16 +100,18 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
 
 
 
-                                    <!-- Status Switch -->
+                                <!-- Status Switch -->
+                                <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="status" class="form-label"><strong>Status:</strong></label>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input @error('status') is-invalid @enderror"
                                                 type="checkbox" role="switch" id="status" name="status" value="1"
-                                                {{ old('status', $category->status) ? 'checked' : '' }}>
+                                                {{ old('status', $blogCategory->status) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="status"></label>
                                         </div>
                                         @error('status')

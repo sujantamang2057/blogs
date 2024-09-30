@@ -38,6 +38,9 @@
         integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
         integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
+        {{-- jquery --}}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
@@ -56,9 +59,9 @@
     {{-- for the form here --}}
     <script src="{{ asset('js/delete.js') }}"></script>
 
-    {{-- for yajra data tables --}}
-    <link rel="stylesheet" href="{{ asset('DataTables/datatables.css') }}">
-    <script src="{{ asset('DataTables/datatables.js') }}"></script>
+
+    {{-- vite --}}
+    @vite(['resources/js/app.js'])
 
 
 
@@ -94,9 +97,7 @@
             <div class="app-content-header"> <!--begin::Container-->
                 <div class="container-fluid"> <!--begin::Row-->
                     <div class="row">
-                        <div class="col-sm-6">
-                            <h3><a href="{{ route('dashboard') }}">Dashboard</a></h3>
-                        </div>
+                        
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
 
@@ -282,7 +283,7 @@
         integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY=" crossorigin="anonymous"></script> <!-- jsvectormap -->
 
 
-    place this script file in the create part
+    {{-- place this script file in the create part --}}
     <script>
         const visitorsData = {
             US: 398, // USA
@@ -408,12 +409,14 @@
     </script>
     <script src="{{ asset('Backend/filepond/filepond/dist/filepond.js') }}"></script>
 
-
-
-
-
-
     @stack('scripts')
+
+
+
+
+
+
+
 
 
 

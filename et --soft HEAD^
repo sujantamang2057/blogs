@@ -1,0 +1,217 @@
+[33mcommit 41aa5c1b504ae3aba3417b2167914f90b3d0f25d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Wed Sep 25 15:38:06 2024 +0545
+
+    chnaging in button ui,adding the create in user etc
+
+[33mcommit 5986fe4086ebb7849fb3bf7214e5fd5333d64df3[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 23 14:47:38 2024 +0545
+
+    fixing the sweet alert when going back with the browser,the chnave in the status through the view page
+
+[33mcommit 4c7dd9cbe54a370f7c064a9c9d5e10e3bf8ce37c[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Fri Sep 20 17:00:44 2024 +0545
+
+     adding sweet laert ,validation checking error and fixing also  change in the code for tyhen laert crerating new function for that ,cnge in the ui for the index page also
+
+[33mcommit 0d550e85d473f545186a268d822fa99041b0f018[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 19 12:39:51 2024 +0545
+
+    updated at ,updated by ,created at,created by making . when dirst created no any datat in upadted by and updated at but when updated the current login suer datatis shown in it
+
+[33mcommit 02e8ce487508d84bfc3e89da47fc8de7e1037e2e[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Wed Sep 18 18:24:13 2024 +0545
+
+    status in the show page in both category  and blog
+
+[33mcommit 4688a8c282f5de4ea79ed7450d11519c8e0be54e[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Wed Sep 18 10:14:17 2024 +0545
+
+    make the image viewer fileponf in the edit section in both the blog and category
+
+[33mcommit 15b2ca2afc9f43a24c7cab6ca6a1f26b23707402[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Tue Sep 17 11:30:55 2024 +0545
+
+    adding the softdelete features making the show ui for the fix size
+
+[33mcommit ad62f07514d427ea865786bbf693dcee22083933[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 16 18:27:17 2024 +0545
+
+    mior changes in images ui
+
+[33mcommit 59584777cc46ca217cc6b666f8b256c47befb4ba[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 16 16:42:07 2024 +0545
+
+    filefond and tinymc both in local not uisng cdn
+
+[33mcommit 94421b26e79e6168c80b84a52f0e25c268ec8486[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 16 10:27:18 2024 +0545
+
+    made the navbaar sticky ,ui chnaged in the blog view and after creating directly going to the view page
+
+[33mcommit 344a1e82bd93e3b4e580a843c625f6853dfde393[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Fri Sep 13 18:21:41 2024 +0545
+
+     changed in the ui of the show or view of blog model
+
+[33mcommit 6fa779e249a0785e1d7cf70221a4956d40f2e988[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Fri Sep 13 11:57:49 2024 +0545
+
+    changing in the UI of the login ,regoster and dashboard page
+
+[33mcommit 0c9ab1b4bfb80afb2c61d90d549741ae94a257b5[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Fri Sep 13 10:05:47 2024 +0545
+
+    adding title in the top bar dynamically in category,blog and user views
+
+[33mcommit 5d965a7f0f26982effd8c33955e723cf13d0f720[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 12 16:21:16 2024 +0545
+
+    image resixe creating and update function in blog post
+
+[33mcommit d1d4bef44d0106a94ec0d6482b502dd760b36bc3[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 12 12:12:35 2024 +0545
+
+    image rerzike during update also done in category model
+
+[33mcommit 11b7f00b34f6ba18fbf4a18ec671dea5a9cf1d7b[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 12 11:47:08 2024 +0545
+
+    image rezizing in the catgory section resized image is in rezize folder and original inage in original folder
+
+[33mcommit a955de6a7eb2e2a131aa2dcb74ee21b62c5bf533[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Wed Sep 11 15:01:13 2024 +0545
+
+    the image in the view nad edit not showing in category is fixed
+
+[33mcommit a1bbf102669557153d3a51aa842277eca4a638b4[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Wed Sep 11 14:29:50 2024 +0545
+
+    making the module for the user,having all crud operation for the user model
+
+[33mcommit de67d96a6e7976bb7fc4a14e3a8bf889a73684f1[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Tue Sep 10 16:25:52 2024 +0545
+
+    changes in .env eample for mail,adding the posted at in the blog model,fixing the editing issue in the image section
+
+[33mcommit 4db31df067b0ba5f17d33f6ffee839ceee790a39[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Tue Sep 10 14:25:27 2024 +0545
+
+    image view or fancy box added to the blog image in the index view
+
+[33mcommit 70a84c48d224d7e512201ffda3463624fe26e834[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Tue Sep 10 12:11:06 2024 +0545
+
+    the toggle in index page of the blog and change in toggle first shows pop up if user want to change after ok it changes the status in both the view and the database used ajax methos nad patch function in it
+
+[33mcommit 5aae56662ca8bc922e57f92d745a69f2e66446f6[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 9 16:24:39 2024 +0545
+
+     new logical approach for the active and inactive coun in the dash board for every model amd more effiecient way also
+
+[33mcommit 5557fd11ce95a5ae9c0c063b0e399581aaa50f4d[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 9 15:42:47 2024 +0545
+
+    category model active and inactive count shown in the dashboard and also change in the controller logic for the blog model active nad inactive count for better efficienct
+
+[33mcommit 3a4a1a2097a82940b00f075e4c48ebe70d4b8609[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 9 15:06:19 2024 +0545
+
+    in dash board the total no of active and inactive number of blogs are displayed using simple logic of count function
+
+[33mcommit c59e135a0bcfe0abb376ad2406938f1f864a0de3[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 9 13:06:26 2024 +0545
+
+    when forget password is clicked the link is send to the mail suing mailtrap
+
+[33mcommit e06cc02da8f6ef11fc8e30b4f20e6659bb68ec63[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 9 10:23:42 2024 +0545
+
+    the issue of the image not beaing saved in the blog category fixed now it can be saved
+
+[33mcommit c75d27a024be2b05ca801eb7a954910fb5606163[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 5 16:55:42 2024 +0545
+
+    adding build
+
+[33mcommit d485cb0248eaf1005a1ef7e831b85eb18c619a62[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 5 16:50:36 2024 +0545
+
+    chnage in ignore public/build
+
+[33mcommit ff4cc6780aa76b59b7dacd1acf3f93f3014219be[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 5 16:25:51 2024 +0545
+
+    modified again
+
+[33mcommit e08c2028e4cdda4e8636275ac6528c4f22e6fd10[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Thu Sep 5 15:05:51 2024 +0545
+
+    env example have the all required set up data deleted a few migration
+
+[33mcommit c519d2557942fe58fbe2c47782c18359c86527e1[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Wed Sep 4 14:03:32 2024 +0545
+
+    image preview done on;y uploading and view
+
+[33mcommit b2683e9212e7389014b2df8ae11ac3b3af8f8b4f[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Tue Sep 3 15:41:26 2024 +0545
+
+    blog post crud and the category section as well tiny added for the description
+
+[33mcommit cd43a330191329fd3423d9c64a7fa39c54cbddb2[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Mon Sep 2 16:17:39 2024 +0545
+
+    category controlo new ui and crud parent id relationship view page
+
+[33mcommit 60d85e4d2aa7317edfa06d9ab1a37bfeeeb2c114[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Fri Aug 30 16:59:51 2024 +0545
+
+    the blog model inserted in the admin colum and shown in same page insted to aniother page
+
+[33mcommit c666002c770d7230d312c6f90fbff382ad0bfd02[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Fri Aug 30 12:30:54 2024 +0545
+
+    making the login possible and logout top,new dashbord admin lte integrating and name etc dynamic adding blogs to the column
+
+[33mcommit d9547bf57bf14359c156d4cdacc5686c5fb76ff1[m
+Author: sujan <sujandontamang@gmail.com>
+Date:   Fri Aug 30 10:15:33 2024 +0545
+
+    adding the login and register layouts etc ,breeze inatllation and set up
+
+[33mcommit fba2d

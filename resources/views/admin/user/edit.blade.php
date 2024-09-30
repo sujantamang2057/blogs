@@ -89,6 +89,22 @@
                                         @enderror
                                     </div>
                                 </div>
+                                @if(Auth::id() !== $user->id)
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="status" class="form-label"><strong>Status:</strong></label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input @error('status') is-invalid @enderror"
+                                                type="checkbox" role="switch" id="status" name="status" value="1"
+                                                {{ old('status', $user->status) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="status"></label>
+                                        </div>
+                                        @error('status')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                @endif
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\blogDataTable;
 use App\Http\Requests\BlogRequest;
 use App\Models\blog;
 use App\Models\blog_category;
@@ -18,13 +19,18 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(blogDataTable $dataTable)
     {
-        $blogs = blog::orderBy('id', 'desc')->paginate(10); // Adjust the number per page as needed
 
-        // Return the view with the paginated data
-        return view('admin.blog.index', compact('blogs'));
+        return $dataTable->render('admin.blog.index');
     }
+    // public function index()
+    // {
+    //     $blogs = blog::orderBy('id', 'desc')->paginate(10); // Adjust the number per page as needed
+
+    //     // Return the view with the paginated data
+    //     return view('admin.blog.index', compact('blogs'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -123,13 +129,15 @@ class BlogController extends Controller
         $blog->published_at = $blog->published_at ? Carbon::parse($blog->published_at) : null;
 
         // Fetch only active categories
-        $categories = blog_category::whereNull('deleted_at')->get();
+        $categories = blog_category::whereNull('deleted_at') // Not soft deleted
+            ->where('status', 1) // Active status
+            ->get();
 
         // Check if the post's category is soft-deleted
         $deletedCategory = blog_category::withTrashed()->find($blog->blog_category_id);
 
         // If the category is soft-deleted, add it to the categories list
-        if ($deletedCategory && $deletedCategory->trashed()) {
+        if ($deletedCategory && ($deletedCategory->trashed() || $deletedCategory->status == 0)) {
             $categories->push($deletedCategory);
         }
 
@@ -147,6 +155,12 @@ class BlogController extends Controller
         // here we will update product
         $blog->title = $request->title;
         $blog->description = $request->description;
+        //for the slug conditon
+        if ($request->slug) {
+            $blog->slug = $request->slug;
+        } else {
+            $blog->slug = Str::slug($request->title);
+        }
 
         $blog->blog_category_id = $request->blog_category_id;
         $blog->status = $request->has('status') ? 1 : 0;

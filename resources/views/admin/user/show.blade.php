@@ -82,6 +82,22 @@
 
 
                     </tr>
+                    <tr>
+                        <th>Status :</th>
+                        <td>
+                            @if (Auth::id() !== $user->id)
+                                <label for="status{{ $user->id }}" class="form-label"><strong></strong></label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input @error('status') is-invalid @enderror" type="checkbox"
+                                        role="switch" id="status{{ $user->id }}" name="status"
+                                        data-id="{{ $user->id }}" value="1" {{ $user->status ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="status{{ $user->id }}"></label>
+                                </div>
+                            @else
+                                Active
+                            @endif
+                        </td>
+                    </tr>
                 @endif
             </tbody>
         </table>
@@ -110,4 +126,82 @@
 
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle toggle switch click
+            document.querySelectorAll('.form-check-input').forEach(function(toggle) {
+                toggle.addEventListener('change', function() {
+                    var blogId = this.dataset.id;
+                    var newStatus = this.checked ? 1 : 0;
+
+                    // SweetAlert for confirmation
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Do you want to change the status?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, change it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Send AJAX request to update status
+                            fetch('{{ route('user.status') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                            'meta[name="csrf-token"]').getAttribute(
+                                            'content')
+                                    },
+                                    body: JSON.stringify({
+                                        id: blogId,
+                                        status: newStatus
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Show success message
+                                        Swal.fire({
+                                            title: 'Updated!',
+                                            text: 'Status updated successfully.',
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        }).then((result) => {
+                                            window.location.reload();
+                                        });
+                                    } else {
+                                        // Show error message
+                                        Swal.fire({
+                                            title: 'Failed!',
+                                            text: 'Failed to update status.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                        // Revert the toggle if the update failed
+                                        toggle.checked = !toggle.checked;
+                                    }
+                                })
+                                .catch(error => {
+                                    // Show error message
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An error occurred.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    console.error(error);
+                                    // Revert the toggle if the update failed
+                                    toggle.checked = !toggle.checked;
+                                });
+                        } else {
+                            // Revert the toggle if the user cancels
+                            this.checked = !this.checked;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 @endsection

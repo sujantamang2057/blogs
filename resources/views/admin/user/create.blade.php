@@ -105,6 +105,21 @@
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                {{-- //for the status section --}}
+                                <div class="mb-3 col-md-6">
+                                    <div class="col-md-6">
+                                        <label for="status" class="form-label"><strong>Status:</strong></label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input @error('status') is-invalid @enderror"
+                                                type="checkbox" role="switch" id="status" name="status" value="1"
+                                                {{ old('status') ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="status"></label>
+                                        </div>
+                                        @error('status')
+                                            <div class="form-text text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
 
 
 

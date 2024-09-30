@@ -32,8 +32,12 @@ class userRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($userId)],
-            'phone' => ['required', 'numeric', 'digits:10'], // Ensuring phone is numeric and exactly 10 digits
-            // 'address' => ['nullable', 'string', 'max:500'], // Limiting the address to 500 characters
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^(\+977-?\d{2}-?\d{8}|\d{10})$/',  // Allow +977 or just 10 digits
+                // Unique phone number
+            ],            // 'address' => ['nullable', 'string', 'max:500'], // Limiting the address to 500 characters
 
             'image' => ['nullable', 'string'],
 
