@@ -77,7 +77,7 @@ class userDataTable extends DataTable
                     <label class="form-check-label" for="status'.$row->id.'"></label>
                 </div>';
                 } else {
-                    return 'Active';
+                    return '<button class="btn btn-success btn-sm">Active</button>';
                 }
             })
 
@@ -90,7 +90,7 @@ class userDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('id', 'desc');
     }
 
     /**
@@ -99,12 +99,12 @@ class userDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-        ->setTableId('blogs-table')
-        ->columns($this->getColumns())
-        ->minifiedAjax()
-        ->dom('lfrtip')
-        ->orderBy(1)
-        ->selectStyleSingle();
+            ->setTableId('blogs-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('lfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle();
     }
 
     /**
@@ -116,15 +116,17 @@ class userDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(200)
-                ->addClass('text-center'),
+                ->width(100)
+                ->addClass('text-left'),
             Column::make('name'),
             Column::make('email'),
             Column::make('phone'),
-            Column::make('image'),
+            Column::make('image')
+                ->width(50),
             Column::make('status')
                 ->exportable(false)
-                ->printable(false),
+                ->printable(false)
+                ->width(50),
         ];
     }
 

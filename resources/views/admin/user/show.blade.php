@@ -6,12 +6,14 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-primary">User</h3>
+                    {{ Breadcrumbs::render('user-show', $user) }}
+
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end bg-transparent p-0 m-0">
-                        <li class="breadcrumb-item active" aria-current="page">
-                            User
+                        <li class="breadcrumb-item ">
+                            <h3 class="mb-0">User</h3>
+
                         </li>
                     </ol>
                 </div>
@@ -94,7 +96,7 @@
                                     <label class="form-check-label" for="status{{ $user->id }}"></label>
                                 </div>
                             @else
-                                Active
+                                <button class="btn btn-success btn-sm">Active</button>
                             @endif
                         </td>
                     </tr>
@@ -126,6 +128,26 @@
 
         </div>
     </div>
+    <style>
+        /* Set a fixed width for the first column (attribute column) */
+        .table th {
+            width: 200px;
+            /* Adjust this width as necessary */
+            white-space: nowrap;
+        }
+
+        /* Ensure the content in the second column doesn't overflow */
+        .table td img {
+            max-width: 100%;
+            /* Ensure images don't overflow the cell */
+            height: auto;
+        }
+
+        .table td {
+            word-wrap: break-word;
+            /* Break long words if necessary */
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Handle toggle switch click

@@ -72,6 +72,14 @@ class blogscatDataTable extends DataTable
                     <label class="form-check-label" for="status'.$row->id.'"></label>
                 </div>';
             })
+            ->addColumn('parent category', function ($row) {
+                // Check if the blog has an associated category
+                if ($row->ParentBlogCategory) {
+                    return $row->ParentBlogCategory->title;
+                } else {
+                    return 'None'; // Display 'None' if no category exists
+                }
+            })
 
             ->rawColumns(['action', 'image', 'status']) // Mark columns as raw HTML
             ->setRowId('id');
@@ -82,7 +90,7 @@ class blogscatDataTable extends DataTable
      */
     public function query(blog_category $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('id', 'desc');
     }
 
     /**
@@ -109,13 +117,18 @@ class blogscatDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(200)
-                ->addClass('text-center'),
-            Column::make('title'),
-            Column::make('image'),
+                ->width(100)
+                ->addClass('text-left'),
+            Column::make('title')
+                ->width(150),
+            Column::make('parent category')
+                ->width(150),
+            Column::make('image')
+                ->width(50),
             Column::make('status')
                 ->exportable(false)
-                ->printable(false),
+                ->printable(false)
+                ->width(50),
 
         ];
     }

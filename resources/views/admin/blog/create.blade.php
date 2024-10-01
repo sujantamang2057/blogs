@@ -6,14 +6,18 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Blog post</h3>
+                    {{ Breadcrumbs::render('blog-create') }}
+
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
 
                         <li class="breadcrumb-item active" aria-current="page">
-                            {{ Breadcrumbs::render('blog-create') }}
+                            <h3 class="mb-0">Blog post</h3>
                         </li>
+
+
+
                     </ol>
                 </div>
             </div>
@@ -60,7 +64,7 @@
                                         </select>
                                         @error('blog_category_id')
                                             <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
+                                        @enderror                                    
                                     </div>
 
 
@@ -69,7 +73,7 @@
                                                     class="text-danger">*</span></strong></label>
                                         <input type="text" name="slug"
                                             class="form-control @error('title') is-invalid @enderror" id="slug"
-                                            placeholder="if you leave it empty, it will be generated"
+                                            placeholder="If you leave it empty, it will be generated"
                                             value="{{ old('slug') }}">
                                         @error('title')
                                             <div class="form-text text-danger">{{ $message }}</div>

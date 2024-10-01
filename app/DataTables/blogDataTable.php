@@ -90,7 +90,7 @@ class blogDataTable extends DataTable
      */
     public function query(blog $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->orderBy('id', 'desc');
     }
 
     /**
@@ -116,14 +116,18 @@ class blogDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(200)
-                ->addClass('text-center'),
-            Column::make('title'),
-            Column::make('blog category'),
-            Column::make('image'),
+                ->width(100)
+                ->addClass('text-left'),
+            Column::make('title')
+                ->width(150),
+            Column::make('blog category')
+                ->width(150),
+            Column::make('image')
+                ->width(50),
             Column::make('status')
                 ->exportable(false)
-                ->printable(false),
+                ->printable(false)
+                ->width(50),
         ];
     }
 

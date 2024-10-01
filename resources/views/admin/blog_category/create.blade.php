@@ -7,12 +7,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Create Blog Category</h3>
+                    {{ Breadcrumbs::render('category-create') }}
+
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            {{ Breadcrumbs::render('category-create') }}
+                            <h3 class="mb-0">Blog Category</h3>
+
                         </li>
                     </ol>
                 </div>

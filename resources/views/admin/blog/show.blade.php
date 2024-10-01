@@ -6,12 +6,14 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <h3 class="mb-0 text-primary">Blog post</h3>
+                    {{ Breadcrumbs::render('blog-show', $blog) }}
+
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end bg-transparent p-0 m-0">
                         <li class="breadcrumb-item active" aria-current="page">
-                            {{ Breadcrumbs::render('blog-show', $blog) }}
+                            <h3 class="mb-0">Blog post</h3>
+
                         </li>
                     </ol>
                 </div>

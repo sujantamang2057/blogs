@@ -3,7 +3,8 @@
 @section('content')
     <div class="app-content">
         <span class="breadcrumbs">
-            {{ Breadcrumbs::render('blog') }}
+            {{ Breadcrumbs::render('home') }}
+
         </span>
         <!--begin::Container-->
         <div class="container-fluid"> <!--begin::Row-->
@@ -40,7 +41,7 @@
             .breadcrumbs {
                 margin-top: 10px;
                 margin-bottom: 0;
-                text-align: left
+                text-align: left;
             }
         </style>
     @endsection

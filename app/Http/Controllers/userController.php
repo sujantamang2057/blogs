@@ -186,7 +186,7 @@ class userController extends Controller
 
         if ($user) {
             $user->status = $request->status;
-            $user->updated_by = Auth::id();
+            $user->updated_by = Auth::user()->name;
 
             $user->save();
 

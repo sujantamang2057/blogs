@@ -11,7 +11,7 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // Home
 Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
-    $trail->push('Home', route('dashboard'));
+    $trail->push('Dashboard', route('dashboard'));
 });
 
 // Home > Blog
@@ -61,4 +61,25 @@ Breadcrumbs::for('category-update', function (BreadcrumbTrail $trail, $blogCateg
     $trail->push('Update/'.$blogCategory->title, route('category.update', $blogCategory));
 });
 
-// Home > Blog > [Category]
+// for the user bread cumb
+Breadcrumbs::for('user', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('User', route('user.index'));
+});
+
+Breadcrumbs::for('user-create', function (BreadcrumbTrail $trail) {
+    $trail->parent('user');
+
+    $trail->push('Create', route('user.create'));
+});
+
+Breadcrumbs::for('user-show', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('user');
+    $trail->push('View /'.$user->name, route('user.show', $user));
+});
+
+Breadcrumbs::for('user-update', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('user');
+
+    $trail->push('Update/'.$user->name, route('user.update', $user));
+});

@@ -7,12 +7,13 @@
         <div class="container-fluid"> <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">user</h3>
+                    {{ Breadcrumbs::render('user-create') }}
+
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            user
+                            <h3 class="mb-0">User</h3>
                         </li>
                     </ol>
                 </div>
@@ -62,7 +63,7 @@
                                                     class="text-danger">*</span></strong></label>
                                         <input type="text" name="email" value="{{ old('email') }}"
                                             class="form-control @error('email') is-invalid @enderror" id="email"
-                                            placeholder="Title">
+                                            placeholder="Email">
                                         @error('email')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
@@ -74,7 +75,7 @@
                                         <label for="image" class="form-label"><strong>Image:</strong></label>
                                         <input type="file" name="image"
                                             class="form-control @error('image') is-invalid @enderror" id="image"
-                                            placeholder="image">
+                                            placeholder="Image">
 
                                         @error('image')
                                             <div class="form-text text-danger">{{ $message }}</div>
@@ -86,7 +87,7 @@
                                                     class="text-danger">*</span></strong></label>
                                         <input type="text" name="phone"
                                             class="form-control @error('phone') is-invalid @enderror" id="phone"
-                                            placeholder="phone" value="{{ old('phone') }}">
+                                            placeholder="Phone" value="{{ old('phone') }}">
 
                                         @error('phone')
                                             <div class="form-text text-danger">{{ $message }}</div>
