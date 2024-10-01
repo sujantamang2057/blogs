@@ -45,7 +45,7 @@
                                 <!-- Image Input -->
 
                                 <!-- Title Input -->
-                                <div class="row">
+                                <div class="row g-4 mb-3">
                                     <div class="col-md-6">
                                         <label for="name" class="form-label"><strong>Name:</strong></label>
                                         <input type="text" name="name" value="{{ old('name', $user->name) }}"
@@ -61,13 +61,15 @@
                                         <label for="email" class="form-label"><strong>Email:</strong></label>
                                         <input type="text" name="email" value="{{ old('email', $user->email) }}"
                                             class="form-control @error('email') is-invalid @enderror" id="email"
-                                            placeholder="Title">
+                                            placeholder="Title" {{ Auth::id() === $user->id ? 'readonly' : '' }}>
                                         @error('email')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+
                                 </div>
-                                <div class="row">
+                                <div class="row g-4 mb-3">
 
                                     <div class="col-md-6">
                                         <label for="image" class="form-label"><strong>Image:</strong></label>

@@ -95,13 +95,20 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="password" class="form-label"><strong>Password: @if (true)
+                                    <label for="password" class="form-label"><strong>Password:
+                                            @if (true)
                                                 <span class="text-danger">*</span>
                                             @endif
                                         </strong></label>
-                                    <input type="password" name="password"
-                                        class="form-control @error('password') is-invalid @enderror" id="password"
-                                        placeholder="Password">
+
+                                    <div class="position-relative">
+                                        <input type="password" name="password"
+                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            placeholder="Password">
+                                        <i class="fa fa-eye-slash position-absolute" id="togglePassword"
+                                            style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                    </div>
+
                                     @error('password')
                                         <div class="form-text text-danger">{{ $message }}</div>
                                     @enderror
@@ -154,6 +161,21 @@
         <!--end::Container-->
     </div>
     <!--end::App Content-->
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.add('fa-eye');
+                icon.classList.remove('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.add('fa-eye-slash');
+                icon.classList.remove('fa-eye');
+            }
+        });
+    </script>
     @push('scripts')
         <script>
             // Initialize TinyMCE for the textarea

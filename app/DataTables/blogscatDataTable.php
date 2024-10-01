@@ -103,8 +103,7 @@ class blogscatDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('lfrtip')
-            ->orderBy(1)
-            ->selectStyleSingle();
+            ->orderBy(1);
 
     }
 

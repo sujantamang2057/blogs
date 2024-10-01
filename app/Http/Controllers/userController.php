@@ -174,6 +174,11 @@ class userController extends Controller
     {
         //
         $user = user::findorfail($id);
+        if ($user->image) {
+            Storage::disk('public')->delete('images/original/'.$user->image);
+            Storage::disk('public')->delete('images/resized/'.$user->image);
+        }
+
         $user->delete();
 
         return redirect()->route('user.index')->with('success', 'user deleted successfully');

@@ -103,8 +103,8 @@ class blogDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('lfrtip')
-            ->orderBy(1)
-            ->selectStyleSingle();
+            ->orderBy(1);
+        // ->selectStyleSingle();//to make the row blue when selection
     }
 
     /**

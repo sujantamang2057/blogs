@@ -214,8 +214,10 @@ class BlogController extends Controller
         //
         $blog = blog::findOrFail($id);
         //deleting the image from file
-        File::delete(public_path('uploads/'.$blog->image));
-
+        if ($blog->image) {
+            Storage::disk('public')->delete('images/original/'.$blog->image);
+            Storage::disk('public')->delete('images/resized/'.$blog->image);
+        }
         $blog->delete();
 
         return redirect()->route('blog.index')->with('success', 'Blog post deleted successfully.');

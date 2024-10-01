@@ -220,7 +220,10 @@ class BlogCategoryController extends Controller
         //
         $blogCategory = blog_category::findOrFail($id);
         //deleting the image from file
-        File::delete(public_path('uploads/'.$blogCategory->image));
+        if ($blogCategory->image) {
+            Storage::disk('public')->delete('images/original/'.$blogCategory->image);
+            Storage::disk('public')->delete('images/resized/'.$blogCategory->image);
+        }
 
         $blogCategory->delete();
 

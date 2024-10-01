@@ -31,7 +31,7 @@ class userRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($userId)],
+            'email' => ['required', 'string', 'lowercase', 'email:rfc,dns',  'max:255', Rule::unique(User::class)->ignore($userId)],
             'phone' => [
                 'required',
                 'string',
@@ -50,7 +50,7 @@ class userRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'phone.regex' => 'The phone number must be a valid Nepali number (+977 or 10 digits).',
+            'phone.regex' => 'The phone number must be a valid  number (+977 or 10 digits).',
         ];
     }
 }
