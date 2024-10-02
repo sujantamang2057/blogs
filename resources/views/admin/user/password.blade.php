@@ -73,27 +73,57 @@
                                 </div>
 
                                 <div class="row ">
+                                    @if (Auth::id() === $user->id)
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label"><strong>Currrent
+                                                    Password:</strong></label>
+                                            <input type="text" name="current_password"
+                                                value="{{ old('current_password') }}"
+                                                class="form-control @error('current_password') is-invalid @enderror"
+                                                id="current_password" placeholder="Current Password">
+                                            @error('current_password')
+                                                <div class="form-text text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
-                                    <div class="col-md-6">
-                                        <label for="email" class="form-label"><strong>currrent password:</strong></label>
-                                        <input type="text" name="current_password" value="{{ old('current_password') }}"
-                                            class="form-control @error('current_password') is-invalid @enderror"
-                                            id="current_password" placeholder="current_password">
-                                        @error('current_password')
-                                            <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
 
-                                    //new password
-                                    <div class="col-md-6">
-                                        <label for="email" class="form-label"><strong>new password:</strong></label>
-                                        <input type="text" name="new_password" value="{{ old('new_password') }}"
-                                            class="form-control @error('new_password') is-invalid @enderror"
-                                            id="current_password" placeholder="new_password">
-                                        @error('new_password')
-                                            <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label"><strong>New Password:</strong></label>
+                                            <input type="text" name="new_password" value="{{ old('new_password') }}"
+                                                class="form-control @error('new_password') is-invalid @enderror"
+                                                id="current_password" placeholder="New Password">
+                                            @error('new_password')
+                                                <div class="form-text text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    @else
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label"><strong>New Password:</strong></label>
+                                            <input type="text" name="new_password" value="{{ old('new_password') }}"
+                                                class="form-control @error('new_password') is-invalid @enderror"
+                                                id="current_password" placeholder="New Password">
+                                            @error('new_password')
+                                                <div class="form-text text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label"><strong> Confirm
+                                                    Password:</strong></label>
+                                            <input type="text" name="confirm_password"
+                                                value="{{ old('confirm_password') }}"
+                                                class="form-control @error('new_password') is-invalid @enderror"
+                                                id="confirm_password" placeholder="Confirm Password">
+                                            @error('confirm_password')
+                                                <div class="form-text text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    @endif
+
+
+
+
                                 </div>
 
 

@@ -212,16 +212,33 @@ class userController extends Controller
     {
 
         $user = user::findorfail($id);
+        if ($request->current_password && $request->new_password) {
+            if (Hash::check($request->current_password, $user->password)) {
 
-        if (Hash::check($request->current_password, $user->password)) {
+                $user->password = Hash::make($request->new_password);
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->save();
 
-            $user->password = Hash::make($request->new_password);
-            $user->save();
+                return redirect()->route('user.show', $user->id)->with('success', 'password updated successfully');
+            } else {
 
-            return redirect()->route('user.show', $user->id)->with('success', 'password updated successfully');
-        } else {
+                return redirect()->route('password', $user->id)->with('error', 'current password not match');
+            }
 
-            return redirect()->route('password', $user->id)->with('error', 'current password not match');
+        } elseif ($request->confirm_password && $request->new_password) {
+            if ($request->new_password == $request->confirm_password) {
+                $user->password = Hash::make($request->new_password);
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->save();
+
+                return redirect()->route('user.show', $user->id)->with('success', 'password updated successfully');
+            } else {
+
+                return redirect()->route('password', $user->id)->with('error', 'password not match');
+            }
+
         }
 
     }
