@@ -13,7 +13,6 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            <h3 class="mb-0">User</h3>
                         </li>
                     </ol>
                 </div>

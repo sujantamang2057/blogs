@@ -9,6 +9,8 @@
                     {{ Breadcrumbs::render('user-update', $user) }}
 
                 </div>
+                @include('admin.message.alert')
+
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
@@ -32,11 +34,12 @@
                     <div class="card card-primary card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
-                            <div class="card-title">Edit User</div>
+                            <div class="card-title">Edit password</div>
                         </div>
                         <!--end::Header-->
                         <!--begin::Form-->
-                        <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('user.password.change', $user->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <!--begin::Body-->
@@ -68,46 +71,30 @@
 
 
                                 </div>
-                                <div class="row g-4 mb-3">
+
+                                <div class="row ">
 
                                     <div class="col-md-6">
-                                        <label for="image" class="form-label"><strong>Image:</strong></label>
-                                        <input type="file" name="image"
-                                            class="form-control @error('image') is-invalid @enderror" id="image"
-                                            placeholder="image">
-
-                                        @error('image')
+                                        <label for="email" class="form-label"><strong>currrent password:</strong></label>
+                                        <input type="text" name="current_password" value="{{ old('current_password') }}"
+                                            class="form-control @error('current_password') is-invalid @enderror"
+                                            id="current_password" placeholder="current_password">
+                                        @error('current_password')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
 
+                                    //new password
                                     <div class="col-md-6">
-                                        <label for="phone" class="form-label"><strong>Phone:</strong></label>
-                                        <input type="text" name="phone"
-                                            class="form-control @error('phone') is-invalid @enderror" id="phone"
-                                            placeholder="phone" value="{{ old('phone', $user->phone) }}">
-
-                                        @error('phone')
+                                        <label for="email" class="form-label"><strong>new password:</strong></label>
+                                        <input type="text" name="new_password" value="{{ old('new_password') }}"
+                                            class="form-control @error('new_password') is-invalid @enderror"
+                                            id="current_password" placeholder="new_password">
+                                        @error('new_password')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
-                                @if (Auth::id() !== $user->id)
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="status" class="form-label"><strong>Status:</strong></label>
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input @error('status') is-invalid @enderror"
-                                                    type="checkbox" role="switch" id="status" name="status"
-                                                    value="1" {{ old('status', $user->status) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="status"></label>
-                                            </div>
-                                            @error('status')
-                                                <div class="form-text text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                @endif
 
 
 
@@ -140,53 +127,5 @@
         <!--end::Container-->
     </div>
     <!--end::App Content-->
-    @push('scripts')
-        <script>
-            // Register the FilePond plugins
-            FilePond.registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
-            // Get the image input element
-            const inputElement = document.querySelector('#image');
-
-            // Initialize FilePond
-            const pond = FilePond.create(inputElement, {
-                acceptedFileTypes: ['image/*'],
-                server: {
-                    load: (source, load, error, progress, abort, headers) => {
-                        fetch(source, {
-                            mode: 'cors'
-                        }).then((res) => {
-                            return res.blob();
-                        }).then(load).catch(error);
-                    },
-                    process: {
-                        url: '{{ route('upload') }}',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        onload: (response) => {
-                            const data = JSON.parse(response);
-                            return data.path;
-                        }
-                    },
-                    revert: {
-                        url: '{{ route('revert') }}',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    }
-                },
-                files: [
-                    @if (isset($user) && $user->image)
-                        {
-                            source: '{{ asset('storage/' . $user->image) }}',
-                            options: {
-                                type: 'local',
-                            },
-                        }
-                    @endif
-                ],
-            });
-        </script>
-    @endpush
 @endsection

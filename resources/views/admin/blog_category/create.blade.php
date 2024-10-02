@@ -13,7 +13,6 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            <h3 class="mb-0">Blog Category</h3>
 
                         </li>
                     </ol>
@@ -35,7 +34,7 @@
                             <div class="card-body">
                                 <div class="row mb-3 g-4">
                                     <!-- Title Input -->
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="title" class="form-label"><strong>Title: <span
                                                     class="text-danger">*</span></strong></label>
                                         <input type="text" name="title"
@@ -47,7 +46,7 @@
                                     </div>
 
                                     <!-- Parent Category Select -->
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="parent_id" class="form-label"><strong>Parent Category:</strong></label>
                                         <select class="form-control @error('parent_id') is-invalid @enderror"
                                             name="parent_id" id="parent_id">
@@ -60,67 +59,67 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    {{-- for the slug --}}
-                                    <div class="col-md-4">
-                                        <label for="slug" class="form-label"><strong>Slug: <span
-                                                    class="text-danger">*</span></strong></label>
-                                        <input type="text" name="slug"
-                                            class="form-control @error('title') is-invalid @enderror" id="slug"
-                                            placeholder="If you leave it empty, it will be generated">
-                                        @error('slug')
-                                            <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-
-                                <div class="row mb-3 g-4">
-                                    <!-- Image Input -->
-                                    <div class="col-md-12">
-                                        <label for="image" class="form-label"><strong>Image:</strong></label>
-                                        <input type="file" name="image" id="image"
-                                            class="form-control @error('image') is-invalid @enderror" placeholder="image">
-                                        @error('image')
-                                            <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- Status Toggle -->
-                                <div class="row mb-3 g-4">
-
-                                    <div class="col-md-6">
-                                        <label for="status" class="form-label"><strong>Status:</strong></label>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input @error('status') is-invalid @enderror"
-                                                type="checkbox" role="switch" id="status" name="status" value="1"
-                                                {{ old('status') ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="status"></label>
-                                        </div>
-                                        @error('status')
-                                            <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                </div> {{-- for the slug --}} <div class="row mb-3 g-4">
+                                <div class="col-md-6">
+                                    <label for="slug" class="form-label"><strong>Slug: <span
+                                                class="text-danger">*</span></strong></label>
+                                    <input type="text" name="slug"
+                                        class="form-control @error('title') is-invalid @enderror" id="slug"
+                                        placeholder="If you leave it empty, it will be generated">
+                                    @error('slug')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="card-footer">
-                                    <a href="{{ url()->previous() }}" class="btn btn-warning text-white">
-                                        <i class="fas fa-times-circle"></i>Cancel
-                                    </a>
 
-
-
-                                    <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>
-                                        Submit</button>
+                            <div class="row mb-3 g-4">
+                                <!-- Image Input -->
+                                <div class="col-md-12">
+                                    <label for="image" class="form-label"><strong>Image:</strong></label>
+                                    <input type="file" name="image" id="image"
+                                        class="form-control @error('image') is-invalid @enderror" placeholder="image">
+                                    @error('image')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
-                        </form>
+
+                            <!-- Status Toggle -->
+                            <div class="row mb-3 g-4">
+
+                                <div class="col-md-6">
+                                    <label for="status" class="form-label"><strong>Status:</strong></label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input @error('status') is-invalid @enderror"
+                                            type="checkbox" role="switch" id="status" name="status" value="1"
+                                            {{ old('status') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="status"></label>
+                                    </div>
+                                    @error('status')
+                                        <div class="form-text text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                     </div>
+
+                    <div class="row">
+                        <div class="card-footer">
+                            <a href="{{ url()->previous() }}" class="btn btn-warning text-white">
+                                <i class="fas fa-times-circle"></i>Cancel
+                            </a>
+
+
+
+                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>
+                                Submit</button>
+                        </div>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     @push('scripts')

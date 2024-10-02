@@ -12,7 +12,6 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end bg-transparent p-0 m-0">
                         <li class="breadcrumb-item active" aria-current="page">
-                            <h3 class="mb-0">Blog post</h3>
 
                         </li>
                     </ol>

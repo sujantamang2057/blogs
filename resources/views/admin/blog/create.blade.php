@@ -13,7 +13,6 @@
                     <ol class="breadcrumb float-sm-end">
 
                         <li class="breadcrumb-item active" aria-current="page">
-                            <h3 class="mb-0">Blog post</h3>
                         </li>
 
 
@@ -37,7 +36,7 @@
 
                                 <!-- Title Input -->
                                 <div class="row mb-3 g-4">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="title" class="form-label"><strong>Title: <span
                                                     class="text-danger">*</span></strong></label>
                                         <input type="text" name="title"
@@ -49,7 +48,7 @@
                                     </div>
                                     <!-- Parent Category Select -->
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="parent_id" class="form-label"><strong>Blog Category: <span
                                                     class="text-danger">*</span></strong></label>
                                         <select class="form-control @error('blog_category_id') is-invalid @enderror"
@@ -64,8 +63,12 @@
                                         </select>
                                         @error('blog_category_id')
                                             <div class="form-text text-danger">{{ $message }}</div>
-                                        @enderror                                    
+                                        @enderror
                                     </div>
+                                </div>
+
+
+                                <div class="row mb-3 g-4">
 
 
                                     <div class="col-md-4">

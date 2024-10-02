@@ -12,7 +12,6 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            <h3 class="mb-0">Blog Category</h3>
 
                         </li>
                     </ol>
@@ -37,10 +36,11 @@
 
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body">
-                                {{ $dataTable->table() }}
-
-                            </div>
+                            <div class="card-body p-3">
+                                <div class="table-responsive">
+                                    {!! $dataTable->table(['class' => 'table table-striped table-bordered dt-responsive nowrap', 'width' => '100%']) !!}
+                                </div>
+                            </div>_______ for responsive table design
                             <!-- /.card-body -->
                             {{-- <div class="card-footer clearfix">
                                 {{ $blogCategoriestable->links('pagination::bootstrap-5') }}

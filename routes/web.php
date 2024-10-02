@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/blog/new', [BlogController::class, 'updateStatus'])->name('blog.status');
     Route::post('/blog/status/update', [BlogCategoryController::class, 'updateStatus'])->name('blogcategory.status');
     Route::post('/user/status/update', [userController::class, 'updateStatus'])->name('user.status');
+    Route::get('/user/password/{id}', [userController::class, 'password'])->name('password');
+    Route::put('/user/password/change/{id}', [userController::class, 'updatepassword'])->name('user.password.change');
+    
 
 });
 

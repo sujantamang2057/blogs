@@ -16,8 +16,7 @@
 
                     </a>
                 </li>
-                <li class="nav-item menu-open"> <a href="#" class="nav-link active"> <i
-                            class="nav-icon bi bi-speedometer"></i>
+                <li class="nav-item "> <a href="#" class="nav-link active"><i class="nav-icon bi bi-folder"></i>
                         <p>
                             Blog Management
                             <i class="nav-arrow bi bi-chevron-right"></i>
@@ -36,8 +35,8 @@
 
                     </ul>
                 </li>
-                <li class="nav-item menu-open"> <a href="#" class="nav-link active"> <i
-                            class="nav-icon bi bi-speedometer"></i>
+                <li class="nav-item "> <a href="#" class="nav-link active"> <i class="nav-icon bi bi-person"></i>
+
                         <p>
                             User Management
                             <i class="nav-arrow bi bi-chevron-right"></i>

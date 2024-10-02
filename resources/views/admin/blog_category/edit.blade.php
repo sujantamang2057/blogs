@@ -14,7 +14,6 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            <h3 class="mb-0">Blog Category</h3>
 
                         </li>
                     </ol>
@@ -48,7 +47,7 @@
                             <!--begin::Body-->
                             <div class="card-body">
                                 <div class="row mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="title" class="form-label"><strong>Title:</strong></label>
                                         <input type="text" name="title"
                                             value="{{ old('title', $blogCategory->title) }}"
@@ -59,7 +58,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="parent_id" class="form-label"><strong>Parent Category:</strong></label>
                                         <select class="form-control @error('parent_id') is-invalid @enderror"
                                             name="parent_id" id="parent_id">
@@ -75,8 +74,11 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
 
-                                    <div class="col-md-4">
+                                <div class="row mb-3">
+
+                                    <div class="col-md-6">
                                         <label for="slug" class="form-label"><strong>Slug:</strong></label>
                                         <input type="text" name="slug" value="{{ old('slug', $blogCategory->slug) }}"
                                             class="form-control @error('slug') is-invalid @enderror" id="slug"
@@ -90,6 +92,7 @@
                                     <!-- Title Input -->
 
                                 </div>
+
 
                                 <div class="row mb-3">
                                     <!-- Image Input -->

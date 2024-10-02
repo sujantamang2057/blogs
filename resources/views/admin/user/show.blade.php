@@ -9,10 +9,10 @@
                     {{ Breadcrumbs::render('user-show', $user) }}
 
                 </div>
+                @include('admin.message.alert')
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end bg-transparent p-0 m-0">
                         <li class="breadcrumb-item ">
-                            <h3 class="mb-0">User</h3>
 
                         </li>
                     </ol>
@@ -28,11 +28,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Name:</strong></td>
+                    <td><strong>Name :</strong></td>
                     <td>{{ $user->name }}</td>
                 </tr>
                 <tr>
-                    <td><strong>Email:</strong></td>
+                    <td><strong>Email :</strong></td>
                     <td>{{ $user->email }}</td>
                 </tr>
 
@@ -51,7 +51,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><strong>Phone:</strong></td>
+                    <td><strong>Phone :</strong></td>
                     <td>{{ $user->phone }}</td>
                 </tr>
                 <tr>
@@ -75,7 +75,7 @@
                         <td class="text-muted">{{ $user->updated_at }}</td>
                     </tr>
                     <tr>
-                        <th>Updated By:</th>
+                        <th>Updated By :</th>
                         @if ($user->updated_by)
                             <td class="text-muted">{{ $user->updated_by }}</td>
                         @else

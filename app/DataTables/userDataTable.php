@@ -46,9 +46,13 @@ class userDataTable extends DataTable
                                 </button>
                             </form>';
                 }
+                //for the password button
+                $passwordBtn = '<a href="'.route('password', $row->id).'" class="btn btn-secondary btn-sm">
+                   <i class="fas fa-lock"></i>
+                </a>';
 
                 // Combine all buttons
-                return $viewBtn.' '.$editBtn.' '.$deleteBtn;
+                return $viewBtn.' '.$editBtn.' '.$deleteBtn.''.$passwordBtn;
             })
             ->addColumn('image', function ($row) {
                 // Display image with a small thumbnail
@@ -115,7 +119,7 @@ class userDataTable extends DataTable
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(100)
+                ->width(150)
                 ->addClass('text-left'),
             Column::make('name'),
             Column::make('email'),

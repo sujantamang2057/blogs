@@ -12,7 +12,6 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            <h3 class="mb-0">Blog post</h3>
 
                         </li>
                     </ol>
@@ -44,7 +43,7 @@
                             <div class="card-body">
                                 {{-- title --}}
                                 <div class="row mb-3 g-4">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <label for="title" class="form-label"><strong>Title:</strong></label>
                                         <input type="text" name="title" value="{{ old('title', $blog->title) }}"
                                             class="form-control @error('title') is-invalid @enderror" id="title"
@@ -53,7 +52,7 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    {{-- //blog category --}} <div class="col-md-4">
+                                    {{-- //blog category --}} <div class="col-md-6">
                                         <label for="parent_id" class="form-label"><strong>Blog Category:</strong></label>
                                         <select class="form-control @error('blog_category_id') is-invalid @enderror"
                                             name="blog_category_id" id="parent_id">
@@ -69,6 +68,8 @@
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
+                                <div class="row mb-3 g-4">
 
                                     <div class="col-md-4">
                                         <label for="slug" class="form-label"><strong>Slug:</strong></label>

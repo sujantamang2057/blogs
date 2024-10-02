@@ -200,4 +200,29 @@ class userController extends Controller
 
         return response()->json(['success' => false]);
     }
+
+    public function password(string $id)
+    {
+        $user = user::find($id);
+
+        return view('admin.user.password', compact('user'));
+    }
+
+    public function updatePassword(Request $request, string $id)
+    {
+
+        $user = user::findorfail($id);
+
+        if (Hash::check($request->current_password, $user->password)) {
+
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            return redirect()->route('user.show', $user->id)->with('success', 'password updated successfully');
+        } else {
+
+            return redirect()->route('password', $user->id)->with('error', 'current password not match');
+        }
+
+    }
 }

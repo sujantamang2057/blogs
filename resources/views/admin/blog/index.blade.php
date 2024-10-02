@@ -7,12 +7,13 @@
         <div class="container-fluid"> <!--begin::Row-->
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Blog post</h3>
+                    {{ Breadcrumbs::render('blog') }} </li>
+
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item active" aria-current="page">
-                            {{ Breadcrumbs::render('blog') }} </li>
+
                     </ol>
                 </div>
             </div> <!--end::Row-->
@@ -34,11 +35,11 @@
 
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body">
-                                {{ $dataTable->table() }}
-
-
-                            </div>
+                            <div class="card-body p-3">
+                                <div class="table-responsive">
+                                    {!! $dataTable->table(['class' => 'table table-striped table-bordered dt-responsive nowrap', 'width' => '100%']) !!}
+                                </div>
+                            </div>_______ for responsive table design
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
 
