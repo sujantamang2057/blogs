@@ -28,11 +28,21 @@
                 <div class="row">
                     <div class="col-md-12 ">
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <a class="btn btn-success btn-sm" href="{{ route('category.create') }}"
+                            <div class="card-header d-flex ">
+                                <a class="btn btn-success btn-sm"href="{{ route('category.create') }}"
                                     id="createNewProduct">
+
+
                                     <i class="fa fa-plus"></i> Create
                                 </a>
+                                <div class="d-flex" style="margin-left: 30px">
+                                    <select id="bulkAction" class="form-select me-2" style="width: auto;">
+                                        <option value="" selected disabled>Bulk Action</option>
+                                        <option value="toggle-status">Toggle Status</option>
+                                        <option value="delete">Delete</option>
+                                    </select>
+                                    <button class="btn btn-secondary" id="applyBulkAction">Apply</button>
+                                </div>
 
                             </div>
                             <!-- /.card-header -->
@@ -128,6 +138,118 @@
                         });
                     }
                 });
+            });
+        </script>
+
+
+
+        {{-- //SCRIPT FOR THE BULK ACTION OR SO --}}
+
+        <script>
+            $('#select-all').click(function() {
+                $('input[name="selected_rows[]"]').prop('checked', this.checked);
+            });
+        </script>
+        <script>
+            console.log('BULK LOADING');
+            document.addEventListener('DOMContentLoaded', function() {
+
+
+                // Apply Bulk Action
+                $('#applyBulkAction').click(function() {
+                    console.log('Apply Bulk Action clicked');
+                    var selectedRows = $('input[name="selected_rows[]"]:checked').map(function() {
+                        return $(this).val();
+                    }).get();
+                    var bulkAction = $('#bulkAction').val();
+
+                    if (bulkAction && selectedRows.length > 0) {
+                        if (bulkAction === 'toggle-status') {
+                            updateStatus(selectedRows);
+                        } else if (bulkAction === 'delete') {
+                            deleteSelectedRows(selectedRows);
+                        }
+                    } else {
+                        alert('Please select an action and at least one row.');
+                    }
+                });
+
+                // Update Status for Selected Rows
+                function updateStatus(ids) {
+                    $.ajax({
+                        url: '/blog-category/bulk-update-status',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            ids: ids
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Status updated successfully!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        },
+                        error: function(error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An error occurred.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                }
+
+                // Delete Selected Rows
+                function deleteSelectedRows(ids) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You won\'t be able to revert this!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/blog-category/bulk-delete',
+                                method: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    ids: ids
+                                },
+                                success: function(response) {
+                                    Swal.fire({
+                                        title: 'Deleted!',
+                                        text: 'Rows deleted successfully!',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.reload();
+                                        }
+                                    });
+                                },
+                                error: function(error) {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'An error occurred while deleting rows.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+
             });
         </script>
 

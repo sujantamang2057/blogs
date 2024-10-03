@@ -52,7 +52,7 @@
                                         <label for="name" class="form-label"><strong>Name:</strong></label>
                                         <input type="text" name="name" value="{{ old('name', $user->name) }}"
                                             class="form-control @error('name') is-invalid @enderror" id="name"
-                                            placeholder="Name">
+                                            placeholder="Name" readonly>
                                         @error('name')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
@@ -63,7 +63,7 @@
                                         <label for="email" class="form-label"><strong>Email:</strong></label>
                                         <input type="text" name="email" value="{{ old('email', $user->email) }}"
                                             class="form-control @error('email') is-invalid @enderror" id="email"
-                                            placeholder="Title" {{ Auth::id() === $user->id ? 'readonly' : '' }}>
+                                            placeholder="Title" readonly>
                                         @error('email')
                                             <div class="form-text text-danger">{{ $message }}</div>
                                         @enderror
@@ -74,6 +74,7 @@
 
                                 <div class="row ">
                                     @if (Auth::id() === $user->id)
+                                        {{-- //part for the only login user --}}
                                         <div class="col-md-6">
                                             <label for="email" class="form-label"><strong>Currrent
                                                     Password:</strong></label>
@@ -97,6 +98,24 @@
                                                 <div class="form-text text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+
+                                        <div class="row g-4 mb-3">
+
+
+                                            <div class="col-md-6">
+                                                <label for="email" class="form-label"><strong> Confirm
+                                                        Password:</strong></label>
+                                                <input type="text" name="confirm_password"
+                                                    value="{{ old('confirm_password') }}"
+                                                    class="form-control @error('new_password') is-invalid @enderror"
+                                                    id="confirm_password" placeholder="Confirm Password">
+                                                @error('confirm_password')
+                                                    <div class="form-text text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- //else part for the non login user --}}
                                     @else
                                         <div class="col-md-6">
                                             <label for="email" class="form-label"><strong>New Password:</strong></label>

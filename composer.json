@@ -11,6 +11,7 @@
         "intervention/image": "2.7",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "rap2hpoutre/laravel-log-viewer": "*",
         "spatie/laravel-permission": "^6.9",
         "spatie/laravel-sluggable": "^3.6",
         "yajra/laravel-datatables": "^11.0"

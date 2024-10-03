@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\userDataTable;
+use App\Http\Requests\passswordRequest;
 use App\Http\Requests\userRequest;
 use App\Models\User;
 use Carbon\Carbon;
@@ -208,16 +209,19 @@ class userController extends Controller
         return view('admin.user.password', compact('user'));
     }
 
-    public function updatePassword(Request $request, string $id)
+    public function updatePassword(passswordRequest $request, string $id)
     {
 
         $user = user::findorfail($id);
         if ($request->current_password && $request->new_password) {
             if (Hash::check($request->current_password, $user->password)) {
+                if (Hash::check($request->new_password, $user->password)) {
+
+                    return redirect()->route('password', $user->id)->with('error', 'The new password is same as old password');
+
+                }
 
                 $user->password = Hash::make($request->new_password);
-                $user->name = $request->name;
-                $user->email = $request->email;
                 $user->save();
 
                 return redirect()->route('user.show', $user->id)->with('success', 'password updated successfully');
@@ -229,8 +233,7 @@ class userController extends Controller
         } elseif ($request->confirm_password && $request->new_password) {
             if ($request->new_password == $request->confirm_password) {
                 $user->password = Hash::make($request->new_password);
-                $user->name = $request->name;
-                $user->email = $request->email;
+
                 $user->save();
 
                 return redirect()->route('user.show', $user->id)->with('success', 'password updated successfully');

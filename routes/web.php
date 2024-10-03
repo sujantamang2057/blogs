@@ -36,7 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/status/update', [userController::class, 'updateStatus'])->name('user.status');
     Route::get('/user/password/{id}', [userController::class, 'password'])->name('password');
     Route::put('/user/password/change/{id}', [userController::class, 'updatepassword'])->name('user.password.change');
-    
+    Route::post('/blog-category/bulk-update-status', [BlogCategoryController::class, 'bulkUpdateStatus'])->name('blog-category.bulk-update-status');
+    Route::post('/blog-category/bulk-delete', [BlogCategoryController::class, 'bulkDelete'])->name('blog-category.bulk-delete');
 
 });
 
