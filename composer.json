@@ -6,17 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "arcanedev/log-viewer": "^11.0",
         "diglactic/laravel-breadcrumbs": "^9.0",
         "elegantweb/sanitizer": "^2.2",
         "intervention/image": "2.7",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "rap2hpoutre/laravel-log-viewer": "*",
         "spatie/laravel-permission": "^6.9",
         "spatie/laravel-sluggable": "^3.6",
         "yajra/laravel-datatables": "^11.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",

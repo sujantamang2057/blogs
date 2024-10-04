@@ -29,10 +29,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card mb-4">
-                            <div class="card-header">
+                            <div class="card-header d-flex">
                                 <a class="btn btn-success btn-sm" href="{{ route('user.create') }}" id="createNewProduct">
                                     <i class="fa fa-plus"></i> Create
                                 </a>
+                                <div class="d-flex" style="margin-left: 30px">
+                                    <select id="bulkAction" class="form-select me-2" style="width: auto;">
+                                        <option value="" selected disabled>Bulk Action</option>
+                                        <option value="toggle-status">Toggle Status</option>
+                                        <option value="delete">Delete</option>
+                                    </select>
+                                    <button class="btn btn-secondary" id="applyBulkAction">Apply</button>
+                                </div>
 
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
@@ -133,6 +141,23 @@
                         });
                     }
                 });
+            });
+        </script>
+        {{-- //for the bulk action --}}
+        <script>
+            $('#select-all').click(function() {
+                $('input[name="selected_rows[]"]').prop('checked', this.checked);
+            });
+        </script>
+        {{-- //the bulk action herer --}}
+        <script>
+            // Setup bulk actions for this specific page
+            setupBulkActions({
+                applyBulkAction: '#applyBulkAction',
+                rowSelector: 'input[name="selected_rows[]"]',
+                bulkAction: '#bulkAction',
+                updateUrl: '/user/bulk-update-status', // URL for update status
+                deleteUrl: '/user/bulk-delete' // URL for delete
             });
         </script>
     @endsection

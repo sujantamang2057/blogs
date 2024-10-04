@@ -7,6 +7,7 @@ use App\Http\Requests\passswordRequest;
 use App\Http\Requests\userRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -244,5 +245,26 @@ class userController extends Controller
 
         }
 
+    }
+
+    public function bulkUpdateStatus(Request $request)
+    {
+        $ids = $request->ids;
+
+        User::whereIn('id', $ids)
+            ->where('id', '!=', Auth::id()) // Exclude the current logged-in user from changing status
+            ->update(['status' => DB::raw('NOT status')]);
+
+        return response()->json(['success' => 'Status updated successfully!']);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+        User::whereIn('id', $ids)
+            ->where('id', '!=', Auth::id())//Exclude the current logged-in user froim getting deleted
+            ->delete();
+
+        return response()->json(['success' => 'Selected rows deleted successfully!']);
     }
 }

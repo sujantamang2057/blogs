@@ -77,7 +77,8 @@
                                         {{-- //part for the only login user --}}
                                         <div class="col-md-6">
                                             <label for="email" class="form-label"><strong>Currrent
-                                                    Password:</strong></label>
+                                                    Password: <span class="text-danger">*</span>
+                                                </strong></label>
                                             <input type="text" name="current_password"
                                                 value="{{ old('current_password') }}"
                                                 class="form-control @error('current_password') is-invalid @enderror"
@@ -90,7 +91,8 @@
 
 
                                         <div class="col-md-6">
-                                            <label for="email" class="form-label"><strong>New Password:</strong></label>
+                                            <label for="email" class="form-label"><strong>New Password:<span
+                                                        class="text-danger">*</span></strong></label>
                                             <input type="text" name="new_password" value="{{ old('new_password') }}"
                                                 class="form-control @error('new_password') is-invalid @enderror"
                                                 id="current_password" placeholder="New Password">
@@ -104,7 +106,7 @@
 
                                             <div class="col-md-6">
                                                 <label for="email" class="form-label"><strong> Confirm
-                                                        Password:</strong></label>
+                                                        Password:<span class="text-danger">*</span></strong></label>
                                                 <input type="text" name="confirm_password"
                                                     value="{{ old('confirm_password') }}"
                                                     class="form-control @error('new_password') is-invalid @enderror"
@@ -118,7 +120,8 @@
                                         {{-- //else part for the non login user --}}
                                     @else
                                         <div class="col-md-6">
-                                            <label for="email" class="form-label"><strong>New Password:</strong></label>
+                                            <label for="email" class="form-label"><strong>New Password:<span
+                                                        class="text-danger">*</span></strong></label>
                                             <input type="text" name="new_password" value="{{ old('new_password') }}"
                                                 class="form-control @error('new_password') is-invalid @enderror"
                                                 id="current_password" placeholder="New Password">
@@ -129,7 +132,7 @@
 
                                         <div class="col-md-6">
                                             <label for="email" class="form-label"><strong> Confirm
-                                                    Password:</strong></label>
+                                                    Password:<span class="text-danger">*</span></strong></label>
                                             <input type="text" name="confirm_password"
                                                 value="{{ old('confirm_password') }}"
                                                 class="form-control @error('new_password') is-invalid @enderror"

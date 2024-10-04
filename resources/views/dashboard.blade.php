@@ -38,7 +38,7 @@
         integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
         integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
-        {{-- jquery --}}
+    {{-- jquery --}}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -58,6 +58,11 @@
 
     {{-- for the form here --}}
     <script src="{{ asset('js/delete.js') }}"></script>
+
+    {{-- for te bulk action --}}
+    {{-- <script src="{{ asset('js/jquery.min.js') }}"></script> --}}
+    <script src="{{ asset('js/bulk.js') }}"></script>
+
 
 
     {{-- vite --}}
@@ -97,7 +102,7 @@
             <div class="app-content-header"> <!--begin::Container-->
                 <div class="container-fluid"> <!--begin::Row-->
                     <div class="row">
-                        
+
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
 

@@ -7,6 +7,7 @@ use App\Http\Requests\BlogRequest;
 use App\Models\blog;
 use App\Models\blog_category;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -260,5 +261,21 @@ class BlogController extends Controller
         }
 
         return response()->json(['success' => false]);
+    }
+
+    public function bulkUpdateStatus(Request $request)
+    {
+        $ids = $request->ids;
+        blog::whereIn('id', $ids)->update(['status' => DB::raw('NOT status')]);
+
+        return response()->json(['success' => 'Status updated successfully!']);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+        blog::whereIn('id', $ids)->delete();
+
+        return response()->json(['success' => 'Selected rows deleted successfully!']);
     }
 }

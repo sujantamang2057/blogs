@@ -21,6 +21,9 @@ class userDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('checkbox', function ($row) {
+                return '<input type="checkbox" name="selected_rows[]" value="'.$row->id.'">';
+            })
             ->addColumn('action', function ($row) {
                 // Edit Button
                 $editBtn = '<a href="'.route('user.edit', $row->id).'" class="btn btn-primary btn-sm">
@@ -85,7 +88,7 @@ class userDataTable extends DataTable
                 }
             })
 
-            ->rawColumns(['action', 'image', 'status']) // Mark columns as raw HTML
+            ->rawColumns(['action', 'image', 'status', 'checkbox']) // Mark columns as raw HTML
             ->setRowId('id');
     }
 
@@ -116,6 +119,13 @@ class userDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('checkbox')
+                ->exportable(false)
+                ->printable(false)
+                ->orderable(false)
+                ->searchable(false)
+                ->title('<input type="checkbox" id="select-all">')
+                ->width(30),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
