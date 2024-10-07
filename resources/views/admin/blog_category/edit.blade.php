@@ -189,7 +189,7 @@
                 files: [
                     @if (isset($blogCategory) && $blogCategory->image)
                         {
-                            source: '{{ asset('storage/images/resized/' . basename($blogCategory->image)) }}',
+                            source: '{{ asset('storage/images/resized/800px_' . basename($blogCategory->image)) }}',
                             options: {
                                 type: 'local'
                             },

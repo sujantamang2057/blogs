@@ -211,7 +211,7 @@
                 files: [
                     @if (isset($blog) && $blog->image)
                         {
-                            source: '{{ asset('storage/images/resized/' . basename($blog->image)) }}',
+                            source: '{{ asset('storage/images/resized/800px_' . basename($blog->image)) }}',
                             options: {
                                 type: 'local',
                             },

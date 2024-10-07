@@ -46,10 +46,11 @@
                     <th scope="row">Image :</th>
                     <td>
                         @if ($blogCategory->image)
-                            <a href="{{ asset('storage/' . $blogCategory->image) }}" data-fancybox="gallery"
-                                data-caption="{{ $blogCategory->title }}">
-                                <img src="{{ asset('storage/' . $blogCategory->image) }}" alt="{{ $blogCategory->title }}"
-                                    class="img-thumbnail" style="width: 100px; height: auto;">
+                            <a href="{{ asset('storage/images/resized/800px_' . basename($blogCategory->image)) }}"
+                                data-fancybox="gallery" data-caption="{{ $blogCategory->title }}">
+                                <img src="{{ asset('storage/images/resized/100px_' . basename($blogCategory->image)) }}"
+                                    alt="{{ $blogCategory->title }}" class="img-thumbnail"
+                                    style="width: 100px; height: auto;">
                             </a>
                         @else
                             <p class="text-muted">No image available</p>

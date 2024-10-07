@@ -84,25 +84,36 @@ class BlogCategoryController extends Controller
         // If an image is uploaded, save it to the uploads folder and update the blog category
         if ($request->input('image')) {
             $imagePath = $request->input('image');
-
             $filename = basename($imagePath);
 
-            // Define paths
+            //path for the original image and resized image
             $originalPath = 'images/'.$filename;
+            $resized100Path = 'images/resized/100px_'.$filename;
+            $resized800Path = 'images/resized/800px_'.$filename;
+            // $resizedPath = 'images/resized/'.$filename;
 
-            $resizedPath = 'images/resized/'.$filename;
-
-            // Move the file from 'temporay place' to 'original path'
+            //move the file from temporary to original place
             Storage::disk('public')->move($imagePath, $originalPath);
 
-            // Resize the image using Intervention Image
-            $resizedImage = Image::make(storage_path('app/public/'.$originalPath))->resize(300, 300);
+            //resize of 100px
+            $resized100Image = Image::make(storage_path('app/public/'.$originalPath))->resize(100, null, function ($constraint) {
+                $constraint->aspectRatio(); // Keep aspect ratio
+                $constraint->upsize(); // Prevent upsizing
+            });
 
-            // Store the resized image
-            Storage::disk('public')->put($resizedPath, (string) $resizedImage->encode());
+            //store the image in the resized folder
+            Storage::disk('public')->put($resized100Path, (string) $resized100Image->encode());
 
-            // Save the new image path in the database
+            // for the resized 800
+            $resized800Image = Image::make(storage_path('app/public/'.$originalPath))->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio(); // Keep aspect ratio
+                $constraint->upsize(); // Prevent upsizing
+            });
+            Storage::disk('public')->put($resized800Path, (string) $resized800Image->encode());
+
+            //saved in the database
             $blogCategory->image = $originalPath;
+
         }
 
         $blogCategory->save();
@@ -178,35 +189,58 @@ class BlogCategoryController extends Controller
 
         // Save the blog category
 
-        if ($request->input('image')) {
+        $existimage = '800px_'.basename($blogCategory->image);
+        $currentimage = basename($request->image);
+        // dd($existimage, $currentimage);
+
+        if ($existimage != $currentimage) {
+
             // Delete old images if they exist
             if ($blogCategory->image) {
                 if (Storage::exists(public_path('storage/'.$blogCategory->image))) {
                     Storage::delete(public_path('storage/'.$blogCategory->image));
                 }
-                if (Storage::exists(public_path('storage/images/resized/'.basename($blogCategory->image)))) {
-                    Storage::delete(public_path('storage/images/resized/'.basename($blogCategory->image)));
+                if (Storage::exists(public_path('storage/images/resized/800px_'.basename($blogCategory->image)))) {
+                    Storage::delete(public_path('storage/images/resized/800px_'.basename($blogCategory->image)));
+                }
+                if (Storage::exists(public_path('storage/images/resized/100px_'.basename($blogCategory->image)))) {
+                    Storage::delete(public_path('storage/images/resized/100px_'.basename($blogCategory->image)));
                 }
             }
 
             $imagePath = $request->input('image');
             $filename = basename($imagePath);
 
-            // Define paths
+            //path for the original image and resized image
             $originalPath = 'images/'.$filename;
-            $resizedPath = 'images/resized/'.$filename;
+            $resized100Path = 'images/resized/100px_'.$filename;
+            $resized800Path = 'images/resized/800px_'.$filename;
+            // $resizedPath = 'images/resized/'.$filename;
 
-            // Move the file from 'tmp' to 'images'
+            //move the file from temporary to original place
             Storage::disk('public')->move($imagePath, $originalPath);
 
-            // Resize the image using Intervention Image
-            $resizedImage = Image::make(storage_path('app/public/'.$originalPath))->resize(300, 300);
+            //resize of 100px
+            $resized100Image = Image::make(storage_path('app/public/'.$originalPath))->resize(100, null, function ($constraint) {
+                $constraint->aspectRatio(); // Keep aspect ratio
+                $constraint->upsize(); // Prevent upsizing
+            });
 
-            // Store the resized image
-            Storage::disk('public')->put($resizedPath, (string) $resizedImage->encode());
+            //store the image in the resized folder
+            Storage::disk('public')->put($resized100Path, (string) $resized100Image->encode());
 
-            // Save the new image path in the database
+            // for the resized 800
+            $resized800Image = Image::make(storage_path('app/public/'.$originalPath))->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio(); // Keep aspect ratio
+                $constraint->upsize(); // Prevent upsizing
+            });
+            Storage::disk('public')->put($resized800Path, (string) $resized800Image->encode());
+
+            //saved in the database
             $blogCategory->image = $originalPath;
+        } else {
+
+            $blogCategory->image = $blogCategory->image;
         }
         $blogCategory->save();
 
