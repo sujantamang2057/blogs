@@ -34,7 +34,20 @@
 
 
                                     <i class="fa fa-plus"></i> Create
+
                                 </a>
+                                <!-- Reset Button -->
+                                <button type="button" class="btn btn-danger" onClick="resetTable()"
+                                    style="margin-left: 20px">
+                                    <i class="fa fa-undo"></i> Reset
+                                </button>
+
+                                <!-- Reload Button -->
+                                <button type="button" class="btn btn-warning" id="reloadTable" onclick="location.reload();"
+                                    style="margin-left: 20px">
+                                    <i class="fa fa-sync"></i> Reload
+                                </button>
+
                                 <div class="d-flex" style="margin-left: 30px">
                                     <select id="bulkAction" class="form-select me-2" style="width: auto;">
                                         <option value="" selected disabled>Bulk Action</option>

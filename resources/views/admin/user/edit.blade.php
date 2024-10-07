@@ -179,7 +179,7 @@
                 files: [
                     @if (isset($user) && $user->image)
                         {
-                            source: '{{ asset('storage/images/resized/' . basename($user->image)) }}',
+                            source: '{{ asset('storage/images/resized/800px_' . basename($user->image)) }}',
                             options: {
                                 type: 'local',
                             },

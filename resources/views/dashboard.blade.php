@@ -414,6 +414,24 @@
     </script>
     <script src="{{ asset('Backend/filepond/filepond/dist/filepond.js') }}"></script>
 
+
+    <script>
+        // Function to reset table filters
+        // Reset Button functionality
+        $('button.btn-danger').click(function() {
+            // Clear any filters or search inputs (adjust based on your filter fields)
+            $('#bulkAction').val(''); // Reset select dropdown
+            $('input[type="text"], input[type="search"]').val(''); // Reset input fields
+
+            // Reload the DataTable without filters
+            let table = $('#dataTableBuilder').DataTable();
+            table.search('').columns().search('').draw();
+        });
+        $('#reloadTable').click(function() {
+            $('#user-table').DataTable().ajax.reload();
+        });
+    </script> ___ this is a script
+
     @stack('scripts')
 
 
