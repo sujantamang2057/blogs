@@ -414,7 +414,7 @@
     </script>
     <script src="{{ asset('Backend/filepond/filepond/dist/filepond.js') }}"></script>
 
-
+    {{-- //for reset and reload --}}
     <script>
         // Function to reset table filters
         // Reset Button functionality
@@ -431,6 +431,7 @@
             $('#user-table').DataTable().ajax.reload();
         });
     </script> ___ this is a script
+    {{-- ending for reset and reload --}}
 
     @stack('scripts')
 

@@ -28,13 +28,13 @@ Breadcrumbs::for('blog-create', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('blog-show', function (BreadcrumbTrail $trail, $blog) {
     $trail->parent('blog');
-    $trail->push('View /'.$blog->title, route('blog.show', $blog));
+    $trail->push($blog->title, route('blog.show', $blog));
 });
 
 Breadcrumbs::for('blog-update', function (BreadcrumbTrail $trail, $blog) {
-    $trail->parent('blog');
+    $trail->parent('blog-show', $blog);
 
-    $trail->push('Update/'.$blog->title, route('blog.create', $blog));
+    $trail->push('Edit', route('blog.edit', $blog));
 });
 
 //for the category of the blog here
@@ -52,13 +52,13 @@ Breadcrumbs::for('category-create', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('category-show', function (BreadcrumbTrail $trail, $blogCategory) {
     $trail->parent('category');
-    $trail->push('View /'.$blogCategory->title, route('category.show', $blogCategory));
+    $trail->push($blogCategory->title, route('category.show', $blogCategory));
 });
 
 Breadcrumbs::for('category-update', function (BreadcrumbTrail $trail, $blogCategory) {
-    $trail->parent('category');
+    $trail->parent('category-show', $blogCategory);
 
-    $trail->push('Update/'.$blogCategory->title, route('category.update', $blogCategory));
+    $trail->push('Edit', route('category.update', $blogCategory));
 });
 
 // for the user bread cumb
@@ -75,11 +75,11 @@ Breadcrumbs::for('user-create', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('user-show', function (BreadcrumbTrail $trail, $user) {
     $trail->parent('user');
-    $trail->push('View /'.$user->name, route('user.show', $user));
+    $trail->push($user->name, route('user.show', $user));
 });
 
 Breadcrumbs::for('user-update', function (BreadcrumbTrail $trail, $user) {
-    $trail->parent('user');
+    $trail->parent('user-show', $user);
 
-    $trail->push('Update/'.$user->name, route('user.update', $user));
+    $trail->push('Edit', route('user.update', $user));
 });

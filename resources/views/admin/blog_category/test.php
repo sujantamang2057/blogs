@@ -1,106 +1,81 @@
-s// bulkActions.js
-<script
-function setupBulkActions(selectors) {
-    console.log('BULK LOADING');
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        // Apply Bulk Action
-        $(selectors.applyBulkAction).click(function() {
-            console.log('Apply Bulk Action clicked');
-            var selectedRows = $(selectors.rowSelector + ':checked').map(function() {
-                return $(this).val();
-            }).get();
-            var bulkAction = $(selectors.bulkAction).val();
 
-            if (bulkAction && selectedRows.length > 0) {
-                if (bulkAction === 'toggle-status') {
-                    updateStatus(selectedRows, selectors.updateUrl);
-                } else if (bulkAction === 'delete') {
-                    deleteSelectedRows(selectedRows, selectors.deleteUrl);
-                }
-            } else {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Please select at least one row and select an action.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
-        });
-    });
-}
+<?php // routes/breadcrumbs.php
 
-function updateStatus(ids, url) {
-    $.ajax({
-        url: url,
-        method: 'POST',
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            ids: ids
-        },
-        success: function(response) {
-            Swal.fire({
-                title: 'Success!',
-                text: 'Status updated successfully!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.reload();
-                }
-            });
-        },
-        error: function(error) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'An error occurred.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        }
-    });
-}
+use Diglactic\Breadcrumbs\Breadcrumbs;
+use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
-function deleteSelectedRows(ids, url) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    ids: ids
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: 'Rows deleted successfully!',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    });
-                },
-                error: function(error) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'An error occurred while deleting rows.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-            });
-        }
-    });
-}
-</script>
+// Home
+Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
+    $trail->push('Dashboard', route('dashboard'));
+});
+
+// Home > Post (Post index)
+Breadcrumbs::for('users.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('User', route('users.index'));
+});
+// Home > Users > Create (Create user)
+Breadcrumbs::for('users.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('users.index');
+    $trail->push('Create', route('users.create'));
+
+});
+
+Breadcrumbs::for('users.edit', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('users.show', $user);
+    $trail->push('Edit', route('users.edit', $user->id));
+});
+
+// Home > Post (Post index)
+Breadcrumbs::for('users.show', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('users.index');
+    $trail->push($user->name, route('users.show', $user->id));
+});
+Breadcrumbs::for('users.update', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('users.show', $user);
+
+    $trail->push('Edit', route('users.update', $user));
+});
+// Home > Post Category(Post Category index)
+Breadcrumbs::for('post-category.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Post Category', route('post-category.index'));
+});
+
+// Home > Post Category > Create (Create Post Category)
+Breadcrumbs::for('post-category.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('post-category.index');
+    $trail->push('Create', route('post-category.create'));
+});
+
+// Home > Post Category > [Category Title] > Edit (Edit Post Category)
+Breadcrumbs::for('post-category.edit', function (BreadcrumbTrail $trail, $postcategory) {
+    $trail->parent('post-category.show', $postcategory);
+    $trail->push('Edit', route('post-category.edit', $postcategory->id));
+});
+// Home > Post > [Post Title] (Single Post)
+Breadcrumbs::for('post-category.show', function (BreadcrumbTrail $trail, $postCategory) {
+    $trail->parent('post-category.index');
+    $trail->push($postCategory->title, route('post-category.show', $postCategory));
+});
+// Home > Post (Post index)
+Breadcrumbs::for('post.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Post', route('post.index'));
+});
+// Home > Post > Create (Create Post)
+Breadcrumbs::for('post.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('post.index');
+    $trail->push('Create', route('post.create'));
+});
+
+// Home > Post > [Post Title] > Edit (Edit Post)
+Breadcrumbs::for('post.edit', function (BreadcrumbTrail $trail, $post) {
+    $trail->parent('post.show', $post);
+    $trail->push('Edit '.($post->title ? ' / '.$post->title : ''), route('post.edit', $post));
+});
+// Home > Post > [Post Title] (Single Post)
+Breadcrumbs::for('post.show', function (BreadcrumbTrail $trail, $post) {
+    $trail->parent('post.index');
+    $trail->push($post->title, route('post.show', $post));
+});
