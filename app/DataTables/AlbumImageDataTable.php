@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\blog;
+use App\Models\Albumimages;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -10,7 +10,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class blogDataTable extends DataTable
+class AlbumImageDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -25,18 +25,18 @@ class blogDataTable extends DataTable
             })
             ->addColumn('action', function ($row) {
                 // Edit Button
-                $editBtn = '<a href="'.route('blog.edit', $row->id).'" class="btn btn-primary btn-sm">
+                $editBtn = '<a href="'.route('Image.edit', $row->id).'" class="btn btn-primary btn-sm">
                     <i class="fas fa-pencil-alt"></i>
                 </a>';
 
                 // View Button
-                $viewBtn = '<a href="'.route('blog.show', $row->id).'" class="btn btn-success btn-sm">
+                $viewBtn = '<a href="'.route('Image.show', $row->id).'" class="btn btn-success btn-sm">
                     <i class="fas fa-eye"></i>
                 </a>';
 
                 // Delete Button
                 $deleteBtn = '<form id="deleteForm-blog-'.$row->id.'"
-                        action="'.route('blog.destroy', $row->id).'"
+                        action="'.route('Image.destroy', $row->id).'"
                         method="POST" style="display:inline;">
                         '.csrf_field().'
                         '.method_field('DELETE').'
@@ -46,16 +46,20 @@ class blogDataTable extends DataTable
                         </button>
                     </form>';
 
+                $imageBtn = '<a href="'.route('image.cover', $row->id).'" class="btn btn-success btn-sm">
+                  <i class="fas fa-images"></i>
+                </a>';
+
                 // Combine all buttons
-                return $viewBtn.' '.$editBtn.' '.$deleteBtn;
+                return $viewBtn.' '.$editBtn.' '.$deleteBtn.''.$imageBtn;
             })
-            ->addColumn('image', function ($row) {
+            ->addColumn('cover_image', function ($row) {
                 // Display image with a small thumbnail
-                if ($row->image) {
-                    return '<a href="'.asset('storage/images/resized/800px_'.basename($row->image)).'" 
+                if ($row->cover_image) {
+                    return '<a href="'.asset('storage/images/resized/800px_'.basename($row->cover_image)).'" 
                             data-fancybox="gallery" 
                             data-caption="'.$row->title.'">
-                            <img src="'.asset('storage/images/resized/100px_'.basename($row->image)).'" 
+                            <img src="'.asset('storage/images/resized/100px_'.basename($row->cover_image)).'" 
                                  alt="'.$row->title.'" 
                                  style="width: 50px; height: auto;">
                         </a>';
@@ -75,25 +79,19 @@ class blogDataTable extends DataTable
                     <label class="form-check-label" for="status'.$row->id.'"></label>
                 </div>';
             })
-            ->addColumn('blog category', function ($row) {
-                // Check if the blog has an associated category
-                if ($row->blogCategory) {
-                    return $row->blogCategory->title;
-                } else {
-                    return 'None'; // Display 'None' if no category exists
-                }
-            })
 
-            ->rawColumns(['action', 'image', 'status', 'checkbox']) // Mark columns as raw HTML
+            ->rawColumns(['action', 'cover_image', 'status', 'checkbox']) // Mark columns as raw HTML
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(blog $model): QueryBuilder
+    public function query(Albumimages $model): QueryBuilder
     {
-        return $model->newQuery()->orderBy('id', 'desc');
+        $album_id = request()->route('album') | 0;   //the albu, here is a parameter
+
+        return $model::with('galleryalbum')->where('album_id', $album_id)->newQuery(); //the gallery album is a relationship in model and using eager loading
     }
 
     /**
@@ -102,13 +100,11 @@ class blogDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('blogs-table')
+            ->setTableId('album-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('frt<"d-flex justify-content-between align-items-center" l ip>')
-            ->lengthMenu([[5, 10, 15, 20, 50], [5, 10, 15, 20, 50]])
+            ->dom('lfrtip')
             ->orderBy(1);
-        // ->selectStyleSingle();//to make the row blue when selection
     }
 
     /**
@@ -117,27 +113,19 @@ class blogDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('checkbox')
-                ->exportable(false)
-                ->printable(false)
-                ->orderable(false)
-                ->searchable(false)
-                ->title('<input type="checkbox" id="select-all">')
-                ->width(30),
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-                ->width(100)
-                ->addClass('text-left'),
-            Column::make('title')
-                ->width(150),
-            Column::make('blog category')
-                ->width(150),
-            Column::make('image')
-                ->width(50),
+            Column::make('action')
+                ->title('Action')
+                ->width(100), // Fixed width for the action column
+            Column::make('image_name')
+                ->title('Caption')
+                ->width(250),
+
+            Column::make('cover_image')
+                ->title('Cover Image')
+                ->width(100),
+
             Column::make('status')
-                ->exportable(false)
-                ->printable(false)
+                ->title('Status')
                 ->width(50),
         ];
     }
@@ -147,6 +135,6 @@ class blogDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'blog_'.date('YmdHis');
+        return 'AlbumImage_'.date('YmdHis');
     }
 }

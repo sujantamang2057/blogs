@@ -192,7 +192,8 @@ class BlogController extends Controller
         if ($existimage != $currentimage) {
 
             // Delete old images if they exist
-            if ($blog->image) {
+
+            if ($request->input('image')) {
                 if (Storage::exists(public_path('storage/'.$blog->image))) {
                     Storage::delete(public_path('storage/'.$blog->image));
                 }

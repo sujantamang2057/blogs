@@ -52,6 +52,15 @@
 
                     </ul>
                 </li>
+                <li class="nav-item menu-open"> <a href="{{ route('Album.index') }}" class="nav-link active">
+                        <i class="nav-icon bi bi-speedometer"></i>
+
+                        <p>
+                            Gallery
+                        </p>
+
+                    </a>
+                </li>
             </ul> <!--end::Sidebar Menu-->
         </nav>
     </div> <!--end::Sidebar Wrapper-->

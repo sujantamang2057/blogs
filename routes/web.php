@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\AlbumimagesController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
@@ -42,6 +44,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/blog/bulk-delete', [BlogController::class, 'bulkDelete'])->name('blog.bulk-delete');
     Route::post('/user/bulk-update-status', [userController::class, 'bulkUpdateStatus'])->name('user.bulk-update-status');
     Route::post('/user/bulk-delete', [userController::class, 'bulkDelete'])->name('user.bulk-delete');
+    Route::resource('/Album', AlbumController::class);
+
+    Route::post('/multipleupload', [AlbumController::class, 'multipleUpload'])->name('multipleUpload');
+    Route::resource('/Image', AlbumimagesController::class);
+    Route::get('/album/{album}/images', [AlbumimagesController::class, 'albumImage'])->name('album.image');
+    Route::get('/album/{album}/images/cover', [AlbumimagesController::class, 'coverImage'])->name('image.cover');
+
 });
 
 require __DIR__.'/auth.php';

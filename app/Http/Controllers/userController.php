@@ -150,51 +150,53 @@ class userController extends Controller
         if ($existimage != $currentimage) {
 
             // Delete old images if they exist
-            if ($user->image) {
-                if (Storage::exists(public_path('storage/'.$user->image))) {
-                    Storage::delete(public_path('storage/'.$user->image));
+            if ($request->input('image')) {
+                if ($user->image) {
+                    if (Storage::exists(public_path('storage/'.$user->image))) {
+                        Storage::delete(public_path('storage/'.$user->image));
+                    }
+                    if (Storage::exists(public_path('storage/images/resized/800px_'.basename($user->image)))) {
+                        Storage::delete(public_path('storage/images/resized/800px_'.basename($user->image)));
+                    }
+                    if (Storage::exists(public_path('storage/images/resized/100px_'.basename($user->image)))) {
+                        Storage::delete(public_path('storage/images/resized/100px_'.basename($user->image)));
+                    }
                 }
-                if (Storage::exists(public_path('storage/images/resized/800px_'.basename($user->image)))) {
-                    Storage::delete(public_path('storage/images/resized/800px_'.basename($user->image)));
-                }
-                if (Storage::exists(public_path('storage/images/resized/100px_'.basename($user->image)))) {
-                    Storage::delete(public_path('storage/images/resized/100px_'.basename($user->image)));
-                }
+
+                $imagePath = $request->input('image');
+                $filename = basename($imagePath);
+
+                //path for the original image and resized image
+                $originalPath = 'images/'.$filename;
+                $resized100Path = 'images/resized/100px_'.$filename;
+                $resized800Path = 'images/resized/800px_'.$filename;
+                // $resizedPath = 'images/resized/'.$filename;
+
+                //move the file from temporary to original place
+                Storage::disk('public')->move($imagePath, $originalPath);
+
+                //resize of 100px
+                $resized100Image = Image::make(storage_path('app/public/'.$originalPath))->resize(100, null, function ($constraint) {
+                    $constraint->aspectRatio(); // Keep aspect ratio
+                    $constraint->upsize(); // Prevent upsizing
+                });
+
+                //store the image in the resized folder
+                Storage::disk('public')->put($resized100Path, (string) $resized100Image->encode());
+
+                // for the resized 800
+                $resized800Image = Image::make(storage_path('app/public/'.$originalPath))->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio(); // Keep aspect ratio
+                    $constraint->upsize(); // Prevent upsizing
+                });
+                Storage::disk('public')->put($resized800Path, (string) $resized800Image->encode());
+
+                //saved in the database
+                $user->image = $originalPath;
+            } else {
+
+                $user->image = $user->image;
             }
-
-            $imagePath = $request->input('image');
-            $filename = basename($imagePath);
-
-            //path for the original image and resized image
-            $originalPath = 'images/'.$filename;
-            $resized100Path = 'images/resized/100px_'.$filename;
-            $resized800Path = 'images/resized/800px_'.$filename;
-            // $resizedPath = 'images/resized/'.$filename;
-
-            //move the file from temporary to original place
-            Storage::disk('public')->move($imagePath, $originalPath);
-
-            //resize of 100px
-            $resized100Image = Image::make(storage_path('app/public/'.$originalPath))->resize(100, null, function ($constraint) {
-                $constraint->aspectRatio(); // Keep aspect ratio
-                $constraint->upsize(); // Prevent upsizing
-            });
-
-            //store the image in the resized folder
-            Storage::disk('public')->put($resized100Path, (string) $resized100Image->encode());
-
-            // for the resized 800
-            $resized800Image = Image::make(storage_path('app/public/'.$originalPath))->resize(800, null, function ($constraint) {
-                $constraint->aspectRatio(); // Keep aspect ratio
-                $constraint->upsize(); // Prevent upsizing
-            });
-            Storage::disk('public')->put($resized800Path, (string) $resized800Image->encode());
-
-            //saved in the database
-            $user->image = $originalPath;
-        } else {
-
-            $user->image = $user->image;
         }
 
         $user->save();

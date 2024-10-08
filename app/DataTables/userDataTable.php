@@ -109,7 +109,8 @@ class userDataTable extends DataTable
             ->setTableId('blogs-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('lfrtip')
+            ->dom('frt<"d-flex justify-content-between align-items-center" l ip>')
+            ->lengthMenu([[5, 10, 15, 20, 50], [5, 10, 15, 20, 50]])
             ->orderBy(1);
     }
 

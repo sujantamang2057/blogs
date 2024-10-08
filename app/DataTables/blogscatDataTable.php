@@ -52,7 +52,7 @@ class blogscatDataTable extends DataTable
             ->addColumn('image', function ($row) {
                 // Display image with a small thumbnail
                 if ($row->image) {
-                    return '<a href="'.asset('storage/images/resized/800px_'.$row->image).'" 
+                    return '<a href="'.asset('storage/images/resized/800px_'.basename($row->image)).'" 
                             data-fancybox="gallery" 
                             data-caption="'.$row->title.'">
                             <img src="'.asset('storage/images/resized/100px_'.basename($row->image)).'" 
@@ -105,7 +105,9 @@ class blogscatDataTable extends DataTable
             ->setTableId('blogs-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('lfrtip')
+            ->dom('frt<"d-flex justify-content-between align-items-center" l ip>')
+            ->lengthMenu([[5, 10, 15, 20, 50], [5, 10, 15, 20, 50]])
+
             ->orderBy(1);
 
     }
