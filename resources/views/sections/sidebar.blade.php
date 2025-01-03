@@ -53,10 +53,31 @@
                     </ul>
                 </li>
                 <li class="nav-item menu-open"> <a href="{{ route('Album.index') }}" class="nav-link active">
-                        <i class="nav-icon bi bi-speedometer"></i>
+                        <i class="nav-icon bi bi-camera"></i>
+
 
                         <p>
                             Gallery
+                        </p>
+
+                    </a>
+                </li>
+                <li class="nav-item menu-open"> <a href="{{ route('cart.index') }}" class="nav-link active">
+                        <i class="nav-icon bi bi-camera"></i>
+
+
+                        <p>
+                            cart
+                        </p>
+
+                    </a>
+                </li>
+                <li class="nav-item menu-open"> <a href="{{ route('cart.list') }}" class="nav-link active">
+                        <i class="nav-icon bi bi-camera"></i>
+
+
+                        <p>
+                            list
                         </p>
 
                     </a>

@@ -56,6 +56,7 @@
                                     </select>
                                     <button class="btn btn-secondary" id="applyBulkAction">Apply</button>
                                 </div>
+                                <a href="/all-tweets-csv" class="btn btn-primary">Export as CSV</a>
 
                             </div>
                             <!-- /.card-header -->

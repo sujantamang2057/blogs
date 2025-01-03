@@ -24,6 +24,17 @@ class BlogCategoryController extends Controller
 
         return $dataTable->render('admin.blog_category.index');
     }
+
+    public function apiIndex()
+    {
+        $customers = blog_category::all();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Customers retrieved successfully',
+            'data' => $customers,
+        ], 200);
+    }
     // public function index(Request $request)
     // {
     //     //
@@ -123,6 +134,37 @@ class BlogCategoryController extends Controller
 
     }
 
+    public function apistore(Request $request)
+    {
+
+        try {
+            $blogCategory = new blog_category;
+            $blogCategory->title = $request->title;
+            //if slug is given by the userv that take that otherwise take a custom made one
+            if ($request->slug) {
+                $blogCategory->slug = $request->slug;
+
+            } else {
+                $blogCategory->slug = Str::slug($request->title);
+
+            }
+            $blogCategory->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Customer created successfully',
+                'data' => $blogCategory,
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error creating customer',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -131,7 +173,18 @@ class BlogCategoryController extends Controller
         $blogCategory = blog_category::findorfail($id);
 
         return view('admin.blog_category.show', compact('blogCategory'));
-        //
+
+    }
+
+    public function apishow(string $id)
+    {
+        $blogCategory = blog_category::findorfail($id);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Customers shown successfully',
+            'data' => $blogCategory,
+        ], 200);
 
     }
 
@@ -249,6 +302,36 @@ class BlogCategoryController extends Controller
         return redirect()->route('category.show', $blogCategory->id)->with('success', 'Blog category updated successfully.');
     }
 
+    public function apiupdate(blogcategoryRequest $request, string $id)
+    {
+        try {
+
+            $blogCategory = blog_category::findOrFail($id);
+            $blogCategory->title = $request->title;
+            if ($request->slug) {
+                $blogCategory->slug = $request->slug;
+            } else {
+                $blogCategory->slug = Str::slug($request->title);
+            }
+            $blogCategory->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Customer updated successfully',
+                'data' => $blogCategory,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error updating customer',
+                'error' => $e->getMessage(),
+            ], 500);
+
+        }
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -265,6 +348,28 @@ class BlogCategoryController extends Controller
         $blogCategory->delete();
 
         return redirect()->route('category.index')->with('success', 'Blog category deleted successfully.');
+
+    }
+
+    public function apidelete(string $id)
+    {
+        try {
+            $blogCategory = blog_category::findOrFail($id);
+            $blogCategory->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Blog category deleted successfully',
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error deleting customer',
+                'error' => $e->getMessage(),
+            ], 500);
+
+        }
 
     }
 

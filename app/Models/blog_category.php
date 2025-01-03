@@ -31,4 +31,5 @@ class blog_category extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    
 }

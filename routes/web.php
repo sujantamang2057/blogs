@@ -4,14 +4,18 @@ use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\AlbumimagesController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\userController;
+use App\Models\blog_category;
+use backend\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/test', [TestController::class, 'index']);
 //dash board route
 
 // Route::get('/dashboard', function () {
@@ -51,6 +55,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/album/{album}/images', [AlbumimagesController::class, 'albumImage'])->name('album.image');
     Route::get('/album/{album}/images/cover', [AlbumimagesController::class, 'coverImage'])->name('image.cover');
 
+    Route::get('/cart/list', [CartController::class, 'Cartlist'])->name('cart.list');
+
+    Route::resource('/cart', CartController::class);
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+
+});
+Route::get('/all-tweets-csv', function(){
+
+    $table = blog_category::all();
+    $filename = "tweets.csv";
+    $handle = fopen($filename, 'w+');
+    fputcsv($handle, array('tweet text', 'screen name', 'name', 'created at'));
+
+    foreach($table as $row) {
+        fputcsv($handle, array($row['tweet_text'], $row['screen_name'], $row['name'], $row['created_at']));
+    }
+
+    fclose($handle);
+
+    $headers = array(
+        'Content-Type' => 'text/csv',
+    );
+
+    return blog_category::download($handle, 'tweets.csv', $headers);
 });
 
 require __DIR__.'/auth.php';
