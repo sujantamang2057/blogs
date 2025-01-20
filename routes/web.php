@@ -9,20 +9,20 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\userController;
 use App\Models\blog_category;
-use backend\Controllers\TestController;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/test', [TestController::class, 'index']);
-//dash board route
+// dash board route
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-//authenticate and middleware for profile
+// authenticate and middleware for profile
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    //blog category controler route
+    // blog category controler route
     Route::resource('category', BlogCategoryController::class);
 
     Route::resource('blog', BlogController::class);
@@ -61,28 +61,63 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 
 });
-Route::get('/all-tweets-csv', function(){
 
-    $table = blog_category::all();
-    $filename = "tweets.csv";
+Route::get('/all-tweets-csv', function () {
+    $table = blog_category::all(); // Adjust model name and namespace
+    $filename = storage_path('tweets.csv'); // Save file in the storage path
+
     $handle = fopen($filename, 'w+');
-    fputcsv($handle, array('tweet text', 'screen name', 'name', 'created at'));
 
-    foreach($table as $row) {
-        fputcsv($handle, array($row['tweet_text'], $row['screen_name'], $row['name'], $row['created_at']));
+    // Add header row
+    fputcsv($handle, ['ID', 'Category Name', 'Status', 'Created At']);
+
+    // Add data rows
+    foreach ($table as $row) {
+        fputcsv($handle, [$row->id, $row->title, $row->status, $row->created_at]);
     }
 
     fclose($handle);
 
-    $headers = array(
+    // Return file as a response for download
+    return Response::download($filename, 'tweets.csv', [
         'Content-Type' => 'text/csv',
-    );
+    ])->deleteFileAfterSend(true); // Deletes the file after download
+});
 
-    return blog_category::download($handle, 'tweets.csv', $headers);
+Route::get('/all-tweets-pdf', function () {
+    $table = blog_category::all(); // Fetch data from the model
+
+    // Prepare HTML content for the PDF
+    $html = '<h1>Blog Categories</h1>';
+    $html .= '<table border="1" cellspacing="0" cellpadding="5">';
+    $html .= '<thead>
+                 <tr>
+                     <th>ID</th>
+                     <th>Category Name</th>
+                     <th>Status</th>
+                     <th>Created At</th>
+                 </tr>
+              </thead>';
+    $html .= '<tbody>';
+    foreach ($table as $row) {
+        $html .= '<tr>
+                     <td>'.$row->id.'</td>
+                     <td>'.$row->title.'</td>
+                     <td>'.($row->status ? 'Active' : 'Inactive').'</td>
+                     <td>'.$row->created_at.'</td>
+                  </tr>';
+    }
+    $html .= '</tbody></table>';
+
+    // Generate PDF from HTML
+    $pdf = Pdf::loadHTML($html);
+
+    // Return the PDF for download
+    return $pdf->download('blog_categories.pdf');
 });
 
 require __DIR__.'/auth.php';
 
-//For blog post in simple all not using resource controller using simple controler ans route
+// For blog post in simple all not using resource controller using simple controler ans route
 
-//for category route using resource controller
+// for category route using resource controller

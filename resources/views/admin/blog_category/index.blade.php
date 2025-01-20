@@ -57,6 +57,9 @@
                                     <button class="btn btn-secondary" id="applyBulkAction">Apply</button>
                                 </div>
                                 <a href="/all-tweets-csv" class="btn btn-primary">Export as CSV</a>
+                                <a href="/all-tweets-pdf" class="btn btn-primary">Export as PDF</a>
+
+
 
                             </div>
                             <!-- /.card-header -->
