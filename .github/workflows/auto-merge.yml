@@ -18,17 +18,9 @@ jobs:
           git config user.name "sujantamang2057"
           git config user.email "sujandontamang@gmail.com"
 
-      - name: Merge blog-branch into master
+      - name: Force merge blog-branch into master
         run: |
           git fetch origin
           git checkout master
-          git merge origin/blog-branch --no-edit --allow-unrelated-histories || {
-            echo "Merge conflict detected. Aborting merge.";
-            git merge --abort;
-            exit 1;
-          }
-
-      - name: Push changes to master
-        if: success()
-        run: |
+          git merge origin/blog-branch --no-edit --allow-unrelated-histories -X theirs
           git push origin master
