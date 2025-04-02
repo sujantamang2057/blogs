@@ -15,8 +15,8 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config user.name "sujantamang2057"
-          git config user.email "sujandontamang@gmail.com"
+          git config user.name "Sujan.Tamang"
+          git config user.email "sujan_mi@yonefu.info"
 
       - name: Force merge blog-branch into master
         run: |
