@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    {{ Breadcrumbs::render('blog-create') }}
+                   
 
                 </div>
                 <div class="col-sm-6">
