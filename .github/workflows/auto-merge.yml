@@ -1,0 +1,26 @@
+name: Auto Merge blog-branch to master
+
+on:
+  push:
+    branches:
+      - blog-branch
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config user.name "sujantamang2057"
+          git config user.email "sujandontamang@gmail.com"
+
+      - name: Merge blog-branch into master
+        run: |
+          git fetch origin
+          git checkout master
+          git merge origin/blog-branch --no-edit
+          git push origin master
