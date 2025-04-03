@@ -20,7 +20,5 @@ jobs:
 
       - name: Force merge blog-branch into master
         run: |
-          git fetch origin
-          git checkout master
-          git merge origin/blog-branch --no-edit --allow-unrelated-histories -X theirs
+         
           git push origin master
