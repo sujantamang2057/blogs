@@ -26,6 +26,6 @@ jobs:
 
       - name: Push changes to master
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN1 }}
         run: |
-          git push https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/sujantamang2057/blogs.git master
+          git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN1 }}@github.com/sujantamang2057/blogs.git master
