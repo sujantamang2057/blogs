@@ -23,4 +23,9 @@ jobs:
           git fetch origin
           git checkout master
           git merge origin/blog-branch --no-edit --allow-unrelated-histories -X theirs
-          git push origin master
+
+      - name: Push changes to master
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          git push https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/sujantamang2057/blogs.git master
